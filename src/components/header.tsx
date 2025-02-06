@@ -193,7 +193,7 @@ const Header: React.FC = () => {
           <Link className='text-gray-700 hover:text-black' href={'#'}>
             <Image src='/icon/search.png' alt='Search' width={24} height={24} />
           </Link>
-          <Link className='text-gray-700 hover:text-black' href='/'>
+          <Link className='text-gray-700 hover:text-black' href='#'>
             {/* <Image src='/icon/user.png' alt='User' width={24} height={24} /> */}
             <DropdownUser />
           </Link>

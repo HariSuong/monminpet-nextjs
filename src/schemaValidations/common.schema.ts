@@ -2,7 +2,10 @@ import z from 'zod'
 
 export const MessageRes = z
   .object({
-    message: z.string()
+    success: z.boolean(),
+    message: z.string(),
+
+    data: z.object({})
   })
   .strict()
 

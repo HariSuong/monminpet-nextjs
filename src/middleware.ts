@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
   if (authPath.some(path => pathname.startsWith(path) && sessionToken)) {
-    return NextResponse.redirect(new URL('/', request.url))
+    return NextResponse.redirect(new URL('/account', request.url))
   }
   // const path = NextResponse.redirect(new URL('/home', request.url))
 

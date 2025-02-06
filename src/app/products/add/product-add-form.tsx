@@ -15,13 +15,10 @@ import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema'
 import authApiRequest from '@/services/apiAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast, Toaster } from 'sonner'
 
-const LoginForm = () => {
-  const [loading, setLoading] = useState(false) // Thêm state loading
-
+const ProductAddForm = () => {
   const router = useRouter()
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
@@ -33,8 +30,6 @@ const LoginForm = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: LoginBodyType) {
-    setLoading(true) // Bắt đầu loading
-
     try {
       const result = await authApiRequest.login(values)
       toast.success('Đăng nhập thành công', {
@@ -43,11 +38,11 @@ const LoginForm = () => {
       })
 
       await authApiRequest.auth({ sessionToken: result.payload.token })
-      // router.push('/account')
-      setTimeout(() => {
-        router.push('/account')
-      }, 500) // Chờ 500ms trước khi thực hiện push
+      router.push('/account')
     } catch (error: any) {
+      // console.log('error', error.status)
+      // const errors = error.payload.errors as { email: string }
+
       const status = error.status as number
       if (status === 400) {
         toast.error('Lỗi', {
@@ -97,4 +92,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm
+export default ProductAddForm

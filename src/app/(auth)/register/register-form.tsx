@@ -1,25 +1,22 @@
 'use client'
 
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { toast, Toaster } from 'sonner'
 import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+
 import { RegisterBody, RegisterBodyType } from '@/schemaValidations/auth.schema'
-import envConfig from '@/config'
 import authApiRequest from '@/services/apiAuth'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useAppContext } from '@/app/AppProvider'
+import { useForm } from 'react-hook-form'
+import { toast, Toaster } from 'sonner'
 
 const RegisterForm = () => {
   const router = useRouter()
@@ -31,7 +28,6 @@ const RegisterForm = () => {
       password: ''
     }
   })
-  const { setSessionToken } = useAppContext()
 
   // 2. Define a submit handler.
   async function onSubmit(values: RegisterBodyType) {
@@ -43,8 +39,9 @@ const RegisterForm = () => {
       })
 
       await authApiRequest.auth({ sessionToken: result.payload.token })
-      console.log(result.payload.token)
-      setSessionToken(result.payload?.token)
+      // console.log(result.payload.token)
+      // sessionTokenClient.value = result.payload?.token
+
       router.push('/account')
     } catch (error: any) {
       console.log(error)

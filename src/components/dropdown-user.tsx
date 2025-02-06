@@ -1,3 +1,4 @@
+import ButtonLogout from '@/components/button-logout'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -61,12 +62,8 @@ const DropdownUser = () => {
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Log out
-          <DropdownMenuShortcut>
-            <FaArrowRightFromBracket className='w-4 h-4' />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
+
+        <ButtonLogout />
       </DropdownMenuContent>
     </DropdownMenu>
   )

@@ -1,6 +1,5 @@
-'use client'
-
 import envConfig from '@/config'
+import { LoginResType } from '@/schemaValidations/auth.schema'
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
   baseUrl?: string | undefined
@@ -13,21 +12,48 @@ export class HttpError extends Error {
     [key: string]: any
   }
   constructor({ status, payload }: { status: number; payload: any }) {
-    super('Http Error')
+    super(payload.message || `HTTP Error: ${status}`)
     this.status = status
     this.payload = payload
   }
 }
 
+class SessionTokenClient {
+  private token = ''
+
+  get value() {
+    return this.token
+  }
+
+  set value(token: string) {
+    // Nếu gọi method này ở server thì sẽ bị lỗi
+    if (typeof window === 'undefined') {
+      throw new Error('Không thể thiết lập token trên server side')
+    }
+    this.token = token
+  }
+}
+
+export const sessionTokenClient = new SessionTokenClient()
+
 const request = async <Response>(
   url: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
-  options?: CustomOptions | undefined
+  options?: CustomOptions | undefined,
+  //xử lý timeout cho request
+  timeout = 10000 // 10s
 ) => {
+  //Dùng AbortController để hủy request sau một khoảng thời gian nhất định
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), timeout)
+
   const body = options?.body ? JSON.stringify(options.body) : undefined
 
   const baseHeaders = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: sessionTokenClient.value
+      ? `Bearer ${sessionTokenClient.value}`
+      : ''
   }
 
   // Nếu không truyền baseUrl, tức baseUrl = undefined thì lấy từ envConfig.NEXT_PUBLIC_API_URL
@@ -40,36 +66,51 @@ const request = async <Response>(
 
   const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/${url}`
 
-  console.log('Request Option:', options)
-  console.log('Request URL:', fullUrl)
-  console.log('Request Body:', body)
+  // console.log('Request Option:', options)
+  // console.log('Request URL:', fullUrl)
+  // console.log('Request Body:', body)
 
-  const response = await fetch(fullUrl, {
-    ...options,
-    method,
-    headers: {
-      ...baseHeaders,
-      ...options?.headers
-    },
-    body
-  })
+  try {
+    const response = await fetch(fullUrl, {
+      ...options,
+      method,
+      headers: {
+        ...baseHeaders,
+        ...options?.headers
+      },
+      body,
+      signal: controller.signal // Gán signal cho fetch
+    })
+    clearTimeout(timeoutId) // Xóa timeout nếu request thành công
 
-  const payload: Response = await response.json()
+    const payload: Response = await response.json()
+    const data = {
+      status: response.status,
+      payload
+    }
+    // console.log('Dữ liệu ', data)
 
-  console.log('Response:', response)
-  console.log('Payload:', payload)
+    if (!response.ok) {
+      throw new HttpError(data)
+    }
 
-  const data = {
-    status: response.status,
-    payload
+    // Set sessionToken cho login và register và đảm bảo logic dưới đây chỉ chạy phía client (browser)
+    if (typeof window !== 'undefined') {
+      if (['/login', '/register'].includes(url)) {
+        sessionTokenClient.value = (payload as LoginResType).token
+      } else if (['/logout'].includes(url)) {
+        sessionTokenClient.value = ''
+      }
+    }
+
+    return data
+  } catch (error: any) {
+    clearTimeout(timeoutId)
+    if (error.name === 'AbortError') {
+      throw new Error('Request timeout')
+    }
+    throw error
   }
-  // console.log('Dữ liệu ', data)
-
-  if (!response.ok) {
-    throw new HttpError(data)
-  }
-
-  return data
 }
 
 const http = {
