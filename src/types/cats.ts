@@ -7,3 +7,9 @@ export interface Category {
   thumb: string
   products: Product[]
 }
+
+export interface CategoryRes {
+  success: boolean
+  message: string
+  data: Category[]
+}

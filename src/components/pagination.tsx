@@ -60,6 +60,8 @@ export default Pagination
 
 */
 
+'use client'
+
 import {
   Pagination,
   PaginationContent,
@@ -70,24 +72,26 @@ import {
   PaginationPrevious
 } from '@/components/ui/pagination'
 import { PageInfo } from '@/types/pagination'
+import { useRouter } from 'next/navigation'
 
 interface PaginationProps {
   pageInfo: PageInfo
-  onPageChange: (page: number) => void
+  searchParams: { catId?: string; page?: string; orderBy?: string }
 }
 
 const PaginationDemo: React.FC<PaginationProps> = ({
   pageInfo,
-  onPageChange
+  searchParams
 }) => {
   const { current_page, last_page, links } = pageInfo
+  const router = useRouter()
 
-  const handlePageChange = (url: string | null) => {
-    if (url) {
-      const urlParams = new URLSearchParams(url.split('?')[1])
-      const page = parseInt(urlParams.get('page') || '1', 10)
-      onPageChange(page)
-    }
+  // Cập nhật URL khi chuyển trang
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams)
+    params.set('page', page.toString())
+
+    router.push(`?${params.toString()}`)
   }
 
   return (
@@ -99,7 +103,10 @@ const PaginationDemo: React.FC<PaginationProps> = ({
               ? 'opacity-50 pointer-events-none text-lg text-black'
               : ''
           } text-lg text-[#424040]`}>
-          <PaginationPrevious onClick={() => handlePageChange(links[0].url)} />
+          <PaginationPrevious
+            onClick={() => handlePageChange(current_page - 1)}
+            aria-disabled={current_page === 1}
+          />
         </PaginationItem>
 
         {links.map((link, index) => {
@@ -115,7 +122,7 @@ const PaginationDemo: React.FC<PaginationProps> = ({
               // }`}
             >
               <PaginationLink
-                onClick={() => handlePageChange(link.url)}
+                onClick={() => handlePageChange(Number(link.label))}
                 className={`${
                   link.active ? 'text-black' : 'text-[#424040]'
                 } text-lg`}
@@ -133,7 +140,8 @@ const PaginationDemo: React.FC<PaginationProps> = ({
               : ''
           } text-lg text-[#424040]`}>
           <PaginationNext
-            onClick={() => handlePageChange(links[links.length - 1].url)}
+            onClick={() => handlePageChange(current_page + 1)}
+            aria-disabled={current_page === last_page}
           />
         </PaginationItem>
       </PaginationContent>

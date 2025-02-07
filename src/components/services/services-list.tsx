@@ -1,19 +1,21 @@
 'use client'
 
-import { useServicesCat } from '@/hooks/services/useServices'
-import { SkeletonCard } from '../skeleton-card'
+import { ServicesCat } from '@/types/services'
 import ServiceItem from './service-item'
 
-const ServicesList = () => {
-  const { data: servicesList, isPending, error } = useServicesCat()
+const ServicesList = ({ services }: { services: ServicesCat[] }) => {
+  // const { data: servicesList, isPending, error } = useServicesCat()
 
-  if (isPending) return <SkeletonCard />
+  // console.log('servicesList', servicesList)
+  // console.log('services', services)
 
-  if (error) return <div>Error fetching products.</div>
+  // if (isPending) return <SkeletonCard />
+
+  // if (error) return <div>Error fetching products.</div>
 
   return (
     <div className='pt-16 sm:max-w-full'>
-      {servicesList.map(service => (
+      {services.map(service => (
         <ServiceItem
           key={service?.id}
           id={service?.id}

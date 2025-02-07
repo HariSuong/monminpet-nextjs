@@ -11,6 +11,14 @@ export interface Product {
   discount?: number
 }
 
+export interface Menu {
+  id: number
+  name: string
+  thumb: string
+  desc?: string
+  video?: string
+  type_thumb_video: string
+}
 export interface ProductPagination {
   current_page: number
   data: Product[]
@@ -27,6 +35,13 @@ export interface ProductPagination {
   total: number
 }
 
+export interface ProductPaginationRes {
+  success: boolean
+  message: string
+  menu: Menu | null
+  data: ProductPagination
+}
+
 export interface ProductItemProps {
   id: number
   name: string
@@ -39,15 +54,6 @@ export interface ProductItemProps {
 
 export interface ProductListProps {
   products: Product[]
-}
-
-export interface Menu {
-  id: number
-  name: string
-  thumb: string
-  desc?: string
-  video?: string
-  type_thumb_video: string
 }
 
 export interface FAQ {
@@ -91,4 +97,10 @@ export interface ProductDetail {
     [key: number]: Attribute
   }
   related: Product[]
+}
+
+export interface ProductDetailRes {
+  success: boolean
+  message: string
+  data: ProductDetail
 }

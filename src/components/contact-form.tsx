@@ -32,6 +32,7 @@ import { DatePickerDemo } from './custom-date-input'
 import { useServicesCat } from '@/hooks/services/useServices'
 import { SkeletonCard } from './skeleton-card'
 import contactSchema from '@/schemaValidations/contact.schema'
+import { ServicesCat } from '@/types/services'
 
 interface Option {
   value: string
@@ -42,38 +43,38 @@ const petOptions: Option[] = [
   { value: 'meo', label: 'Mèo' }
 ]
 
-const ContactForm: React.FC = () => {
+const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
   const form = useForm({
     resolver: zodResolver(contactSchema),
     defaultValues: {
-      specialization: '',
-      petType: '',
-      name: '',
-      phone: '',
+      full_name: '',
       email: '',
-      appointmentDate: '',
-      message: ''
+      phone: '',
+      pet: '',
+      service: 'Test',
+      message: '',
+      appointment_at: ''
     }
   })
 
-  const { data: servicesList, error, isLoading } = useServicesCat()
+  // const { data: servicesList, error, isLoading } = useServicesCat()
 
-  if (isLoading) {
-    return <SkeletonCard />
-  }
+  // if (isLoading) {
+  //   return <SkeletonCard />
+  // }
 
-  if (error || !servicesList) {
-    return <div>Error loading services</div>
-  }
+  // if (error || !servicesList) {
+  //   return <div>Error loading services</div>
+  // }
 
-  const serviceOptions = servicesList.map(({ name, id }) => ({
+  const serviceOptions = services.map(({ name, id }) => ({
     value: String(id),
     label: name
   }))
 
   const onSubmit = (data: z.infer<typeof contactSchema>) => {
     console.log('Submit')
-    console.log(data)
+    console.log('data', data)
     toast.success('Thông tin đã được gửi', {
       description:
         'Chúng tôi đã ghi nhận lịch của bạn và sẽ trả lời trong thời gian sớm nhất'
@@ -107,7 +108,7 @@ const ContactForm: React.FC = () => {
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 uppercase'>
                 <FormField
                   control={form.control}
-                  name='specialization'
+                  name='service'
                   render={({ field }) => (
                     <FormItem>
                       <Select
@@ -142,7 +143,7 @@ const ContactForm: React.FC = () => {
 
                 <FormField
                   control={form.control}
-                  name='petType'
+                  name='pet'
                   render={({ field }) => (
                     <FormItem>
                       <Select
@@ -178,7 +179,7 @@ const ContactForm: React.FC = () => {
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-4'>
                 <FormField
                   control={form.control}
-                  name='name'
+                  name='full_name'
                   render={({ field }) => (
                     <FormItem>
                       <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-full uppercase'>
@@ -230,7 +231,7 @@ const ContactForm: React.FC = () => {
                 />
                 <FormField
                   control={form.control}
-                  name='appointmentDate'
+                  name='appointment_at'
                   render={({ field }) => (
                     <FormItem>
                       <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-full uppercase'>
@@ -242,7 +243,7 @@ const ContactForm: React.FC = () => {
                         /> */}
                         <Controller
                           control={form.control}
-                          name='appointmentDate'
+                          name='appointment_at'
                           render={({ field }) => (
                             <DatePickerDemo
                               value={field.value}

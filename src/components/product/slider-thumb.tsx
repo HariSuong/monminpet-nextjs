@@ -8,15 +8,20 @@ import 'slick-carousel/slick/slick.css'
 import Image from 'next/image'
 
 import styles from './slider-thumb.module.css'
+import { useEffect, useState } from 'react'
 
 interface SliderThumbProps {
   images?: string[]
 }
 
 const SliderThumb: React.FC<SliderThumbProps> = ({ images }) => {
-  if (!images) {
-    return null // hoặc bạn có thể trả về một thành phần placeholder khác
-  }
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  useEffect(() => {
+    setCurrentSlide(0) // Reset về ảnh đầu tiên khi đổi ảnh
+  }, [images])
+
+  if (!images || images.length === 0) return null
 
   const settings = {
     customPaging: function (i: number) {
@@ -40,7 +45,10 @@ const SliderThumb: React.FC<SliderThumbProps> = ({ images }) => {
     slidesToShow: 1,
     slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />
+    prevArrow: <SamplePrevArrow />,
+    initialSlide: currentSlide, // Set slide đầu tiên
+    beforeChange: (oldIndex: number, newIndex: number) =>
+      setCurrentSlide(newIndex)
   }
 
   return (

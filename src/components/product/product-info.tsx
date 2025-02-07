@@ -1,9 +1,10 @@
 import { Attribute, Product } from '@/types/products'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { HiOutlineStar, HiStar } from 'react-icons/hi2'
 import { TiShoppingCart } from 'react-icons/ti'
 import Suggests from './suggests'
+import ProductAttr from '@/components/product/product-attr'
 
 interface ProductInfoProps {
   name: string
@@ -15,6 +16,7 @@ interface ProductInfoProps {
     [key: number]: Attribute
   }
   discount?: string
+  onSelectImage: (image: string | null) => void // Nhận từ `ProductDetail`
 }
 
 const ProductInfo: React.FC<ProductInfoProps> = ({
@@ -23,7 +25,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   desc,
   price_old_text,
   price_text,
-  suggests
+  suggests,
+  onSelectImage
 }) => {
   return (
     <div className='lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0'>
@@ -71,7 +74,22 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           </div>
         </div>
         {/* Tạo một div giống cấu trúc như trên nhưng nối dung là size, background màu sắc #D89C17 và có border màu đen, bên trong là số kg, ví dụ 180kg */}
-        <div className='flex items-center mb-5 space-x-3'>
+        {attributes &&
+          Object.values(attributes).map(attr => (
+            <div key={attr.id} className='flex items-center mb-5 space-x-3'>
+              <span className='text-xl font-semibold'>{attr.name}</span>
+              {attr.product_attribute.map(pa => (
+                <div
+                  key={pa.id}
+                  onClick={() => onSelectImage(pa.image || null)} // Gọi hàm từ `ProductDetail.tsx`
+                  className='bg-[#D89C17] px-3 py-2 text-black border border-black font-semibold text-lg cursor-pointer'>
+                  {pa.name}
+                </div>
+              ))}
+            </div>
+          ))}
+
+        {/* <div className='flex items-center mb-5 space-x-3'>
           <span className='text-xl font-semibold'>Size</span>
           <div className='bg-[#D89C17] px-3 py-2 text-black border border-black font-semibold text-lg'>
             180g
@@ -80,11 +98,12 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
             360g
           </div>
         </div>
+
         <div className='flex items-center mb-5 space-x-3'>
           <span className='text-xl font-semibold'>Màu sắc</span>
           <div className='bg-[#d82417] p-5 text-black border border-black font-semibold text-lg'></div>
           <div className='bg-[#000000] p-5 text-black border border-black font-semibold text-lg'></div>
-        </div>
+        </div> */}
 
         <div className='flex items-center mb-5 space-x-3'>
           <span className='text-xl font-semibold'>Số lượng</span>

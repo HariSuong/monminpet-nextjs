@@ -5,13 +5,10 @@ import { SkeletonCard } from '../skeleton-card'
 import Title from '../title'
 import ProductSlider from './product-slider'
 import { slugify } from '@/lib/utils'
+import { Category } from '@/types/cats'
 
-const ProductCat = () => {
-  const { data, isPending, error } = useProductsCat()
-  if (isPending) return <SkeletonCard />
-  if (error) return <div>Error: {error.message}</div>
-
-  const products = data?.map(cat => {
+const ProductCat: React.FC<{ productsCat: Category[] }> = ({ productsCat }) => {
+  const products = productsCat?.map(cat => {
     if (cat.products.length === 0) return null
     return (
       <div key={cat.id}>

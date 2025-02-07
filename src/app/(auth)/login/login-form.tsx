@@ -45,7 +45,7 @@ const LoginForm = () => {
       await authApiRequest.auth({ sessionToken: result.payload.token })
       // router.push('/account')
       setTimeout(() => {
-        router.push('/account')
+        router.push('/')
       }, 500) // Chờ 500ms trước khi thực hiện push
     } catch (error: any) {
       const status = error.status as number

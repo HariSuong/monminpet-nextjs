@@ -36,3 +36,14 @@ export interface ServiceDetail {
     answer: string
   }[]
 }
+
+export interface ServiceDetailRes {
+  success: boolean
+  message: string
+  data: ServiceDetail
+}
+export interface ServiceCatRes {
+  success: boolean
+  message: string
+  data: ServicesCat[]
+}
