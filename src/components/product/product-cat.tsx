@@ -4,8 +4,9 @@ import { useProductsCat } from '@/hooks/product/useProductsCat'
 import { SkeletonCard } from '../skeleton-card'
 import Title from '../title'
 import ProductSlider from './product-slider'
-import { slugify } from '@/lib/utils'
+
 import { Category } from '@/types/cats'
+import slugify from 'slugify'
 
 const ProductCat: React.FC<{ productsCat: Category[] }> = ({ productsCat }) => {
   const products = productsCat?.map(cat => {
@@ -15,7 +16,11 @@ const ProductCat: React.FC<{ productsCat: Category[] }> = ({ productsCat }) => {
         <Title
           title={cat.name}
           subtitle='best seller'
-          to={`/products/${slugify(cat.name)}?catId=${cat.id}&page=1`}
+          to={`/products/${slugify(cat?.name || '', {
+            lower: true,
+            strict: true,
+            locale: 'vi'
+          })}?catId=${cat.id}&page=1`}
         />
         <div className='font-[sans-serif] '>
           <div className='p-4 lg:max-w-7xl sm:max-w-full'>

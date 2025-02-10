@@ -2,7 +2,8 @@
 
 import { SkeletonCard } from '@/components/skeleton-card'
 import { useProduct } from '@/hooks/product/useProduct'
-import { slugify } from '@/lib/utils'
+import slugify from 'slugify'
+
 import { BreadcrumbWithCustomSeparator } from '../breadcrumb-with-custom-separator'
 import { Faq } from '../faq'
 
@@ -27,9 +28,11 @@ const ProductDetail = ({
   return (
     <div className='container px-5 py-24 mx-auto'>
       <BreadcrumbWithCustomSeparator
-        parentLink={`/products/${slugify(product?.menus.name!)}?catId=${
-          product?.menus.id
-        }&page=1`}
+        parentLink={`/products/${slugify(product?.menus?.name || '', {
+          lower: true,
+          strict: true,
+          locale: 'vi'
+        })}?catId=${product?.menus.id}&page=1`}
         currentPage={product?.name!}
         parentPage={product?.menus.name}
       />
@@ -40,8 +43,10 @@ const ProductDetail = ({
           }
         />
         <ProductInfo
+          id={Number(product?.id)}
           name={product?.name}
           desc={product?.desc!}
+          image={product?.imgs[0]}
           price_text={product?.price_text}
           price_old_text={product?.price_old_text}
           suggests={product?.suggests}

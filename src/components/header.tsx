@@ -197,7 +197,7 @@ const Header: React.FC = () => {
             {/* <Image src='/icon/user.png' alt='User' width={24} height={24} /> */}
             <DropdownUser />
           </Link>
-          <Link className='text-gray-700 hover:text-black' href={'#'}>
+          <Link className='text-gray-700 hover:text-black' href={'/cart'}>
             <Image src='/icon/cart.png' alt='Cart' width={24} height={24} />
           </Link>
         </NavigationMenuList>

@@ -93,9 +93,7 @@ export interface ProductDetail {
   price_text: string
   price_old_text: string
   suggests: Product[]
-  attributes: {
-    [key: number]: Attribute
-  }
+  attributes: Attribute[]
   related: Product[]
 }
 

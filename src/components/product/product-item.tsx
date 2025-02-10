@@ -2,7 +2,7 @@ import React from 'react'
 import Badge from '../badge'
 import Link from 'next/link'
 import Image from 'next/image'
-import { slugify } from '@/lib/utils'
+import slugify from 'slugify'
 
 const ProductItem = (props: any) => {
   const {
@@ -32,7 +32,14 @@ const ProductItem = (props: any) => {
 
       <div className='text-center'>
         <h3 className='text-xl font-bold uppercase text-gray-800'>
-          <Link href={`/products/${slugify(name)}/${id}`}>{name}</Link>
+          <Link
+            href={`/products/${slugify(name || '', {
+              lower: true,
+              strict: true,
+              locale: 'vi'
+            })}/${id}`}>
+            {name}
+          </Link>
         </h3>
         <p className='text-sm mt-2'>{description}</p>
         <div className='flex gap-2 justify-center items-center mt-4'>

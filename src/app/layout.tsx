@@ -6,6 +6,7 @@ import Footer from '@/components/footer'
 import Providers from '@/lib/providers'
 import AppProvider from './AppProvider'
 import { cookies } from 'next/headers'
+import { CartProvider } from '@/context/CartContext'
 // import { Header } from '@/components/header-top'
 
 // const montserrat = Montserrat({ subsets: ['vietnamese'] })
@@ -36,11 +37,14 @@ export default function RootLayout({
       {/* <body className={montserrat.className}> */}
       <body>
         <Providers>
-          <Header />
-          <AppProvider initialSessionToken={sessionToken}>
-            {children}
-          </AppProvider>
-          <Footer />
+          <CartProvider>
+            {/* Bao bọc ứng dụng bằng CartProvider */}
+            <Header />
+            <AppProvider initialSessionToken={sessionToken}>
+              {children}
+            </AppProvider>
+            <Footer />
+          </CartProvider>
         </Providers>
       </body>
     </html>
