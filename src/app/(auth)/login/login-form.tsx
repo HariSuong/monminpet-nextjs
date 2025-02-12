@@ -1,5 +1,6 @@
 'use client'
 
+import ButtonSubmit from '@/app/(auth)/_component/button-submit'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -14,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema'
 import authApiRequest from '@/services/apiAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -61,15 +63,18 @@ const LoginForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-4 max-w-[400px] w-full'>
+        className='space-y-4 max-w-[350px] w-full'>
         <FormField
           control={form.control}
           name='email'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder='Email' {...field} />
+                <Input
+                  className='uppercase italic font-light text-black bg-[#f8edd8] rounded-3xl px-8 py-7 border-none placeholder:text-black'
+                  placeholder='NHẬP EMAIL của bạn'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -80,17 +85,24 @@ const LoginForm = () => {
           name='password'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mật khẩu</FormLabel>
               <FormControl>
-                <Input type='password' placeholder='Mật khẩu' {...field} />
+                <Input
+                  type='password'
+                  className='uppercase italic font-light text-black bg-[#f8edd8] rounded-3xl px-8 py-7 border-none placeholder:text-black'
+                  placeholder='Nhập mật khẩu'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type='submit' className='!mt-6 w-full'>
-          Đăng nhập
-        </Button>
+        <Link
+          href={'/password-reset'}
+          className='text-center italic underline text-xs'>
+          Quên mật khẩu?
+        </Link>
+        <ButtonSubmit title='Đăng nhập' />
       </form>
       <Toaster position='top-right' richColors closeButton />
     </Form>

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Video from './video'
 
 interface BannerProps {
-  type: string
+  type?: 'video'
   url: string
   position?: string
   to?: string

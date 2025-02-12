@@ -47,7 +47,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
         <div className='lg:w-4/5 mx-auto my-8 flex flex-wrap'>
           <Faq faqs={faq} />
         </div>
-        <ContactForm />
+        {/* <ContactForm /> */}
       </div>
     </>
   )

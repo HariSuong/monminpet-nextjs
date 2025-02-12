@@ -14,7 +14,7 @@ const PetInsurance = () => {
       />
       <Video url='/services/baohiemthuy.mp4' time={10000} />
 
-      <ContactForm />
+      {/* <ContactForm /> */}
     </div>
   )
 }
