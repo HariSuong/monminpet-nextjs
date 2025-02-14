@@ -37,6 +37,19 @@ export type LoginBodyType = z.TypeOf<typeof LoginBody>
 export const LoginRes = RegisterRes
 
 export type LoginResType = z.TypeOf<typeof LoginRes>
+
+export const PasswordResetBody = z
+  .object({
+    email: z.string().email('Email không đúng định dạng')
+  })
+  .strict()
+
+export type PasswordResetBodyType = z.TypeOf<typeof PasswordResetBody>
+
+export const PasswordResetRes = RegisterRes
+
+export type PasswordResetResType = z.TypeOf<typeof PasswordResetRes>
+
 export const SlideSessionBody = z.object({}).strict()
 
 export type SlideSessionBodyType = z.TypeOf<typeof SlideSessionBody>

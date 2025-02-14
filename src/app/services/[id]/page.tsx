@@ -42,7 +42,7 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
           <ServiceContent content={content} />
         </div>
       </div>
-      <Banner url='/services/quy-trinh-monminpet.png' type='image' />
+      <Banner url='/services/quy-trinh-monminpet.png' />
       <div className='w-full mx-auto mt-10 container'>
         <div className='lg:w-4/5 mx-auto my-8 flex flex-wrap'>
           <Faq faqs={faq} />

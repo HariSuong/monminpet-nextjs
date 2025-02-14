@@ -1,5 +1,6 @@
 'use client'
 
+import ButtonSubmit from '@/app/(auth)/_component/button-submit'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -14,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import { RegisterBody, RegisterBodyType } from '@/schemaValidations/auth.schema'
 import authApiRequest from '@/services/apiAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast, Toaster } from 'sonner'
@@ -97,9 +99,12 @@ const RegisterForm = () => {
           name='full_name'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Tên</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  className='uppercase italic font-light text-black bg-[#f8edd8] rounded-3xl px-8 py-7 border-none placeholder:text-black'
+                  placeholder='NHẬP họ tên của bạn'
+                />
               </FormControl>
 
               <FormMessage />
@@ -111,9 +116,12 @@ const RegisterForm = () => {
           name='email'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  className='uppercase italic font-light text-black bg-[#f8edd8] rounded-3xl px-8 py-7 border-none placeholder:text-black'
+                  placeholder='NHẬP EMAIL của bạn'
+                />
               </FormControl>
 
               <FormMessage />
@@ -125,18 +133,31 @@ const RegisterForm = () => {
           name='password'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Mật khẩu</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  className='uppercase italic font-light text-black bg-[#f8edd8] rounded-3xl px-8 py-7 border-none placeholder:text-black'
+                  placeholder='NHẬP mật khẩu'
+                />
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type='submit' className='!mt-6 w-full'>
-          Đăng ký
-        </Button>
+        <div className='text-center w-full'>
+          <ButtonSubmit title='Đăng ký' />
+
+          <p className='italic font-light my-6 text-sm uppercase'>
+            BẠN đã LÀ THÀNH VIÊN CỦA MONMIN PET?
+          </p>
+
+          <Link
+            href={'/login'}
+            className='underline text-lg font-bold uppercase'>
+            đăng nhập
+          </Link>
+        </div>
       </form>
       <Toaster position='top-right' richColors closeButton />
     </Form>

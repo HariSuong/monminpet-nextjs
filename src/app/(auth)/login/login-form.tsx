@@ -97,12 +97,22 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
-        <Link
-          href={'/password-reset'}
-          className='text-center italic underline text-xs'>
-          Quên mật khẩu?
-        </Link>
-        <ButtonSubmit title='Đăng nhập' />
+        <div className='text-center w-full'>
+          <Link href={'/password-reset'} className='italic underline text-xs'>
+            Quên mật khẩu?
+          </Link>
+          <ButtonSubmit title='Đăng nhập' />
+
+          <p className='italic font-light my-6 text-sm'>
+            BẠN CHƯA LÀ THÀNH VIÊN CỦA MONMIN PET?
+          </p>
+
+          <Link
+            href={'/register'}
+            className='underline text-lg font-bold uppercase'>
+            đăng ký thành viên
+          </Link>
+        </div>
       </form>
       <Toaster position='top-right' richColors closeButton />
     </Form>

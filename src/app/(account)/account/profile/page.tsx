@@ -1,5 +1,5 @@
 // import envConfig from '@/config'
-import ProfileForm from '@/app/account/profile-form'
+import ProfileForm from '@/app/(account)/_component/profile/profile-form'
 import accountApiRequest from '@/services/apiAccount'
 import { cookies } from 'next/headers'
 

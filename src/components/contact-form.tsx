@@ -57,16 +57,6 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
     }
   })
 
-  // const { data: servicesList, error, isLoading } = useServicesCat()
-
-  // if (isLoading) {
-  //   return <SkeletonCard />
-  // }
-
-  // if (error || !servicesList) {
-  //   return <div>Error loading services</div>
-  // }
-
   const serviceOptions = services.map(({ name, id }) => ({
     value: String(id),
     label: name
