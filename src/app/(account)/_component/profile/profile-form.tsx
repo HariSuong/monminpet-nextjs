@@ -1,6 +1,5 @@
 'use client'
 
-import { CheckboxProfile } from '@/app/(account)/_component/profile/checkbox-profile'
 import ButtonSubmit from '@/app/(auth)/_component/button-submit'
 import { Button } from '@/components/ui/button'
 import {
@@ -19,60 +18,50 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { sessionTokenClient } from '@/lib/http'
 import {
-  UpdateMeBodyType,
+  AccountResType,
   UpdateMeBody,
-  AccountResType
+  UpdateMeBodyType
 } from '@/schemaValidations/account.schema'
 import accountApiRequest from '@/services/apiAccount'
 
-import authApiRequest from '@/services/apiAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SelectIcon } from '@radix-ui/react-select'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast, Toaster } from 'sonner'
-
-interface Province {
-  name: string
-  code: number
-  division_type: string
-  codename: string
-  phone_code: number
-  districts: []
-}
+import { provinces } from '../../../../../public/data/provinces'
 
 interface Profile {
   profile: AccountResType['data']
-  province: Province[]
 }
-const ProfileForm: React.FC<Profile> = ({ profile, province }) => {
+const ProfileForm: React.FC<Profile> = ({ profile }) => {
+  console.log('profile', profile)
   const router = useRouter()
   const form = useForm<UpdateMeBodyType>({
     resolver: zodResolver(UpdateMeBody),
     defaultValues: {
-      full_name: '',
-      address: '',
-      province: '',
-      phone: ''
+      full_name: profile.full_name,
+      address: profile.address,
+      province: profile.province,
+      phone: profile.phone
     }
   })
 
   // 2. Define a submit handler.
   async function onSubmit(values: UpdateMeBodyType) {
     try {
+      // console.log('values', values)
       // Gọi API route từ Next.js để gửi yêu cầu update profile
       const result =
         await accountApiRequest.updateAccountFromClientToNextServer(values)
-
-      toast.success('Đăng nhập thành công', {
-        description:
-          'Chúng tôi đã ghi nhận lịch của bạn và sẽ trả lời trong thời gian sớm nhất'
+      toast.success('Lưu thành công', {
+        description: 'Chúng tôi đã cập nhật địa chỉ giao hàng của bạn'
       })
       console.log('result form update', result)
-      router.prefetch('/profile')
+      // router.prefetch('/account')
+      router.push('/account') // Instead of prefetching, we push to refresh the profile page
     } catch (error: any) {
       // console.log('error', error.status)
       // const errors = error.payload.errors as { email: string }
@@ -108,7 +97,6 @@ const ProfileForm: React.FC<Profile> = ({ profile, province }) => {
                         className='uppercase italic font-light text-black bg-[#f8edd8] rounded-3xl px-8 py-7 border-none placeholder:text-black'
                         placeholder='họ và tên *'
                         {...field}
-                        // value={profile.email}
                       />
                     </FormControl>
                     <FormMessage />
@@ -130,7 +118,6 @@ const ProfileForm: React.FC<Profile> = ({ profile, province }) => {
                         className='uppercase italic font-light text-black bg-[#f8edd8] rounded-3xl px-8 py-7 border-none placeholder:text-black'
                         placeholder='số điện thoại *'
                         {...field}
-                        value={profile.mobile}
                       />
                     </FormControl>
                     <FormMessage />
@@ -172,7 +159,7 @@ const ProfileForm: React.FC<Profile> = ({ profile, province }) => {
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}>
-                      <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-full uppercase'>
+                      <FormControl className='bg-[#F8EDD8] px-8 py-7 text-base italic font-light rounded-full uppercase border-none'>
                         <SelectTrigger className='relative'>
                           <SelectValue placeholder='HỒ CHÍ MINH' />
                           <SelectIcon asChild>
@@ -181,17 +168,24 @@ const ProfileForm: React.FC<Profile> = ({ profile, province }) => {
                               height={20}
                               src='/icon/icon-dropdown.png'
                               alt='Dropdown Icon'
-                              className='absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none'
+                              className='absolute right-8 top-1/2 transform -translate-y-1/2 pointer-events-none'
                             />
                           </SelectIcon>
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className='bg-[#F8EDD8]'>
-                        {province.map(option => (
-                          <SelectItem key={option.code} value={option.codename}>
-                            {option.name}
-                          </SelectItem>
-                        ))}
+                        {provinces.map(option => {
+                          const cleanedProvinceName = option.name.replace(
+                            /^(Tỉnh|Thành phố)\s*/,
+                            ''
+                          ) // Remove the prefix
+
+                          return (
+                            <SelectItem key={option.code} value={option.name}>
+                              {cleanedProvinceName}
+                            </SelectItem>
+                          )
+                        })}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -202,14 +196,14 @@ const ProfileForm: React.FC<Profile> = ({ profile, province }) => {
           </div>
 
           <div className='w-full flex flex-col justify-end items-end mt-6'>
-            <CheckboxProfile />
+            {/* <CheckboxProfile /> */}
 
             <div className='flex items-center gap-4 mt-6'>
-              <Button
+              {/* <Button
                 type='button'
                 className='bg-gradient-to-r from-[#fafafa] via-[#cccccc] to-[#a2a2a2] px-1 md:p-6 py-5 text-center text-xs text-black md:text-lg italic font-semibold uppercase mt-4'>
                 Chỉnh sửa
-              </Button>
+              </Button> */}
               <ButtonSubmit title='Lưu' />
             </div>
           </div>

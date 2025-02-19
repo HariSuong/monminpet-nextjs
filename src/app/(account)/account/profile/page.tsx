@@ -1,4 +1,5 @@
 // import envConfig from '@/config'
+
 import ProfileForm from '@/app/(account)/_component/profile/profile-form'
 import accountApiRequest from '@/services/apiAccount'
 import { cookies } from 'next/headers'
@@ -18,7 +19,7 @@ const Profile = async () => {
     <>
       <h1>Profile Form</h1>
       <p>{result.payload?.data.email}</p>
-      <ProfileForm profile={result.payload?.data} />
+      {/* <ProfileForm profile={result.payload?.data} /> */}
     </>
   )
 }

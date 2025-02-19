@@ -28,7 +28,10 @@ export type RegisterResType = z.TypeOf<typeof RegisterRes>
 export const LoginBody = z
   .object({
     email: z.string().email('Email không đúng định dạng'),
-    password: z.string().min(8, 'Mật khẩu có ít nhất 8 ký tự').max(100)
+    password: z
+      .string()
+      // .min(8, 'Mật khẩu có ít nhất 8 ký tự')
+      .max(100)
   })
   .strict()
 

@@ -1,5 +1,6 @@
 import http from '@/lib/http'
 import {
+  AccountGiftResType,
   AccountResType,
   UpdateMeBodyType,
   UpdateMeResponseType
@@ -9,6 +10,13 @@ const accountApiRequest = {
   me: (sessionToken: string) =>
     http.get<AccountResType>('/user/accounts', {
       headers: {
+        Authorization: `Bearer ${sessionToken}`
+      }
+    }),
+  gift: (sessionToken: string) =>
+    http.get<AccountGiftResType>('/user/accounts/gifts', {
+      headers: {
+        // Authorization: `Bearer ${sessionToken}`
         Authorization: `Bearer ${sessionToken}`
       }
     }),

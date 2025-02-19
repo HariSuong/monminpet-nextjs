@@ -1,16 +1,49 @@
+import {
+  ProductGiftSchema,
+  ProductInvoiceSchema
+} from '@/schemaValidations/product.schema'
 import z from 'zod'
 
 export const AccountRes = z
   .object({
     data: z.object({
       email: z.string(),
-      mobile: z.string()
+      phone: z.string(),
+      full_name: z.string(),
+      address: z.string(),
+      province: z.string()
     }),
     message: z.string()
   })
   .strict()
 
 export type AccountResType = z.TypeOf<typeof AccountRes>
+
+export const AccountGiftRes = z
+  .object({
+    data: z.object({
+      products: z.array(ProductGiftSchema),
+      totalBalance: z.number()
+    }),
+    message: z.string(),
+    success: z.boolean() // Success flag indicating the status of the request
+  })
+  .strict()
+
+export type AccountGiftResType = z.TypeOf<typeof AccountGiftRes>
+
+export const AccountInvoicesRes = z
+  .object({
+    data: z.object({
+      products: z.array(ProductInvoiceSchema),
+      totalBalance: z.number()
+    }),
+    message: z.string(),
+    success: z.boolean() // Success flag indicating the status of the request
+  })
+  .strict()
+
+export type AccountInvoicesResType = z.TypeOf<typeof AccountRes>
 
 export const UpdateMeBody = z.object({
   full_name: z

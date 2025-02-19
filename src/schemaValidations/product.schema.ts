@@ -39,3 +39,18 @@ export const ProductParams = z.object({
   id: z.coerce.number()
 })
 export type ProductParamsType = z.TypeOf<typeof ProductParams>
+
+// Define the product schema
+export const ProductGiftSchema = z.object({
+  id: z.number(),
+  thumb: z.string().url(), // assuming this is a valid URL string
+  price: z.number(),
+  price_old: z.number(),
+  name: z.string(),
+  desc: z.string(),
+  point_change: z.number(),
+  classify: z.string(),
+  lock: z.number()
+})
+
+export const ProductInvoiceSchema = z.object({})

@@ -1,13 +1,25 @@
 import Point from '@/app/(account)/_component/benefit/point'
 import ProductGift from '@/app/(account)/_component/benefit/product-gift'
+import accountApiRequest from '@/services/apiAccount'
+import { cookies } from 'next/headers'
 import React from 'react'
 
-const Benefit = () => {
+const Benefit = async () => {
+  const cookieStore = cookies()
+  const sessionToken = cookieStore.get('sessionToken')
+
+  if (!sessionToken?.value) return <div>Chưa đăng nhập</div>
+
+  // Gọi API lấy thông tin tài khoản
+  const result = await accountApiRequest.gift(sessionToken.value)
+  // console.log('result', result)
+  if (!result) return
+
   return (
     <div>
-      <Point />
+      <Point point={result.payload.data.totalBalance} />
 
-      <ProductGift />
+      <ProductGift products={result.payload} />
     </div>
   )
 }
