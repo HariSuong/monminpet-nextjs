@@ -37,14 +37,14 @@ const averageStar =
 
 const PurchaseDetail = () => {
   return (
-    <div className='flex flex-col justify-center items-center'>
+    <div className='flex flex-col justify-center items-center md:text-base text-sm'>
       <BackLink />
-      <Card className='shadow-md p-4 w-4/5'>
-        <Link href={'/'} className='mb-4 w-fit text-xl px-4 py-2'>
+      <Card className='shadow-md p-4 md:w-4/5 w-full'>
+        <Link href={'/'} className='mb-4 w-fit md:text-xl text-sm px-4 py-2'>
           Chi tiết đơn hàng {'>'}
         </Link>
-        <div className='my-10 flex md:gap-16'>
-          <div className='w-2/5'>
+        <div className='my-10 flex flex-col md:flex-row md:gap-16'>
+          <div className='md:w-2/5 w-full'>
             <div className='space-y-4'>
               {products.map((product, index) => (
                 <div key={index} className='flex gap-20'>
@@ -62,7 +62,7 @@ const PurchaseDetail = () => {
                       </div>
                       <div>
                         <div className='flex justify-between'>
-                          <h3 className='text-lg font-semibold'>
+                          <h3 className='md:text-lg text-base font-semibold'>
                             {product.name}
                           </h3>
                           <p className='text-sm text-gray-500'>
@@ -70,7 +70,7 @@ const PurchaseDetail = () => {
                           </p>
                         </div>
                         <p className='text-sm text-gray-500'>{product.desc}</p>
-                        <p className='text-xl font-bold'>
+                        <p className='md:text-xl text-base font-bold'>
                           {product.price.toLocaleString()}đ
                         </p>
                       </div>
@@ -80,12 +80,12 @@ const PurchaseDetail = () => {
               ))}
             </div>
           </div>
-          <div className='flex flex-col justify-between w-3/5 md:gap-16'>
+          <div className='flex flex-col justify-between md:w-3/5 w-full md:gap-16'>
             {/* Action Buttons */}
-            <div className='flex justify-between'>
-              <p className='w-1/5 text-base text-gray-500 italic mt-2'>{`1 sản phẩm`}</p>
+            <div className='flex flex-col md:flex-row justify-between'>
+              <p className='md:w-1/5 w-full md:text-base text-sm text-gray-500 italic mt-2'>{`${products.length} sản phẩm`}</p>
               {/* Price & Total */}
-              <div className='w-4/5'>
+              <div className='md:w-4/5 w-full'>
                 <p className='font-bold flex justify-between gap-3 mt-2'>
                   <span className='text-gray-500 italic'>Tổng tiền hàng:</span>
                   <p className='text-[#b00303]'>{'10000'.toLocaleString()}đ</p>
@@ -109,33 +109,39 @@ const PurchaseDetail = () => {
 
         <InfoDetail />
 
-        <div className='flex flex-col justify-between'>
+        <div className='flex flex-col justify-between md:mt-0 mt-4'>
           {/* Action Buttons */}
-          <div className='flex justify-between items-center'>
-            <div className='flex gap-2'>
-              <p className='italic'>Đánh giá của bạn: </p>
+          <div className='flex flex-col md:flex-row justify-between items-center md:gap-0 gap-4'>
+            <div className='flex gap-2 self-start'>
+              <p className='italic md:text-base text-sm'>Đánh giá của bạn: </p>
               {/* <div className='flex items-center'>
                 {[...Array(averageStar)].map((_, i) => (
                   <StarFilledIcon
                     key={i}
-                    className={`w-6 h-6 ${'text-yellow-400'}`}
+                    className={`md:w-6 w-4 md:h-6 h-4 ${'text-yellow-400'}`}
                   />
                 ))}
               </div> */}
               <div className='flex items-center'>
                 {/* Vẽ các sao đầy đủ */}
                 {[...Array(Math.floor(averageStar))].map((_, i) => (
-                  <FaStar key={i} className='w-6 h-6 text-yellow-400' />
+                  <FaStar
+                    key={i}
+                    className='md:w-6 w-4 md:h-6 h-4 text-yellow-400'
+                  />
                 ))}
 
                 {/* Vẽ nửa sao nếu có */}
                 {averageStar % 1 !== 0 && (
-                  <FaRegStarHalfStroke className='w-6 h-6 text-yellow-400' />
+                  <FaRegStarHalfStroke className='md:w-6 w-4 md:h-6 h-4 text-yellow-400' />
                 )}
 
                 {/* Vẽ các sao rỗng */}
                 {[...Array(5 - Math.ceil(averageStar))].map((_, i) => (
-                  <FaRegStar key={i} className='w-6 h-6 text-yellow-400' />
+                  <FaRegStar
+                    key={i}
+                    className='md:w-6 w-4 md:h-6 h-4 text-yellow-400'
+                  />
                 ))}
               </div>
             </div>

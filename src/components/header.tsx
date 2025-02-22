@@ -19,7 +19,7 @@ const Header: React.FC = () => {
   const pathname = usePathname()
 
   return (
-    <header className='bg-transparent shadow-md'>
+    <header className='bg-transparent shadow-md '>
       <div className='flex items-center justify-between py-4 container lg:hidden'>
         <Link
           href='/'
@@ -117,7 +117,7 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      <NavigationMenu className='hidden lg:flex justify-center gap-6 max-w-full container px-4 py-8'>
+      <NavigationMenu className='hidden lg:flex justify-center gap-6 max-w-full container px-4 py-8 absolute top-0 right-0 left-0 z-20'>
         <NavigationMenuList className='lg:space-x-6'>
           <NavigationMenuLink asChild>
             <Link

@@ -91,14 +91,22 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   const handleAddToCart = () => {
     // Kiểm tra nếu có thuộc tính và product_id đã được lấy đúng
     if (!selectedAttributes || selectedAttributes.length === 0) {
-      console.error('Thông tin thuộc tính chưa đầy đủ!')
+      const itemToAdd = {
+        id: generateCartItemId([], id), // Truyền mảng rỗng và productId
+        name,
+        price: Number(price_text),
+        quantity,
+        attributes: [], // Các thuộc tính đã chọn
+        total: calculateTotalPrice() // Tổng giá của sản phẩm
+      }
+      addToCart(itemToAdd, image, attributes!) // Thêm vào giỏ hàng
       return
     }
 
     const totalPrice = calculateTotalPrice() // Tính giá tổng
 
     const itemToAdd = {
-      id: generateCartItemId(selectedAttributes), // 🔥 Tạo ID duy nhất
+      id: generateCartItemId(selectedAttributes, id), // 🔥 Tạo ID duy nhất
       name,
       price: Number(price_text),
       quantity,

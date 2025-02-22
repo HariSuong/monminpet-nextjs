@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-// import { Montserrat } from 'next/font/google'
 import './globals.css'
+import { Roboto, Montserrat } from 'next/font/google'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import Providers from '@/lib/providers'
@@ -9,7 +9,15 @@ import { cookies } from 'next/headers'
 import { CartProvider } from '@/context/CartContext'
 // import { Header } from '@/components/header-top'
 
-// const montserrat = Montserrat({ subsets: ['vietnamese'] })
+const roboto = Roboto({
+  subsets: ['vietnamese'],
+  weight: ['300', '400', '500', '700']
+})
+
+const montserrat = Montserrat({
+  subsets: ['vietnamese'],
+  weight: ['300', '400', '500', '700']
+})
 
 export const metadata: Metadata = {
   title: 'Monminpet',
@@ -25,17 +33,13 @@ export default function RootLayout({
   const sessionToken = cookie.get('sessionToken')?.value
 
   return (
-    <html lang='en'>
+    <html lang='vi'>
       <head>
         <link rel='preconnect' href='https://fonts.googleapis.com' />
         <link rel='preconnect' href='https://fonts.gstatic.com' />
-        <link
-          href='https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'
-          rel='stylesheet'
-        />
       </head>
       {/* <body className={montserrat.className}> */}
-      <body>
+      <body className={montserrat.className}>
         <Providers>
           <CartProvider>
             {/* Bao bọc ứng dụng bằng CartProvider */}

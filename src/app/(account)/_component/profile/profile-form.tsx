@@ -81,8 +81,8 @@ const ProfileForm: React.FC<Profile> = ({ profile }) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className='space-y-4 w-full flex flex-col items-center'>
         <div className='w-full md:max-w-5xl'>
-          <div className='flex gap-4'>
-            <div className='w-1/2'>
+          <div className='md:flex md:gap-4'>
+            <div className='md:w-1/2 space-y-6 md:space-y-0 w-full'>
               {/* Họ */}
               <FormField
                 control={form.control}
@@ -109,7 +109,7 @@ const ProfileForm: React.FC<Profile> = ({ profile }) => {
                 control={form.control}
                 name='phone'
                 render={({ field }) => (
-                  <FormItem className='mt-3'>
+                  <FormItem className='md:mt-3 mt-6'>
                     <FormLabel className='uppercase italic font-light'>
                       Số điện thoại
                     </FormLabel>
@@ -125,7 +125,7 @@ const ProfileForm: React.FC<Profile> = ({ profile }) => {
                 )}
               />
             </div>
-            <div className='w-1/2'>
+            <div className='md:w-1/2 w-full'>
               {/* Địa chỉ */}
               <FormField
                 control={form.control}
@@ -152,7 +152,7 @@ const ProfileForm: React.FC<Profile> = ({ profile }) => {
                 control={form.control}
                 name='province'
                 render={({ field }) => (
-                  <FormItem className='mt-3'>
+                  <FormItem className='md:mt-3 mt-6'>
                     <FormLabel className='uppercase italic font-light'>
                       Tỉnh / Thành phố
                     </FormLabel>
@@ -195,10 +195,10 @@ const ProfileForm: React.FC<Profile> = ({ profile }) => {
             </div>
           </div>
 
-          <div className='w-full flex flex-col justify-end items-end mt-6'>
+          <div className='w-full flex flex-col md:justify-end md:items-end mt-6'>
             {/* <CheckboxProfile /> */}
 
-            <div className='flex items-center gap-4 mt-6'>
+            <div className='md:flex items-center gap-4 mt-6'>
               {/* <Button
                 type='button'
                 className='bg-gradient-to-r from-[#fafafa] via-[#cccccc] to-[#a2a2a2] px-1 md:p-6 py-5 text-center text-xs text-black md:text-lg italic font-semibold uppercase mt-4'>

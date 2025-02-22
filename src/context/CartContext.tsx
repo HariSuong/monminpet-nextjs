@@ -39,16 +39,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     defaultImage: string,
     productAttributes: Attribute[]
   ) => {
-    // Đảm bảo rằng dữ liệu thuộc tính đã được lấy đầy đủ
-    if (!item.attributes || item.attributes.length === 0) {
-      console.error('Thông tin thuộc tính chưa đầy đủ!')
-      return
-    }
-
-    console.log('item cartcontext', item)
-    console.log('item defaultImage', defaultImage)
-    console.log('item productAttributes', productAttributes)
-
     setCart(prev => {
       const formattedAttributes: CartAttributeOption[] = Array.isArray(
         item.attributes
@@ -58,7 +48,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
       // 🛠 Fix: Đảm bảo `id` luôn là string hợp lệ
       const cartItemId =
-        generateCartItemId(formattedAttributes) || `temp_${Date.now()}`
+        generateCartItemId(formattedAttributes, Number(item.id)) ||
+        `temp_${Date.now()}`
       // // Giữ lại ID hiện tại của sản phẩm thay vì tạo ID mới
       // const cartItemId = item.id // Sử dụng ID hiện tại
 

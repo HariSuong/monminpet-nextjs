@@ -111,56 +111,62 @@ const Review = ({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
           <div className='flex justify-center items-end'>
-            <Card className='shadow-md p-16 w-4/5 space-y-10'>
+            <Card className='shadow-md md:p-16 p-4 md:w-4/5 w-full md:space-y-10 space-y-8'>
               {products.map((product, index) => (
-                <div key={product.id} className='space-y-8'>
-                  <div className='flex items-center space-x-4'>
+                <div key={product.id} className='md:space-y-8 space-y-6'>
+                  <div className='flex items-center md:space-x-4 space-x-2'>
                     <Image
                       src={product.thumb}
                       alt={product.name}
                       width={80}
                       height={80}
-                      className='rounded-md'
+                      className='rounded-md md:w-20 md:h-20 w-6 h-6'
                     />
                     <div>
-                      <h3 className='font-bold'>{product.name}</h3>
-                      <p className='text-gray-500'>{product.price} VND</p>
+                      <h3 className='font-medium md:text-base text-sm md:w-64 w-60 h-6 truncate'>
+                        {product.name}
+                      </h3>
+                      <p className='text-gray-500 md:text-base text-sm font-bold md:block hidden'>
+                        {product.price.toLocaleString()} VND
+                      </p>
                     </div>
                   </div>
 
-                  <div className='flex items-center gap-4'>
-                    <p className='uppercase italic font-light text-sm mt-1'>
+                  <div className='flex flex-col md:flex-row md:items-center items-start md:gap-4 gap-0'>
+                    <p className='italic md:text-base text-sm font-bold mt-1 md:mr-0 mr-4'>
                       {' '}
                       Chất lượng sản phẩm
                     </p>
-                    {[1, 2, 3, 4, 5].map(star => (
-                      <FaStar
-                        key={star}
-                        className={`w-8 h-8 ${
-                          hoverRatings[index]?.hover >= star
-                            ? 'text-yellow-400'
-                            : 'text-gray-400'
-                        } cursor-pointer`}
-                        onMouseEnter={() => handleMouseEnter(star, index)}
-                        onMouseLeave={() => handleMouseLeave(index)}
-                        onClick={() => handleClick(star, index)}
-                      />
-                    ))}
+                    <div className='flex'>
+                      {[1, 2, 3, 4, 5].map(star => (
+                        <FaStar
+                          key={star}
+                          className={`w-8 h-8 ${
+                            hoverRatings[index]?.hover >= star
+                              ? 'text-yellow-400'
+                              : 'text-gray-400'
+                          } cursor-pointer`}
+                          onMouseEnter={() => handleMouseEnter(star, index)}
+                          onMouseLeave={() => handleMouseLeave(index)}
+                          onClick={() => handleClick(star, index)}
+                        />
+                      ))}
+                    </div>
                   </div>
 
-                  <div className='flex flex-col justify-center gap-4'>
+                  <div className='flex flex-col md:justify-center justify-start gap-4'>
                     <FormField
                       control={form.control}
                       name={`reviews.${index}.content`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className='uppercase italic font-light'>
+                          <FormLabel className='italic font-bold'>
                             Đánh giá
                           </FormLabel>
                           <FormControl>
                             <Textarea
                               placeholder='Đánh giá của bạn giúp dịch vụ của chúng tôi tốt hơn!...'
-                              className='h-40 bg-[#f8edd8] text-[#737373] placeholder:italic rounded-xl text-lg w-full'
+                              className='md:h-40 h-20 bg-[#f8edd8] text-[#737373] placeholder:italic rounded-xl md:text-lg text-sm w-full'
                               {...field}
                             />
                           </FormControl>
@@ -187,7 +193,7 @@ const Review = ({
               <div className='text-center'>
                 <button
                   type='submit'
-                  className='bg-gradient-to-r from-[#000000] via-[#222222] to-[#555555] text-white py-3 px-5 rounded-xl text-center font-semibold uppercase'>
+                  className='bg-gradient-to-r from-[#000000] via-[#222222] to-[#555555] text-white md:py-3 py-1 md:px-5 px-3 rounded-xl text-center font-semibold uppercase md:text-base text-sm'>
                   Đánh giá
                 </button>
               </div>

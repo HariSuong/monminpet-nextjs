@@ -13,8 +13,8 @@ const ProductGift: React.FC<{ products: AccountGiftResType }> = ({
 }) => {
   return (
     <div className='my-10 flex flex-col items-center'>
-      <div className='w-10/12'>
-        <h2 className='mb-4 w-fit bg-black text-white uppercase font-bold text-xl px-4 py-2'>
+      <div className='md:w-10/12 w-full'>
+        <h2 className='mb-4 w-fit bg-black text-white uppercase font-bold md:text-xl text-base md:px-4 px-2 md:py-2 py-1'>
           Đổi quà
         </h2>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8'>
@@ -26,7 +26,7 @@ const ProductGift: React.FC<{ products: AccountGiftResType }> = ({
                   ? 'pointer-events-none cursor-not-allowed bg-black bg-opacity-25'
                   : 'bg-transparent'
               }`}>
-              <div className='flex items-center p-2 gap-4'>
+              <div className='flex flex-col md:flex-row items-center justify-center p-2 gap-4'>
                 <div className='flex-shrink-0 relative'>
                   <Image
                     src={product.thumb}
@@ -50,13 +50,13 @@ const ProductGift: React.FC<{ products: AccountGiftResType }> = ({
                 <div className='flex flex-col justify-between flex-grow'>
                   <CardContent className='p-0'>
                     <div className='flex justify-between items-start'>
-                      <div className='flex gap-1 items-start'>
+                      <div className='flex gap-2 items-start'>
                         <div className='px-1 mt-1 border border-[#b00303] text-white'>
                           <p className='text-xs text-[#b00303] text-nowrap'>
                             Quà tặng
                           </p>
                         </div>
-                        <h3 className='font-semibold uppercase w-64 h-8 truncate'>
+                        <h3 className='font-semibold uppercase md:w-64 w-48 h-8 truncate'>
                           {product.name}
                         </h3>
                       </div>
@@ -67,12 +67,12 @@ const ProductGift: React.FC<{ products: AccountGiftResType }> = ({
                       Phân loại: {product.classify}
                     </p>
                     <div className='flex gap-2 items-center mt-2'>
-                      <p className='text-xl font-bold line-through'>
+                      <p className='md:text-xl text-base font-bold line-through'>
                         {product.price.toLocaleString()}đ
                       </p>
 
                       <p
-                        className={`text-xl font-bold ${
+                        className={`md:text-xl text-base font-bold ${
                           product.lock === 1 ? 'text-black' : 'text-red-500'
                         }`}>
                         0đ

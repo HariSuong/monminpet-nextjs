@@ -11,7 +11,7 @@ const ProgressPoint = () => {
   }, [])
 
   return (
-    <div className='flex justify-between items-center gap-2 w-2/5'>
+    <div className='flex justify-between items-center gap-2 md:w-2/5 w-full'>
       <Progress value={progress} className='w-[100%] bg-[#d1b39b]' />
 
       <div className='p-1 rounded-full bg-[#d1b39b]'>

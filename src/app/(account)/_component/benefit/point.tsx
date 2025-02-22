@@ -14,7 +14,7 @@ const Point = ({ point }: { point: number }) => {
         <ProgressPoint />
       </div>
       <div className='flex flex-col items-center'>
-        <p className='text-lg w-2/5'>
+        <p className='text-lg md:w-2/5 w-full'>
           Bạn cần chi tiêu thêm 1.770.000 VNĐ để đổi quà tặng 123 điểm
           {/* sẽ hết hạn vào ngày 30/06/2025. */}
         </p>
