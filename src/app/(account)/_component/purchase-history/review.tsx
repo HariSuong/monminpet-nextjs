@@ -84,9 +84,9 @@ const Review = ({
 
   const onSubmit = async (values: ReviewFormType) => {
     try {
-      const result = await reviewApiRequest.insertReviewFromClientToNextServer(
-        values
-      )
+      // const result = await reviewApiRequest.insertReviewFromClientToNextServer(values)
+      const result = await reviewApiRequest.insertReview(values, sessionToken)
+
       toast.success('Lưu thành công', {
         description: 'Chúng tôi đã cập nhật đánh giá của bạn'
       })

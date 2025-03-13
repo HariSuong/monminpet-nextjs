@@ -29,7 +29,13 @@ const DropdownUser = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Image src='/icon/user.png' alt='User' width={24} height={24} />
+        <Image
+          src='/icon/user.png'
+          alt='User'
+          width={24}
+          height={24}
+          className='w-12 md:w-auto'
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56'>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>

@@ -11,15 +11,11 @@ const Services = async () => {
   return (
     <>
       <Banner type='video' url='/services/banner.mp4' />
-      <Banner type='image' url='/services/vetcoach.png' />
+      <Banner url='/services/vetcoach.png' />
       <Suspense fallback={<Loading />}>
         <ServicesList services={services.payload.data} />
       </Suspense>
-      <Banner
-        type='image'
-        url='/services/bao-hiem-thu-cung.png'
-        to='/pet-insurance'
-      />
+      <Banner url='/services/bao-hiem-thu-cung.png' to='/pet-insurance' />
       <ContactForm services={services.payload.data} />
     </>
   )

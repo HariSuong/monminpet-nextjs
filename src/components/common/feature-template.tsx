@@ -1,3 +1,4 @@
+import BotToTopAnimation from '@/components/common/bot-to-top'
 import Image from 'next/image'
 import React from 'react'
 
@@ -12,26 +13,29 @@ const FeatureTemplate = ({
   content: string
 }) => {
   return (
-    <div className='bg-[#f8edd8] flex flex-col gap-2 md:w-96 w-full p-2 rounded-3xl'>
+    <div className='bg-[#f8edd8] flex flex-col gap-2 md:w-96 w-full p-2 md:p-6 rounded-3xl'>
       {/* Image Section */}
-      <div className='flex justify-center items-center'>
+      <BotToTopAnimation delay={0} className='flex justify-center items-center'>
         <Image
           src={image}
           alt={title}
           width={50}
           height={50}
-          className='w-[80px] h-[80px]' // Ensure the image doesn't stretch
+          className='lg:w-[80px] w-10 lg:h-[80px] h-10' // Ensure the image doesn't stretch
         />
-      </div>
+      </BotToTopAnimation>
 
       {/* Title Section */}
-      <h2
-        className='text-2xl uppercase font-bold text-center '
-        dangerouslySetInnerHTML={{ __html: title }}
-      />
-
+      <BotToTopAnimation delay={0.25}>
+        <h2
+          className='lg:text-4xl/normal text-lg uppercase font-bold text-center '
+          dangerouslySetInnerHTML={{ __html: title }}
+        />
+      </BotToTopAnimation>
       {/* Content Section */}
-      <p className='text-base text-center px-4'>{content}</p>
+      <BotToTopAnimation delay={0.5}>
+        <p className='text-base md:text-2xl text-center px-4'>{content}</p>
+      </BotToTopAnimation>
     </div>
   )
 }

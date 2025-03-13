@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -23,7 +21,7 @@ const PetCat: React.FC = () => {
         height={200}
       />
 
-      <div className='p-8 flex items-center justify-center mx-auto z-10 gap-x-6 xl:gap-x-72 md:gap-x-12 lg:pt-20 pt-10'>
+      <div className='md:p-8 p-4 flex items-center gap-y-6 md:flex-row flex-col justify-center mx-auto z-10 gap-x-6 xl:gap-x-72 md:gap-x-12 lg:pt-20 pt-10'>
         <Link
           href='/products/?catId=1'
           className='flex flex-col gap-4 items-center'>
@@ -33,7 +31,7 @@ const PetCat: React.FC = () => {
             alt='Icon Dog'
             width={300}
             height={300}
-            className='w-40 h-40 md:w-52 lg:w-72 lg:h-72 md:h-52'
+            className='w-40 h-w-40 md:w-52 lg:w-72 lg:h-72 md:h-52'
           />
         </Link>
 
@@ -46,7 +44,7 @@ const PetCat: React.FC = () => {
             alt='Icon Cat'
             width={300}
             height={300}
-            className='w-40 h-40 md:w-52 lg:w-72 lg:h-72 md:h-52'
+            className='w-40 h-w-40 md:w-52 lg:w-72 lg:h-72 md:h-52'
           />
         </Link>
       </div>

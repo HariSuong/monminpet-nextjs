@@ -86,7 +86,7 @@ const SlideFeedback: React.FC = () => {
     <Slider {...settings}>
       {feedbacks.map(feedback => (
         <div key={feedback.id}>
-          <div className='flex flex-col gap-3 mt-20 xl:space-x-16 space-x-12'>
+          <div className='flex flex-col gap-3 md:mt-20 mt-0 xl:space-x-16 space-x-5'>
             <div className='self-center'>
               <Image
                 src={feedback.avatar}

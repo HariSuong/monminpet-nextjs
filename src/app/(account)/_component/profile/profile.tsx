@@ -26,7 +26,10 @@ const Profile = async () => {
         </div>
       </div>
       <div>
-        <ProfileForm profile={result.payload?.data} />
+        <ProfileForm
+          sessionToken={sessionToken.value}
+          profile={result.payload?.data}
+        />
       </div>
     </>
   )

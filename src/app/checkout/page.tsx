@@ -24,16 +24,16 @@ const CheckoutPage = async () => {
   if (!result) return
 
   return (
-    <div className='min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
+    <div className='min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-16'>
       <div className='max-w-7xl mx-auto'>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+        <div className='flex md:flex-row flex-col gap-8'>
           {/* Left Column */}
-          <div className='bg-white p-6 rounded-lg shadow'>
+          <div className='bg-white p-6 rounded-lg shadow md:w-2/3 w-full'>
             <CheckoutAccordion profile={result.payload?.data} />
           </div>
 
           {/* Right Column */}
-          <div className='bg-white p-6 rounded-lg shadow'>
+          <div className='bg-white p-6 rounded-lg shadow md:w-1/3 w-full'>
             <h2 className='text-2xl font-bold mb-6'>Đơn hàng của bạn</h2>
 
             <OrderSummary />

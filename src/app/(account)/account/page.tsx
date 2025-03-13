@@ -9,9 +9,9 @@ import TabsComponent from '@/app/(account)/_component/tabs-component'
 
 const Account = () => {
   return (
-    <>
+    <section className='pt-32'>
       <TabsComponent activeTab={'account'} purchaseTab={<PurchaseHistory />} />
-    </>
+    </section>
   )
 }
 

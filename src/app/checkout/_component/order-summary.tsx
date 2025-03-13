@@ -18,6 +18,8 @@ const OrderSummary = () => {
   const shippingFee = totalPrice <= 1000000 ? 30000 : 0
   const discount = 0
 
+  const totle = totalPrice + shippingFee - discount
+
   return (
     <div>
       <div className='space-y-4'>
@@ -29,14 +31,14 @@ const OrderSummary = () => {
               <h3 className='font-medium'>{product.name}</h3>
 
               <p className='text-gray-500'>
-                {product.attributes ? (
+                {product.attributes.length > 0 ? (
                   <>
-                    (<span>Size: {product.attributes[1].name}</span> {' | '}
-                    <span>Color: {product.attributes[0].name}</span>) {' x '}
+                    (<span>Size: {product?.attributes[1]?.name}</span> {' | '}
+                    <span>Color: {product?.attributes[0]?.name}</span>) {' x '}
                     <span>{product.quantity}</span>
                   </>
                 ) : (
-                  ''
+                  <span>x{product.quantity}</span>
                 )}
               </p>
             </div>

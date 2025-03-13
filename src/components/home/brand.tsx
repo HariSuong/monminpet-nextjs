@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Slider from 'react-slick'
 
 const Brand: React.FC = () => {
@@ -24,14 +25,14 @@ const Brand: React.FC = () => {
       {
         breakpoint: 768, // 768px trở xuống
         settings: {
-          slidesToShow: 2, // Hiển thị 2 logo
+          slidesToShow: 3, // Hiển thị 2 logo
           slidesToScroll: 1
         }
       },
       {
         breakpoint: 480, // 480px trở xuống
         settings: {
-          slidesToShow: 2, // Hiển thị 1 logo
+          slidesToShow: 3, // Hiển thị 1 logo
           slidesToScroll: 2
         }
       }
@@ -42,43 +43,55 @@ const Brand: React.FC = () => {
     <div className='p-4 relative w-full bg-[#424040]'>
       <Slider {...settings}>
         <div>
-          <img
-            className='w-auto h-20 mx-auto'
+          <Image
+            width={100}
+            height={80}
+            className='w-auto md:h-20 h-12 mx-auto'
             src='/brand/logo1.png'
             alt='Logo'
           />
         </div>
         <div>
-          <img
-            className='w-auto h-20 mx-auto'
+          <Image
+            width={100}
+            height={80}
+            className='w-auto md:h-20 h-12 mx-auto'
             src='/brand/logo2.png'
             alt='Logo'
           />
         </div>
         <div>
-          <img
-            className='w-auto h-20 mx-auto'
+          <Image
+            width={100}
+            height={80}
+            className='w-auto md:h-20 h-12 mx-auto'
             src='/brand/logo3.png'
             alt='Logo'
           />
         </div>
         <div>
-          <img
-            className='w-auto h-20 mx-auto'
+          <Image
+            width={100}
+            height={80}
+            className='w-auto md:h-20 h-12 mx-auto'
             src='/brand/logo4.png'
             alt='Logo'
           />
         </div>
         <div>
-          <img
-            className='w-auto h-20 mx-auto'
+          <Image
+            width={100}
+            height={80}
+            className='w-auto md:h-20 h-12 mx-auto'
             src='/brand/logo5.png'
             alt='Logo'
           />
         </div>
         <div>
-          <img
-            className='w-auto h-20 mx-auto'
+          <Image
+            width={100}
+            height={80}
+            className='w-auto md:h-20 h-12 mx-auto'
             src='/brand/logo6.png'
             alt='Logo'
           />

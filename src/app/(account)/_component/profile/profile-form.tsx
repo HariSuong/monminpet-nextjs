@@ -35,8 +35,9 @@ import { provinces } from '../../../../../public/data/provinces'
 
 interface Profile {
   profile: AccountResType['data']
+  sessionToken: string
 }
-const ProfileForm: React.FC<Profile> = ({ profile }) => {
+const ProfileForm: React.FC<Profile> = ({ profile, sessionToken }) => {
   console.log('profile', profile)
   const router = useRouter()
   const form = useForm<UpdateMeBodyType>({
@@ -54,8 +55,10 @@ const ProfileForm: React.FC<Profile> = ({ profile }) => {
     try {
       // console.log('values', values)
       // Gọi API route từ Next.js để gửi yêu cầu update profile
-      const result =
-        await accountApiRequest.updateAccountFromClientToNextServer(values)
+      // const result = await accountApiRequest.updateAccountFromClientToNextServer(values)
+
+      const result = await accountApiRequest.updateAccount(values, sessionToken)
+
       toast.success('Lưu thành công', {
         description: 'Chúng tôi đã cập nhật địa chỉ giao hàng của bạn'
       })
@@ -109,7 +112,7 @@ const ProfileForm: React.FC<Profile> = ({ profile }) => {
                 control={form.control}
                 name='phone'
                 render={({ field }) => (
-                  <FormItem className='md:mt-3 mt-6'>
+                  <FormItem className='!md:mt-3 !mt-6'>
                     <FormLabel className='uppercase italic font-light'>
                       Số điện thoại
                     </FormLabel>
@@ -152,7 +155,7 @@ const ProfileForm: React.FC<Profile> = ({ profile }) => {
                 control={form.control}
                 name='province'
                 render={({ field }) => (
-                  <FormItem className='md:mt-3 mt-6'>
+                  <FormItem className='!md:mt-3 !mt-6'>
                     <FormLabel className='uppercase italic font-light'>
                       Tỉnh / Thành phố
                     </FormLabel>

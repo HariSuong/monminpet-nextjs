@@ -3,6 +3,7 @@ import Badge from '../badge'
 import Link from 'next/link'
 import Image from 'next/image'
 import slugify from 'slugify'
+import CountdownHome from '@/components/home/countdown'
 
 const ProductItem = (props: any) => {
   const {
@@ -12,6 +13,7 @@ const ProductItem = (props: any) => {
     price,
     priceOld,
     imageUrl,
+    countdownTimer,
     isNew = false,
     isHot = false
   } = props
@@ -22,8 +24,8 @@ const ProductItem = (props: any) => {
         <Image
           src={imageUrl}
           alt={name}
-          width={270}
-          height={210}
+          width={300}
+          height={300}
           className='h-full w-full object-contain'
         />
         {isNew && <Badge title='NEW!' />}
@@ -31,7 +33,7 @@ const ProductItem = (props: any) => {
       </div>
 
       <div className='text-center'>
-        <h3 className='text-xl font-bold uppercase text-gray-800'>
+        <h3 className='text-xl font-bold uppercase text-gray-800 line-clamp-2 mt-6'>
           <Link
             href={`/products/${slugify(name || '', {
               lower: true,
@@ -41,11 +43,22 @@ const ProductItem = (props: any) => {
             {name}
           </Link>
         </h3>
-        <p className='text-sm mt-2'>{description}</p>
+        {description && <p className='text-sm mt-2'>{description}</p>}
         <div className='flex gap-2 justify-center items-center mt-4'>
-          <h4 className='text-xl text-gray-800 font-bold'>{price}</h4>
-          <p className='text-[#A9829C] text-xl line-through'>{priceOld}</p>
+          <h4 className='text-xl text-gray-800 font-bold'>
+            {Number(price).toLocaleString('vi-VN', {
+              style: 'currency',
+              currency: 'VND'
+            })}
+          </h4>
+          <p className='text-[#A9829C] text-xl line-through'>
+            {priceOld.toLocaleString('vi-VN', {
+              style: 'currency',
+              currency: 'VND'
+            })}
+          </p>
         </div>
+        <CountdownHome timer={countdownTimer} />
       </div>
     </div>
   )

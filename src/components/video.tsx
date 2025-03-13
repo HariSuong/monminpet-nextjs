@@ -2,7 +2,15 @@
 
 import { useRef } from 'react'
 
-const Video = ({ url, time }: { url: string; time: number }) => {
+const Video = ({
+  url,
+  time,
+  playsInline
+}: {
+  url: string
+  time: number
+  playsInline?: boolean
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const handleVideoEnd = () => {
@@ -20,8 +28,9 @@ const Video = ({ url, time }: { url: string; time: number }) => {
         className='w-full object-cover'
         src={url}
         autoPlay
-        loop={false}
+        // loop={true}
         muted
+        playsInline={playsInline ? true : false}
         onEnded={handleVideoEnd}
       />
     </div>

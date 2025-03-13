@@ -12,7 +12,7 @@ const ButtonService = ({
     <Button asChild>
       <Link
         href={linkUrl}
-        className='bg-[#f8edd8] px-1 md:px-8 py-5 md:py-10 !text-black text-center text-xs md:text-2xl italic rounded-none font-semibold uppercase'>
+        className='!bg-[#f8edd8] !px-2 !md:px-8 !py-0 h-auto !md:py-10 !text-black text-center text-[0.5rem] md:text-2xl italic rounded-none font-bold uppercase'>
         {/* Decode HTML entities trước khi hiển thị */}
         <span dangerouslySetInnerHTML={{ __html: title }} />
       </Link>
