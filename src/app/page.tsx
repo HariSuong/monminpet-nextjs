@@ -19,7 +19,7 @@ export default async function Home() {
       <Banner url='/images/banner-tam-thoi-home.png' />
       <div id='observer-target'>
         <ProductHot />
-        {/* <PetCat /> */}
+
         <PetCats />
         {/* <Banner type='video' url='/home/thucanthucung.mp4' time={1000} /> */}
 

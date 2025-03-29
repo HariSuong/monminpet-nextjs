@@ -1,9 +1,22 @@
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import accountApiRequest from '@/services/apiAccount'
 import { StarFilledIcon } from '@radix-ui/react-icons'
+import { cookies } from 'next/headers'
 import Image from 'next/image'
 
-const PurchaseList = () => {
+const PurchaseList = async () => {
+  const cookieStore = cookies()
+  const sessionToken = cookieStore.get('sessionToken')
+
+  if (!sessionToken?.value) return <div>Chưa đăng nhập</div>
+
+  // Gọi API lấy thông tin tài khoản
+  const result = await accountApiRequest.invoices(sessionToken.value)
+  // console.log('result', result)
+  if (!result) return
+  console.log('result', result.payload.data.data)
+  const productList = result.payload.data.data
   const products = [
     {
       id: 1,

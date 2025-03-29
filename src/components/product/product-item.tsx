@@ -5,6 +5,10 @@ import Image from 'next/image'
 import slugify from 'slugify'
 import CountdownHome from '@/components/home/countdown'
 
+export const formatPrice = (price: number) => {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+}
+
 const ProductItem = (props: any) => {
   const {
     id,
@@ -26,7 +30,7 @@ const ProductItem = (props: any) => {
           alt={name}
           width={300}
           height={300}
-          className='h-full w-full object-contain'
+          className='h-full w-full object-cover'
         />
         {isNew && <Badge title='NEW!' />}
         {isHot && <Badge title='HOT!' />}
@@ -43,20 +47,22 @@ const ProductItem = (props: any) => {
             {name}
           </Link>
         </h3>
-        {description && <p className='text-sm mt-2'>{description}</p>}
+        {description && (
+          <p className='text-sm mt-2 line-clamp-3'>{description}</p>
+        )}
         <div className='flex gap-2 justify-center items-center mt-4'>
           <h4 className='text-xl text-gray-800 font-bold'>
-            {Number(price).toLocaleString('vi-VN', {
-              style: 'currency',
-              currency: 'VND'
-            })}
+            {formatPrice(price)}
+            <sup>đ</sup>
           </h4>
-          <p className='text-[#A9829C] text-xl line-through'>
-            {priceOld.toLocaleString('vi-VN', {
-              style: 'currency',
-              currency: 'VND'
-            })}
-          </p>
+          {priceOld > 0 && (
+            <p className='text-[#A9829C] text-xl line-through'>
+              {priceOld?.toLocaleString('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+              })}
+            </p>
+          )}
         </div>
         <CountdownHome timer={countdownTimer} />
       </div>

@@ -36,6 +36,7 @@ import {
 import QuantityInput from '@/app/cart/_component/quantity'
 import Link from 'next/link'
 import { Separator } from '@/components/ui/separator'
+import slugify from 'slugify'
 
 const CartList = () => {
   const { cart, removeFromCart, updateQuantity, handleSizeChange } = useCart()
@@ -62,7 +63,7 @@ const CartList = () => {
   const totalPrice = cart.reduce((acc, item) => acc + item.total, 0)
   const shippingFee = totalPrice <= 1000000 ? 30000 : 0
   const discount = 0
-
+  console.log('cart', cart)
   return (
     <>
       {/* Cart Items */}
@@ -100,7 +101,15 @@ const CartList = () => {
                       className='rounded-md'
                     />
                     <div>
-                      <h3 className='font-bold'>{item.name}</h3>
+                      <Link
+                        href={`/products/${slugify(item.name || '', {
+                          lower: true,
+                          strict: true,
+                          locale: 'vi'
+                        })}/${item.id}`}>
+                        <h3 className='font-bold'>{item.name}</h3>
+                      </Link>
+
                       <p className='text-sm text-gray-600'>
                         {sizeAttribute?.name}
                       </p>
@@ -160,6 +169,7 @@ const CartList = () => {
                         item.quantity > 1 &&
                         updateQuantity(id, item.quantity - 1)
                       }
+                      price={item.price}
                       onChange={(id, newValue) => updateQuantity(id, newValue)}
                     />
                   </TableCell>
@@ -261,6 +271,7 @@ const CartList = () => {
                         updateQuantity(id, item.quantity - 1)
                       }
                       onChange={(id, newValue) => updateQuantity(id, newValue)}
+                      price={item.price}
                     />
                     <Button
                       variant='ghost'

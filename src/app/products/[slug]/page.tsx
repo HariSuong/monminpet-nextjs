@@ -20,11 +20,7 @@ const CategoryPage = async ({
 
   return (
     <Suspense fallback={<Loading />}>
-      <Banner
-        url='/product/banner-product.png'
-        type='image'
-        position='product'
-      />
+      <Banner url='/product/banner-product.png' position='product' />
       <div className='font-[sans-serif] bg-gray-100'>
         <div className='flex justify-end py-10 pr-10'>
           <ProductFilter />

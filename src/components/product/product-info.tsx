@@ -1,6 +1,6 @@
-import { Attribute, Product } from '@/types/products'
+import { Attribute, Coupon, Product } from '@/types/products'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { HiOutlineStar, HiStar } from 'react-icons/hi2'
 import { TiShoppingCart } from 'react-icons/ti'
 import Suggests from './suggests'
@@ -8,9 +8,12 @@ import ProductAttr from '@/components/product/product-attr'
 import { useCart } from '@/context/CartContext'
 import { CartAttributeOption } from '@/types/cart'
 import { generateCartItemId } from '@/lib/helper'
+import { formatPrice } from '@/components/product/product-item'
+import { useRouter } from 'next/navigation'
+import ProductCoupon from '@/components/product/product-coupon'
 
 interface ProductInfoProps {
-  id?: number
+  id?: string
   name: string
   desc: string
   image: string
@@ -18,8 +21,8 @@ interface ProductInfoProps {
   price_old_text: string
   suggests: Product[]
   attributes?: Attribute[]
-  discount?: string
-  onSelectImage: (image: string | null) => void // Nhận từ `ProductDetail`
+  coupons?: Coupon[]
+  onAttributeClick: (imageUrl: string) => void
 }
 
 const ProductInfo: React.FC<ProductInfoProps> = ({
@@ -31,8 +34,11 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   price_old_text,
   price_text,
   suggests,
-  onSelectImage
+  onAttributeClick,
+  coupons
 }) => {
+  const router = useRouter() // Khởi tạo useRouter
+
   // State để lưu số lượng sản phẩm
   const [quantity, setQuantity] = useState<number>(1)
   // State để lưu các thuộc tính được chọn
@@ -41,6 +47,9 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   >([])
 
   const { addToCart } = useCart() // Lấy hàm addToCart từ CartContext
+
+  // Lưu trữ ID trong useRef để tránh tính toán lại khi render lại
+  const generatedIdRef = useRef<string | null>(null)
 
   // Tính toán giá tổng (bao gồm giá cơ bản + giá các thuộc tính)
   const calculateTotalPrice = () => {
@@ -55,24 +64,13 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   }
 
   // Hàm xử lý khi người dùng chọn thuộc tính
-  const handleSelectAttribute = (
-    attrType: string,
-    value: CartAttributeOption
-  ) => {
+  const handleSelectAttribute = (value: CartAttributeOption) => {
     setSelectedAttributes(prevAttributes => {
-      // Kiểm tra nếu thuộc tính đã tồn tại thì thay thế, nếu chưa thì thêm vào mảng
       const updatedAttributes = prevAttributes.filter(
         attr => attr.attribute_id !== value.attribute_id
       )
-      return [...updatedAttributes, value] // Luôn là array
+      return [...updatedAttributes, value]
     })
-    // Nếu thuộc tính này là "Trọng Lượng" hoặc "Size", cập nhật ảnh
-    if (
-      attrType.toLowerCase().includes('trọng lượng') ||
-      attrType.toLowerCase().includes('size')
-    ) {
-      onSelectImage(value.image)
-    }
   }
 
   // Xử lý khi thay đổi số lượng sản phẩm
@@ -91,22 +89,31 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   const handleAddToCart = () => {
     // Kiểm tra nếu có thuộc tính và product_id đã được lấy đúng
     if (!selectedAttributes || selectedAttributes.length === 0) {
+      // Chỉ tính ID một lần và lưu vào useRef
+      if (!generatedIdRef.current) {
+        generatedIdRef.current = generateCartItemId([], id)
+      }
+
       const itemToAdd = {
-        id: generateCartItemId([], id), // Truyền mảng rỗng và productId
+        id: generateCartItemId([], id),
         name,
         price: Number(price_text),
         quantity,
         attributes: [], // Các thuộc tính đã chọn
         total: calculateTotalPrice() // Tổng giá của sản phẩm
       }
-      addToCart(itemToAdd, image, attributes!) // Thêm vào giỏ hàng
+      addToCart(itemToAdd, image, attributes ?? []) // Thêm vào giỏ hàng
       return
     }
 
     const totalPrice = calculateTotalPrice() // Tính giá tổng
 
+    if (!generatedIdRef.current) {
+      generatedIdRef.current = generateCartItemId(selectedAttributes, id)
+    }
+
     const itemToAdd = {
-      id: generateCartItemId(selectedAttributes, id), // 🔥 Tạo ID duy nhất
+      id: generatedIdRef.current, // 🔥 Tạo ID duy nhất
       name,
       price: Number(price_text),
       quantity,
@@ -117,6 +124,43 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
     addToCart(itemToAdd, image, attributes!) // Thêm vào giỏ hàng
   }
 
+  // Hàm xử lý khi click "Mua ngay"
+  const handleBuyNow = () => {
+    if (!selectedAttributes || selectedAttributes.length === 0) {
+      if (!generatedIdRef.current) {
+        generatedIdRef.current = generateCartItemId([], id)
+      }
+
+      const itemToAdd = {
+        id: generatedIdRef.current,
+        name,
+        price: Number(price_text),
+        quantity: 1, // Chỉ thêm 1 sản phẩm
+        attributes: [], // Các thuộc tính đã chọn (mặc định nếu không có)
+        total: calculateTotalPrice() // Tổng giá của sản phẩm
+      }
+      addToCart(itemToAdd, image, attributes!)
+    } else {
+      const totalPrice = calculateTotalPrice()
+      if (!generatedIdRef.current) {
+        generatedIdRef.current = generateCartItemId(selectedAttributes, id)
+      }
+
+      const itemToAdd = {
+        id: generatedIdRef.current,
+        name,
+        price: Number(price_text),
+        quantity: 1, // Chỉ thêm 1 sản phẩm
+        attributes: selectedAttributes,
+        total: totalPrice
+      }
+      addToCart(itemToAdd, image, attributes!)
+    }
+
+    // Điều hướng sang trang giỏ hàng ngay lập tức
+    router.push('/cart')
+  }
+
   // Cập nhật thuộc tính mặc định khi vào trang
   useEffect(() => {
     if (attributes && attributes.length > 0) {
@@ -124,11 +168,8 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         attr => attr.product_attribute[0]
       )
       setSelectedAttributes(defaultAttributes)
-      const selectedImage =
-        defaultAttributes.find(attr => attr.image)?.image || image
-      onSelectImage(selectedImage)
     }
-  }, [attributes, image, onSelectImage])
+  }, [attributes])
 
   return (
     <div className='lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0'>
@@ -154,27 +195,20 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         <div className='flex items-center mb-5 space-x-3'>
           <span className='text-xl font-semibold'>Giá</span>
           <p className='bg-black px-3 py-2 text-white font-semibold text-2xl'>
-            {price_text}đ
+            {/* {formatPrice(Number(price_text))} */}
+            {Number(price_text).toLocaleString('vi-VN', {
+              currency: 'VND'
+            })}
+            {/* <sup>đ</sup> */}
           </p>
-          <p className='text-[#A9829C] font-medium line-through'>
-            {price_old_text}đ
-          </p>
+          {Number(price_old_text) > 0 && (
+            <p className='text-[#A9829C] font-medium line-through'>
+              {price_old_text}
+              <sup>đ</sup>
+            </p>
+          )}
         </div>
-        <div className='flex items-center mb-5 space-x-3'>
-          <span className='text-xl font-semibold'>Mã giảm giá</span>
-          <div className='relative'>
-            <Image
-              width={127}
-              height={50}
-              src='/icon/badge-coupon.png'
-              alt='badge-coupon'
-              className='w-full object-cover'
-            />
-            <span className='absolute bottom-0 top-0 left-0 right-0 h-full w-full font-medium text-center text-white pointer-events-none flex items-center justify-center'>
-              KM01
-            </span>
-          </div>
-        </div>
+        <ProductCoupon coupons={coupons ?? []} />
         {/* Tạo một div giống cấu trúc như trên nhưng nối dung là size, background màu sắc #D89C17 và có border màu đen, bên trong là số kg, ví dụ 180kg */}
         {attributes &&
           Object.values(attributes).map(attr => (
@@ -184,10 +218,14 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
                 <div
                   key={pa.id}
                   onClick={() => {
-                    handleSelectAttribute(attr.name, pa) // Cập nhật thuộc tính khi chọn
-                    onSelectImage(pa.image || null) // Cập nhật hình ảnh khi chọn thuộc tính
+                    onAttributeClick(pa.image)
+                    handleSelectAttribute(pa) // Cập nhật thuộc tính khi chọn
                   }}
-                  className='bg-[#D89C17] px-3 py-2 text-black border border-black font-semibold text-lg cursor-pointer'>
+                  className={`bg-[#D89C17] px-3 py-2 text-black border border-black font-semibold text-lg cursor-pointer ${
+                    selectedAttributes.some(attribute => attribute.id === pa.id)
+                      ? 'bg-[#F8EDD8] border-[#B20101]'
+                      : ''
+                  }`}>
                   {pa.name}
                 </div>
               ))}
@@ -221,32 +259,38 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
 
         <div className='flex'>
           <button
-            className='hover:bg-[#D89C17] bg-[#F8EDD8] text-black px-6 py-2 border border-black flex items-center font-semibold'
+            className='hover:bg-[#D89C17] bg-[#F8EDD8] text-black px-6 py-2 border border-black flex items-center font-semibold active:bg-[#B20101] active:text-white focus:bg-[#B20101] focus:text-white'
             onClick={handleAddToCart}>
             <TiShoppingCart className='w-8 h-8 mr-2 font-thin' />
 
             <span>Thêm vào giỏ hàng</span>
           </button>
-          <button className='hover:bg-[#D89C17] bg-gradient-to-r from-[#8F0000] via-[#920000] to-[#B20101] text-white py-2 px-3 ml-4 font-semibold text-lg'>
+          <button
+            className='hover:bg-[#D89C17] bg-gradient-to-r from-[#8F0000] via-[#920000] to-[#B20101] text-white py-2 px-3 ml-4 font-semibold text-lg'
+            onClick={handleBuyNow} // Gọi handleBuyNow khi click vào nút "Mua ngay"
+          >
             Mua ngay
           </button>
         </div>
-        <div className='mt-5'>
-          <p className='text-xl italic font-semibold'>Kết hợp tốt với:</p>
-
+        {suggests.length > 0 && (
           <div className='mt-5'>
-            {/* Tôi muốn tạo một thẻ div sản phẩm kèm theo là flex gồm có 1 bên là 1 thumbnai, bên cạnh thumbnail sẽ 1 cụm, gồm dòng 1 là tên, dòng 2 là giá, bên cạnh giá là "-Thêm vào giỏ hàng", cả thẻ div có background là (#F8EDD8)*/}
+            <p className='text-xl italic font-semibold'>Kết hợp tốt với:</p>
 
-            {suggests.map(sug => (
-              <Suggests
-                image={sug?.thumb}
-                key={sug.id}
-                name={sug?.name}
-                price={sug?.price}
-              />
-            ))}
+            <div className='mt-5'>
+              {/* Tôi muốn tạo một thẻ div sản phẩm kèm theo là flex gồm có 1 bên là 1 thumbnai, bên cạnh thumbnail sẽ 1 cụm, gồm dòng 1 là tên, dòng 2 là giá, bên cạnh giá là "-Thêm vào giỏ hàng", cả thẻ div có background là (#F8EDD8)*/}
+
+              {suggests.map(sug => (
+                <Suggests
+                  image={sug?.thumb}
+                  key={sug.id}
+                  id={sug.id}
+                  name={sug?.name}
+                  price={sug?.price}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

@@ -91,13 +91,55 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer base {
+  /* Sử dụng Tailwind với @apply để định kiểu cho các thành phần */
+  .content-container h1,
+  .content-container h2 {
+    @apply text-2xl font-bold mb-7;
+  }
+  .content-container h3 {
+    @apply text-xl font-bold mb-6;
+  }
+
+  .content-container p {
+    @apply text-base mb-5 leading-relaxed;
+  }
+
+  .content-container ul,
+  .content-container ol {
+    /* @apply block list-disc ; */
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 40px;
+  }
+  .content-container ul li,
+  .content-container ol li {
+    @apply mb-2;
+  }
+
+  .content-container table {
+    @apply w-full border-collapse mb-8;
+  }
+
+  .content-container table td,
+  .content-container table th {
+    @apply border border-gray-300 p-2;
+  }
+
+  .content-container img {
+    @apply w-full h-auto;
   }
 }

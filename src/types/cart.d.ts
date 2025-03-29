@@ -32,4 +32,5 @@ export interface CartContextType {
   updateQuantity: (id: string, quantity: number) => void
   handleSizeChange: (item: CartItem, newSize: CartAttributeOption) => void
   clearCart: () => void
+  isAttributeInCart: (attributeId: number) => boolean
 }

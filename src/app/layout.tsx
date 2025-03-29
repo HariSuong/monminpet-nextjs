@@ -7,6 +7,8 @@ import Providers from '@/lib/providers'
 import AppProvider from './AppProvider'
 import { cookies } from 'next/headers'
 import { CartProvider } from '@/context/CartContext'
+import { CouponProvider } from '@/context/coupon-context'
+import { Toaster } from '@/components/ui/sonner'
 // import { Header } from '@/components/header-top'
 
 const roboto = Roboto({
@@ -41,14 +43,17 @@ export default function RootLayout({
       {/* <body className={montserrat.className}> */}
       <body className={montserrat.className}>
         <Providers>
-          <CartProvider>
-            {/* Bao bọc ứng dụng bằng CartProvider */}
-            <Header />
-            <AppProvider initialSessionToken={sessionToken}>
-              {children}
-            </AppProvider>
-            <Footer />
-          </CartProvider>
+          <CouponProvider>
+            <CartProvider>
+              {/* Bao bọc ứng dụng bằng CartProvider */}
+              <Header />
+              <AppProvider initialSessionToken={sessionToken}>
+                {children}
+                <Toaster position='top-right' richColors closeButton />
+              </AppProvider>
+              <Footer />
+            </CartProvider>
+          </CouponProvider>
         </Providers>
       </body>
     </html>

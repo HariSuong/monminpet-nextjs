@@ -1,3 +1,4 @@
+'use client'
 import InfoDetail from '@/app/(account)/_component/purchase-history/info-detail'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -8,6 +9,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import BackLink from '@/app/(account)/_component/purchase-history/back'
+import { cookies } from 'next/headers'
+import accountApiRequest from '@/services/apiAccount'
+import { useCart } from '@/context/CartContext'
+import { useRouter } from 'next/navigation'
 
 const products = [
   {
@@ -35,7 +40,25 @@ const products = [
 const averageStar =
   products.reduce((acc, product) => acc + product.star, 0) / products.length
 
-const PurchaseDetail = () => {
+const PurchaseDetail = ({
+  orderId,
+  jsonInvoices
+}: {
+  orderId: string
+  jsonInvoices: any[] // Thay 'any' bằng kiểu dữ liệu cụ thể của jsonInvoices
+}) => {
+  const { clearCart } = useCart() // Chỉ cần clearCart
+  const router = useRouter()
+
+  const handleBuyAgain = () => {
+    clearCart() // Xóa giỏ hàng hiện tại
+
+    // Lưu trực tiếp jsonInvoices vào localStorage (giả sử cấu trúc đã phù hợp)
+    localStorage.setItem('cartItems', JSON.stringify(jsonInvoices))
+
+    router.push('/cart')
+  }
+
   return (
     <div className='flex flex-col justify-center items-center md:text-base text-sm'>
       <BackLink />
@@ -114,14 +137,7 @@ const PurchaseDetail = () => {
           <div className='flex flex-col md:flex-row justify-between items-center md:gap-0 gap-4'>
             <div className='flex gap-2 self-start'>
               <p className='italic md:text-base text-sm'>Đánh giá của bạn: </p>
-              {/* <div className='flex items-center'>
-                {[...Array(averageStar)].map((_, i) => (
-                  <StarFilledIcon
-                    key={i}
-                    className={`md:w-6 w-4 md:h-6 h-4 ${'text-yellow-400'}`}
-                  />
-                ))}
-              </div> */}
+
               <div className='flex items-center'>
                 {/* Vẽ các sao đầy đủ */}
                 {[...Array(Math.floor(averageStar))].map((_, i) => (

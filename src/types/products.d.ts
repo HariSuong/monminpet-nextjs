@@ -75,26 +75,54 @@ export interface Attribute {
   }[]
 }
 
+interface Review {
+  name: string
+  rating: number
+  content: string | null
+  created_at: string
+}
+
+export interface Coupon {
+  code: string
+  exp_time: string
+  text: string
+}
+
 export interface ProductDetail {
   id: string
   name: string
   thumb: string
   desc: string | null
-  hot: number
-  imgs: string[]
-  content: string
-  video: string
-  type_thumb_video: string
-  tags: string[]
-  menus: Menu
-  faqs: FAQ[]
-  price: number
-  price_old: number
-  price_text: string
-  price_old_text: string
-  suggests: Product[]
-  attributes: Attribute[]
-  related: Product[]
+  hot?: number
+  imgs?: string[]
+  content?: string
+  video?: string
+  type_thumb_video?: string
+  tags?: string[]
+  menus?: Menu
+  faqs?: FAQ[]
+  price?: number
+  price_old?: number
+  price_text?: string
+  price_old_text?: string
+  suggests?: Product[]
+  attributes?: Attribute[]
+  related?: Product[]
+  reviews?: Review[]
+  coupons?: Coupon[]
+}
+export interface ProductPoint {
+  id: string
+  classify: string
+  name: string
+  thumb: string
+  desc: string | null
+  imgs?: string[]
+  lock?: number
+  point_change?: number
+  price?: number
+  price_old?: number
+  attributes?: Attribute[]
 }
 
 export interface ProductDetailRes {

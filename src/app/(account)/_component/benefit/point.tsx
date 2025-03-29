@@ -1,7 +1,7 @@
 import ProgressPoint from '@/app/(account)/_component/benefit/progress-point'
 import React from 'react'
 
-const Point = ({ point }: { point: number }) => {
+const Point = ({ point, message }: { point: number; message: string }) => {
   return (
     <div className='space-y-4 w-full'>
       <div className='flex flex-col justify-center items-center w-full'>
@@ -11,11 +11,12 @@ const Point = ({ point }: { point: number }) => {
         </div>
       </div>
       <div className='flex flex-col justify-center items-center w-full'>
-        <ProgressPoint />
+        {/* <ProgressPoint /> */}
       </div>
       <div className='flex flex-col items-center'>
-        <p className='text-lg md:w-2/5 w-full'>
-          Bạn cần chi tiêu thêm 1.770.000 VNĐ để đổi quà tặng 123 điểm
+        <p className='text-lg text-center md:w-2/5 w-full'>
+          {/* Bạn cần chi tiêu thêm 1.770.000 VNĐ để đổi quà tặng 123 điểm */}
+          {message}
           {/* sẽ hết hạn vào ngày 30/06/2025. */}
         </p>
       </div>

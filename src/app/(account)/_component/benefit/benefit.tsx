@@ -17,7 +17,10 @@ const Benefit = async () => {
   console.log('result', result)
   return (
     <div>
-      <Point point={result.payload.data.totalBalance} />
+      <Point
+        point={result.payload.data.totalBalance}
+        message={result.payload.message}
+      />
 
       <ProductGift products={result.payload} />
     </div>

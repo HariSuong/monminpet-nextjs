@@ -1,6 +1,7 @@
 'use client'
 
 import { useCart } from '@/context/CartContext'
+import { useCoupon } from '@/context/coupon-context'
 import Link from 'next/link'
 import React from 'react'
 
@@ -13,12 +14,12 @@ interface Product {
 
 const OrderSummary = () => {
   const { cart } = useCart()
+  const { discount, finalPrice } = useCoupon()
 
   const totalPrice = cart.reduce((acc, item) => acc + item.total, 0)
   const shippingFee = totalPrice <= 1000000 ? 30000 : 0
-  const discount = 0
 
-  const totle = totalPrice + shippingFee - discount
+  console.log(discount, finalPrice)
 
   return (
     <div>
@@ -33,8 +34,10 @@ const OrderSummary = () => {
               <p className='text-gray-500'>
                 {product.attributes.length > 0 ? (
                   <>
-                    (<span>Size: {product?.attributes[1]?.name}</span> {' | '}
-                    <span>Color: {product?.attributes[0]?.name}</span>) {' x '}
+                    (
+                    {/* <span>Size: {product?.attributes[1]?.name}</span> {' | '} */}
+                    <span>Phân loại: {product?.attributes[0]?.name}</span>){' '}
+                    {' x '}
                     <span>{product.quantity}</span>
                   </>
                 ) : (
@@ -42,7 +45,12 @@ const OrderSummary = () => {
                 )}
               </p>
             </div>
-            <p className='font-medium'>{product.total.toLocaleString()}đ</p>
+            <p className='font-medium'>
+              {product.total.toLocaleString('vi-VN', {
+                currency: 'VND'
+              })}
+              đ
+            </p>
           </div>
         ))}
         <div className='text-right'>
@@ -54,16 +62,41 @@ const OrderSummary = () => {
         <div className='pt-4'>
           <div className='flex justify-between mb-2'>
             <p className='text-gray-600'>Tổng tiền hàng</p>
-            <p className='font-medium'>{totalPrice.toLocaleString()}đ</p>
+            <p className='font-medium'>
+              {totalPrice.toLocaleString('vi-VN', {
+                currency: 'VND'
+              })}
+              đ
+            </p>
           </div>
           <div className='flex justify-between mb-2'>
             <p className='text-gray-600'>Phí vận chuyển</p>
-            <p className='font-medium'>{shippingFee.toLocaleString()}đ</p>
+            <p className='font-medium'>
+              {shippingFee.toLocaleString('vi-VN', {
+                currency: 'VND'
+              })}
+              đ
+            </p>
+          </div>
+          <div className='flex justify-between mb-2'>
+            <p className='text-gray-600'>Ưu đãi</p>
+            <p className='font-medium'>
+              {discount.toLocaleString('vi-VN', {
+                currency: 'VND'
+              })}
+              đ
+            </p>
           </div>
           <div className='flex justify-between pt-4 border-t'>
             <p className='font-bold'>Tổng cộng</p>
             <p className='font-bold'>
-              {(totalPrice + shippingFee - discount).toLocaleString()}đ
+              {(finalPrice
+                ? finalPrice
+                : totalPrice + shippingFee
+              ).toLocaleString('vi-VN', {
+                currency: 'VND'
+              })}
+              đ
             </p>
           </div>
         </div>

@@ -10,8 +10,12 @@ const productApiRequest = {
     http.get<ProductPaginationRes>(
       `/products/${catId}?page=${page}${orderBy ? `&orderby=${orderBy}` : ''}`
     ),
-  getDetail: (id: number) =>
-    http.get<ProductDetailRes>(`/products/detail/${id}`)
+  getDetail: (sessionToken: string, id: number) =>
+    http.get<ProductDetailRes>(`/products/detail/${id}`, {
+      headers: {
+        Authorization: `Bearer ${sessionToken}`
+      }
+    })
 }
 
 export default productApiRequest

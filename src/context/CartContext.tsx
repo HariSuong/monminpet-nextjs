@@ -39,6 +39,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     defaultImage: string,
     productAttributes: Attribute[]
   ) => {
+    console.log('item', item)
+
     setCart(prev => {
       const formattedAttributes: CartAttributeOption[] = Array.isArray(
         item.attributes
@@ -47,19 +49,17 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         : Object.values(item.attributes ?? {}) // Chuyển object thành array nếu cần
 
       // 🛠 Fix: Đảm bảo `id` luôn là string hợp lệ
-      const cartItemId =
-        generateCartItemId(formattedAttributes, Number(item.id)) ||
-        `temp_${Date.now()}`
+      // const cartItemId = generateCartItemId(formattedAttributes, item.id) || `temp_${Date.now()}`
       // // Giữ lại ID hiện tại của sản phẩm thay vì tạo ID mới
       // const cartItemId = item.id // Sử dụng ID hiện tại
 
       console.log('prev', prev)
-      console.log('cartItemId', cartItemId)
+      // console.log('cartItemId user Cart', cartItemId)
 
       // Kiểm tra nếu sản phẩm đã có trong giỏ hàng với thuộc tính giống nhau
       const existingItem = prev.find(
         i =>
-          i.id === cartItemId &&
+          i.id === item.id &&
           JSON.stringify(i.attributes) === JSON.stringify(formattedAttributes)
       )
 
@@ -72,7 +72,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       // Nếu sản phẩm đã có và thuộc tính giống nhau
       if (existingItem) {
         return prev.map(i =>
-          i.id === cartItemId &&
+          i.id === item.id &&
           JSON.stringify(i.attributes) === JSON.stringify(formattedAttributes)
             ? {
                 ...i,
@@ -87,7 +87,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           ...prev,
           {
             ...item,
-            id: cartItemId, // Gán ID mới vào sản phẩm trong giỏ hàng
+            id: item.id, // Gán ID mới vào sản phẩm trong giỏ hàng
             image: finalImage, // Lưu hình ảnh vào giỏ hàng
             attributes: formattedAttributes, // 🔥 Sửa: Đảm bảo lưu `attributes` dưới dạng array
             total:
@@ -130,9 +130,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const updatedAttributes = item.attributes.map(attr =>
       attr.attribute_id === newSize.attribute_id ? newSize : attr
     )
-
+    console.log('item', item)
+    console.log('newSize', newSize)
     // Tạo ID mới cho sản phẩm dựa trên thuộc tính size mới
-    const updatedItemId = generateCartItemId(updatedAttributes)
+    const updatedItemId = generateCartItemId(
+      updatedAttributes,
+      newSize.product_id.toString()
+    )
 
     // Tính lại tổng giá trị của sản phẩm sau khi thay đổi size
     const updatedItem = {
@@ -162,7 +166,14 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Hàm xóa tất cả sản phẩm trong giỏ hàng
   const clearCart = () => {
-    setCart([]) // Đặt giỏ hàng thành mảng rỗng
+    setCart([]) // Đặt giỏ hàng thành mảng rỗng trong context
+    localStorage.removeItem('cart') // Xóa item 'cart' khỏi localStorage
+  }
+
+  const isAttributeInCart = (attributeId: number) => {
+    return cart.some(item =>
+      item.attributes.some(attr => attr.attribute_id === attributeId)
+    )
   }
 
   return (
@@ -174,7 +185,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         removeFromCart,
         updateQuantity,
         clearCart,
-        handleSizeChange
+        handleSizeChange,
+        isAttributeInCart
       }}>
       {children}
     </CartContext.Provider>

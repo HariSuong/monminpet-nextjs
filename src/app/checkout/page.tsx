@@ -29,7 +29,10 @@ const CheckoutPage = async () => {
         <div className='flex md:flex-row flex-col gap-8'>
           {/* Left Column */}
           <div className='bg-white p-6 rounded-lg shadow md:w-2/3 w-full'>
-            <CheckoutAccordion profile={result.payload?.data} />
+            <CheckoutAccordion
+              sessionToken={sessionToken.value}
+              profile={result.payload?.data}
+            />
           </div>
 
           {/* Right Column */}

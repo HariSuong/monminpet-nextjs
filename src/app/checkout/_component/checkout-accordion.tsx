@@ -12,9 +12,11 @@ import PaymentInfo from '@/app/checkout/_component/payment-info'
 import { AccountResType } from '@/schemaValidations/account.schema'
 
 const CheckoutAccordion = ({
-  profile
+  profile,
+  sessionToken
 }: {
   profile: AccountResType['data']
+  sessionToken: string
 }) => {
   const [activeAccordion, setActiveAccordion] = useState('delivery')
 
@@ -32,6 +34,7 @@ const CheckoutAccordion = ({
           <CheckoutForm
             profile={profile}
             onFormValid={() => setActiveAccordion('payment')}
+            sessionToken={sessionToken}
           />
         </AccordionContent>
       </AccordionItem>

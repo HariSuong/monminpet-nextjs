@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+'use client'
 import React from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -7,10 +10,60 @@ import { BiSolidLock } from 'react-icons/bi'
 
 import { LockIcon, LockKeyhole } from 'lucide-react'
 import { AccountGiftResType } from '@/schemaValidations/account.schema'
+import Link from 'next/link'
+import slugify from 'slugify'
+import { useCart } from '@/context/CartContext'
+import { useRouter } from 'next/navigation'
+import { generateCartItemId } from '@/lib/helper'
+import { ProductDetail, ProductPoint } from '@/types/products'
 
 const ProductGift: React.FC<{ products: AccountGiftResType }> = ({
   products
 }) => {
+  const { addToCart } = useCart()
+  const router = useRouter()
+
+  console.log('products', products.data.products)
+
+  const handleAddToCart = (product: ProductPoint) => {
+    let attributesToAdd = []
+
+    if (product.attributes && product.attributes.length > 0) {
+      // Lấy thuộc tính mặc định
+      attributesToAdd = [product.attributes[0].product_attribute[0]]
+    }
+
+    const cartItem = {
+      id: generateCartItemId(attributesToAdd, product.id),
+      name: product.name,
+      price: 0, // Gán giá là 0 cho sản phẩm quà tặng
+      quantity: 1,
+      attributes: attributesToAdd,
+      point: product.point_change,
+      total: 0 // Total cũng là 0
+    }
+    addToCart(cartItem, product.thumb, product.attributes)
+    // toast.success(`${product.name} đã được thêm vào giỏ hàng!`)
+    router.push('/cart')
+  }
+
+  // const handleAddToCart = (product: ProductPoint) => {
+  //   if (!product.attributes || product.attributes.length === 0) {
+  //     return // Nếu không có thuộc tính nào thì không làm gì cả
+  //   }
+  //   const defaultAttribute = product.attributes[0].product_attribute[0]
+  //   console.log('defaultAttribute', defaultAttribute[0])
+  //   const cartItem = {
+  //     id: generateCartItemId([defaultAttribute], product.id),
+  //     name: product.name,
+  //     price: 0,
+  //     quantity: 1,
+  //     attributes: [],
+  //     point: product.point_change,
+  //     total: 0
+  //   }
+  //   addToCart(cartItem, product.thumb, defaultAttribute)
+  // }
   return (
     <div className='my-10 flex flex-col items-center'>
       <div className='md:w-10/12 w-full'>
@@ -56,16 +109,28 @@ const ProductGift: React.FC<{ products: AccountGiftResType }> = ({
                             Quà tặng
                           </p>
                         </div>
-                        <h3 className='font-semibold uppercase md:w-64 w-48 h-8 truncate'>
-                          {product.name}
+                        <h3 className='font-semibold uppercase md:w-64 w-48 h-8 truncate cursor-pointer'>
+                          <Link
+                            href={`/products/${slugify(product.name || '', {
+                              lower: true,
+                              strict: true,
+                              locale: 'vi'
+                            })}/${product.id}`}>
+                            {product.name}
+                          </Link>
                         </h3>
                       </div>
                       <p className='text-sm text-gray-500 italic'>x1</p>
                     </div>
-                    <p className='text-sm text-gray-500'>{product.desc}</p>
-                    <p className='text-sm text-gray-500'>
-                      Phân loại: {product.classify}
+                    <p className='text-sm text-gray-500 line-clamp-3'>
+                      {product.desc}
                     </p>
+                    {product.classify && (
+                      <p className='text-sm text-gray-500'>
+                        Phân loại: {product.classify}
+                      </p>
+                    )}
+
                     <div className='flex gap-2 items-center mt-2'>
                       <p className='md:text-xl text-base font-bold line-through'>
                         {product.price.toLocaleString()}đ
@@ -86,7 +151,8 @@ const ProductGift: React.FC<{ products: AccountGiftResType }> = ({
                       product.lock === 1
                         ? 'bg-black hover:bg-black opacity-75 cursor-not-allowed'
                         : 'bg-[#b00303] hover:bg-red-600'
-                    } text-white rounded-none py-2`}>
+                    } text-white rounded-none py-2`}
+                    onClick={() => handleAddToCart(product)}>
                     ĐỔI
                   </Button>
                 </CardFooter>

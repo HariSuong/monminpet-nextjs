@@ -40,7 +40,7 @@ const ProductHot = async () => {
         {/* {to && <SeeAll to={to} />} */}
       </div>
       <div className='lg:px-14 xl:px:28 px-6'>
-        {/* <ProductSliderHome products={home.payload.data.products} /> */}
+        <ProductSliderHome products={home.payload.data.products} />
       </div>
     </div>
   )

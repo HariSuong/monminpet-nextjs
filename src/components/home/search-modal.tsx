@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import homeApiRequest from '@/services/apiHome'
+import ProductItem from '@/components/product/product-item'
 
 const SearchModal = () => {
   const [query, setQuery] = useState<string>('')
@@ -54,7 +55,7 @@ const SearchModal = () => {
       </DialogTrigger>
 
       {/* Nội dung modal */}
-      <DialogContent>
+      <DialogContent className='h-5/6 overflow-auto lg:max-w-5xl'>
         <div className='p-4'>
           <h2 className='text-lg font-bold mb-2'>Tìm kiếm</h2>
           <div className='flex gap-2'>
@@ -100,22 +101,31 @@ const SearchModal = () => {
             {results.product.length > 0 && (
               <div>
                 <h3 className='text-lg font-semibold'>Sản phẩm</h3>
-                <ul>
+                <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
                   {results.product.slice(0, 8).map(product => (
-                    <li
+                    // <li
+                    //   key={product.id}
+                    //   className='flex items-center gap-2 p-2 border-b'>
+                    //   <Image
+                    //     src={product.thumb}
+                    //     alt={product.name}
+                    //     width={40}
+                    //     height={40}
+                    //     className='rounded'
+                    //   />
+                    //   <p>{product.name}</p>
+                    // </li>
+                    <ProductItem
                       key={product.id}
-                      className='flex items-center gap-2 p-2 border-b'>
-                      <Image
-                        src={product.thumb}
-                        alt={product.name}
-                        width={40}
-                        height={40}
-                        className='rounded'
-                      />
-                      <p>{product.name}</p>
-                    </li>
+                      id={product.id}
+                      name={product.name}
+                      description={product.desc || ''} // Add default value for description
+                      price={`${product.price}đ`}
+                      imageUrl={product.thumb}
+                      isHot={product.hot === 1}
+                    />
                   ))}
-                </ul>
+                </div>
                 <Button
                   variant='link'
                   onClick={() =>
@@ -130,9 +140,9 @@ const SearchModal = () => {
             {results.service.length > 0 && (
               <div>
                 <h3 className='text-lg font-semibold'>Dịch vụ</h3>
-                <ul>
+                <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
                   {results.service.slice(0, 8).map(service => (
-                    <li
+                    <div
                       key={service.id}
                       className='flex items-center gap-2 p-2 border-b'>
                       <Image
@@ -143,9 +153,9 @@ const SearchModal = () => {
                         className='rounded'
                       />
                       <p>{service.title}</p>
-                    </li>
+                    </div>
                   ))}
-                </ul>
+                </div>
                 <Button
                   variant='link'
                   onClick={() =>

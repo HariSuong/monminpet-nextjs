@@ -38,41 +38,6 @@ export const Checkout = z
 
 export type CheckoutType = z.infer<typeof Checkout>
 
-/**
- *
- * 
- * export interface CartAttributeOption {
-  id: number
-  product_id: number
-  name: string
-  attribute_id: number
-  image: string
-  price: number
-}
-export interface Attribute {
-  id: number
-  name: string
-  product_attribute: {
-    id: number
-    product_id: number
-    attribute_id: number
-    name: string
-    price: number
-    image: string
-  }[]
-}
- *  export interface CartItem {
-   id: string
-   image?: string | StaticImport | undefined
-   name: string
-   price: number
-   quantity: number
-   attributes: CartAttributeOption[]
-   availableAttributes?: Attribute[]
-   total: number
- }
- */
-
 export const CartAttributeOption = z.object({
   id: z.number(),
   product_id: z.number(),
@@ -85,16 +50,7 @@ export const CartAttributeOption = z.object({
 export const Attribute = z.object({
   id: z.number(),
   name: z.string(),
-  product_attribute: z.array(
-    z.object({
-      id: z.number(),
-      product_id: z.number(),
-      attribute_id: z.number(),
-      name: z.string(),
-      price: z.number(),
-      image: z.string()
-    })
-  )
+  product_attribute: z.array(CartAttributeOption)
 })
 
 export const CartItem = z.object({
@@ -108,12 +64,6 @@ export const CartItem = z.object({
   total: z.number()
 })
 
-export const CheckoutRes = z.object({
-  message: z.string()
-})
-
-export type CheckoutResType = z.infer<typeof CheckoutRes>
-
 export const CheckoutBody = z.object({
   cart: z.array(CartItem),
   form: z.object({
@@ -122,7 +72,25 @@ export const CheckoutBody = z.object({
     address: z.string(),
     phone: z.string(),
     message: z.string()
-  })
+  }),
+  gift: z
+    .object({
+      id: z.number(),
+      point: z.number()
+    })
+    .optional(),
+  code: z.string(),
+  fee: z.number()
 })
 
 export type CheckoutBodyType = z.infer<typeof CheckoutBody>
+
+export const CheckoutRes = z.object({
+  message: z.string(),
+  code_payment: z.string(),
+  discount: z.number(),
+  final_price: z.number(),
+  coupon_message: z.string()
+})
+
+export type CheckoutResType = z.infer<typeof CheckoutRes>

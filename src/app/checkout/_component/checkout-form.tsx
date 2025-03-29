@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client'
 
 import ButtonSubmit from '@/app/(auth)/_component/button-submit'
@@ -11,21 +12,24 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Toaster } from '@/components/ui/sonner'
+import { useCart } from '@/context/CartContext'
+import { useCoupon } from '@/context/coupon-context'
 import { AccountResType } from '@/schemaValidations/account.schema'
 import { Checkout, CheckoutType } from '@/schemaValidations/checkout.schema'
+import checkoutApiRequest from '@/services/apiCheckout'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 const CheckoutForm = ({
   profile,
-  onFormValid
+  onFormValid,
+  sessionToken
 }: {
   profile: AccountResType['data']
   onFormValid: () => void
+  sessionToken: string
 }) => {
-  const router = useRouter()
   const form = useForm<CheckoutType>({
     resolver: zodResolver(Checkout),
     defaultValues: {
@@ -36,12 +40,59 @@ const CheckoutForm = ({
       message: ''
     }
   })
+  const { cart, clearCart } = useCart()
+  console.log('cart', cart)
+  const totalPrice = cart.reduce((acc, item) => acc + item.total, 0)
+  const shippingFee = totalPrice <= 1000000 ? 30000 : 0
+
+  const { codeCoupon, clearCoupon } = useCoupon()
+
+  console.log('codeCoupon', codeCoupon)
+
+  // Lấy thông tin gift
+  const cartWithPoint = cart.find(item => item.point > 0)
+
+  const giftObject = cartWithPoint
+    ? { id: Number(cartWithPoint.id.split('_')[0]), point: cartWithPoint.point }
+    : {}
 
   const onSubmit = async (values: CheckoutType) => {
-    console.log('values', values)
-    // Gọi API route từ Next.js để gửi yêu cầu update profile
-    if (values) {
-      onFormValid() // Kích hoạt khi form hợp lệ
+    if (!values) return
+    // Chuẩn bị body gửi đến API
+    const checkoutBody = {
+      cart,
+      form: values,
+      gift: giftObject,
+      // gift: {
+      //   id: 123123, // Nếu có thông tin quà tặng, bạn có thể thay đổi
+      //   point: 8721
+      // },
+
+      code: codeCoupon || '',
+      fee: shippingFee
+    }
+
+    console.log('checkoutBody', checkoutBody)
+
+    // Gọi API gửi thông tin đơn hàng
+    try {
+      const response = await checkoutApiRequest.submitCheckout(
+        checkoutBody,
+        sessionToken // Lấy sessionToken từ context hoặc cookie
+      )
+
+      console.log('response', response)
+      // Xử lý kết quả trả về
+      if (response.payload?.message) {
+        toast.success(response.payload?.message) // Hiển thị thông báo thành công
+        clearCart()
+        clearCoupon()
+        onFormValid() // Kích hoạt khi form hợp lệ
+      } else {
+        toast.error('Có lỗi xảy ra khi gửi đơn hàng.')
+      }
+    } catch (error) {
+      toast.error('Đã có lỗi xảy ra khi gửi đơn hàng.')
     }
   }
 
@@ -176,7 +227,7 @@ const CheckoutForm = ({
               </div>
             </div>
           </form>
-          <Toaster position='top-right' richColors closeButton />
+          {/* <Toaster position='top-right' richColors closeButton /> */}
         </Form>
       </div>
     </div>
@@ -184,3 +235,7 @@ const CheckoutForm = ({
 }
 
 export default CheckoutForm
+
+// https://cdn.monminpet.com/storage/app/public/tmp/2025/03/29/tmp-1743228790-8FjdQsUbCi.png,
+// https://cdn.monminpet.com/storage/app/public/tmp/2025/03/29/tmp-1743228790-fnLMMK5Frk.png,
+// https://cdn.monminpet.com/storage/app/public/tmp/2025/03/29/tmp-1743228790-iopmnmJ7V2.png
