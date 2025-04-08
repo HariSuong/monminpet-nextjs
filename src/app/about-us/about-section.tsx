@@ -5,7 +5,7 @@ const AboutSection = () => {
   return (
     <>
       <ServiceTemplate title='From love' image='/about/our-story/1.png'>
-        <p className='font-light md:text-xl text-base mb-6'>
+        <p className='font-light md:text-xl text-sm md:mb-6 mb-2'>
           <strong className='font-bold'>Mon</strong>, chú mèo hiền lành và trầm
           lặng, dường như hiểu chuyện, luôn an ủi gia đình và đồng hành trong
           những lúc tâm trạng xuống dốc.{' '}
@@ -13,7 +13,7 @@ const AboutSection = () => {
           hiếu động, luôn mang đến những khoảnh khắc vui vẻ bằng những trò đùa
           nghịch ngợm.
         </p>
-        <p className='font-light md:text-xl text-base '>
+        <p className='font-light md:text-xl text-sm '>
           Mỗi ngày bên cạnh MonMin là những khoảnh khắc vô giá mà tôi luôn trân
           trọng. MonMin không chỉ là thú cưng, mà còn là những người bạn thân
           thiết, những thành viên không thể thiếu trong gia đình. Và chắc hẳn
@@ -25,15 +25,15 @@ const AboutSection = () => {
         title='for the best thing'
         image='/about/our-story/2.png'
         position='right'>
-        <p className='font-light md:text-xl text-base mb-6'>
+        <p className='font-light md:text-xl text-sm md:mb-6 mb-2'>
           Và chúng tôi hiểu, khi thời gian trôi đi, MonMin cũng dần già yếu.
         </p>
-        <p className='font-light md:text-xl text-base mb-6'>
+        <p className='font-light md:text-xl text-sm md:mb-6 mb-2'>
           Chính vì vậy, chúng tôi càng trân trọng hơn từng khoảnh khắc bên cạnh
           MonMin, cố gắng mang đến cho chúng cuộc sống tốt đẹp và hạnh phúc
           nhất.
         </p>
-        <p className='font-light md:text-xl text-base '>
+        <p className='font-light md:text-xl text-sm '>
           Từ đó, tôi ấp ủ ước mơ mang đến những thương hiệu thực phẩm tốt và
           thực phẩm bảo vệ sức khỏe dành cho thú cưng, với mong muốn giúp đỡ
           những người bạn bốn chân khác cũng có được cuộc sống khỏe mạnh và vui
@@ -42,7 +42,7 @@ const AboutSection = () => {
       </ServiceTemplate>
 
       <ServiceTemplate title='created with love' image='/about/our-story/3.png'>
-        <p className='font-light md:text-xl text-base mb-6'>
+        <p className='font-light md:text-xl text-sm md:mb-6 mb-2'>
           Là một bác sĩ thú y, tôi luôn đặt{' '}
           <strong className='font-bold'>AN TOÀN - KHOA HỌC</strong> lên hàng
           đầu. Với tình yêu chó mèo đủ lớn, quan tâm đủ nhiều và sự tự tin vào
@@ -52,7 +52,7 @@ const AboutSection = () => {
           hưởng một cuộc sống khỏe mạnh bên gia đình.
         </p>
         <div className='text-right text-sm space-y-1 italic'>
-          <p className='font-bold text-base not-italic'>
+          <p className='font-bold text-sm not-italic'>
             Chuyên Gia Thú Y- Minh Duy
           </p>
           <p>Chứng chỉ chẩn đoán và điều trị bệnh lý trên thú nhỏ</p>

@@ -16,25 +16,17 @@ import { usePathname } from 'next/navigation'
 import DropdownUser from './dropdown-user'
 import SearchModal from '@/components/home/search-modal'
 import HeaderMobile from '@/components/header-mobile'
+import { useCart } from '@/context/CartContext'
 
 const Header: React.FC = () => {
-  const [totalQuantity, setTotalQuantity] = useState(0)
-
-  useEffect(() => {
-    // Lấy giỏ hàng từ localStorage
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]').length
-
-    // Tính tổng số lượng sản phẩm
-    const total = cart
-    setTotalQuantity(total)
-  }, [])
+  const { cartLength } = useCart()
 
   const pathname = usePathname()
 
   return (
     <header className='bg-transparent shadow-md '>
       {/*  Mobile */}
-      <HeaderMobile totalCart={totalQuantity} />
+      <HeaderMobile totalCart={cartLength} />
 
       <NavigationMenu className='hidden lg:flex justify-center gap-6 max-w-full container px-4 py-8 absolute top-0 right-0 left-0 z-20'>
         <NavigationMenuList className='lg:space-x-6'>
@@ -73,7 +65,13 @@ const Header: React.FC = () => {
               href='/'
               className='group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 lg:text-sm min-[1180px]:text-base xl:text-lg font-light'
               prefetch={false}>
-              <Image src='/logo/logo.png' alt='Logo' width={80} height={80} />
+              <Image
+                src='/logo/logo.png'
+                alt='Logo'
+                width={80}
+                height={80}
+                className='w-32 pt-8'
+              />
             </Link>
           </NavigationMenuLink>
           <NavigationMenuLink asChild>
@@ -124,9 +122,9 @@ const Header: React.FC = () => {
             <Image src='/icon/cart.png' alt='Cart' width={24} height={24} />
 
             {/* Hiển thị số lượng sản phẩm nếu lớn hơn 0 */}
-            {totalQuantity > 0 && (
+            {cartLength > 0 && (
               <span className='absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full'>
-                {totalQuantity}
+                {cartLength}
               </span>
             )}
           </Link>

@@ -6,7 +6,7 @@ const SeeAll = ({ to }: { to: string }) => {
   return (
     <Link
       href={to}
-      className='hidden text-sm font-normal hover:text-slate-400 sm:block'>
+      className='text-sm font-normal hover:text-slate-400 sm:block'>
       Xem tất cả
       {/* <span aria-hidden='true'> &rarr;</span> */}
       <span aria-hidden='true'> {' >'} </span>

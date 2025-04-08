@@ -4,6 +4,7 @@ import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import Link from 'next/link'
 import Benefit from '@/app/(account)/_component/benefit/benefit'
+import LogoutAccount from '@/app/(account)/_component/logout-account'
 
 const TabsComponent = ({
   purchaseTab,
@@ -36,7 +37,7 @@ const TabsComponent = ({
         <TabsTrigger
           value='logout'
           className='data-[state=active]:font-extrabold font-light uppercase text-black active:bg-transparent data-[state=active]:bg-transparent data-[state=active]:text-black data-[state=active]:shadow-none md:text-2xl text-lg'>
-          <Link href={'/logout'}>Đăng xuất</Link>
+          <div>Đăng xuất</div>
         </TabsTrigger>
       </TabsList>
       <TabsContent value='account'>
@@ -46,6 +47,9 @@ const TabsComponent = ({
         <Benefit />
       </TabsContent>
       <TabsContent value='purchase-history'>{purchaseTab}</TabsContent>
+      <TabsContent value='logout'>
+        <LogoutAccount />
+      </TabsContent>
     </Tabs>
   )
 }

@@ -20,7 +20,7 @@ const ServiceTemplate = ({
   titleButton?: string
 }) => {
   return (
-    <div className='sm:flex block items-center'>
+    <div className='sm:flex block items-center mb-8 md:mb-0'>
       {position === 'left' && (
         <div className='sm:w-1/2 w-full sm:px-0 px-8 relative md:h-[768px] h-[350px]'>
           <Image
@@ -50,10 +50,14 @@ const ServiceTemplate = ({
             title === 'CHƯƠNG TRÌNH THIỆN NGUYỆN'
               ? 'md:text-[1.9rem]'
               : 'md:text-[2.75rem]'
-          } text-2xl uppercase font-bold md:mt-0 mt-4`}>
+          } text-lg uppercase font-bold md:mt-0 mt-4`}>
           {title}
         </h2>
-        <div className='md:text-xl text-base'>{children}</div>
+        {/* <div className='md:text-xl text-base'>{children}</div> */}
+        <div
+          className='md:text-xl text-base content-container'
+          dangerouslySetInnerHTML={{ __html: children as string }}
+        />
         {titleButton && (
           <div className='text-center'>
             <ButtonService title={titleButton} />

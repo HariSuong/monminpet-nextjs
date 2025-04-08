@@ -28,11 +28,14 @@ import { toast, Toaster } from 'sonner'
 
 const Review = ({
   sessionToken,
-  products
+  products,
+  orderId
 }: {
   sessionToken: string
   products: ReviewsResType['data']
+  orderId: number
 }) => {
+  console.log('products', products)
   const router = useRouter()
   const form = useForm<ReviewFormType>({
     resolver: zodResolver(ReviewForm),
@@ -90,6 +93,9 @@ const Review = ({
       toast.success('Lưu thành công', {
         description: 'Chúng tôi đã cập nhật đánh giá của bạn'
       })
+      //`/account/purchase-history/${products?.id}?tab=purchase-history`
+      router.push(`/account/purchase-history/${orderId}?tab=purchase-history`)
+
       console.log('result form update', result)
     } catch (error: any) {
       console.error('Error submitting review:', error)
@@ -116,7 +122,7 @@ const Review = ({
                 <div key={product.id} className='md:space-y-8 space-y-6'>
                   <div className='flex items-center md:space-x-4 space-x-2'>
                     <Image
-                      src={product.thumb}
+                      src={`https://cdn.monminpet.com/storage/app/public/${product?.thumb}`}
                       alt={product.name}
                       width={80}
                       height={80}

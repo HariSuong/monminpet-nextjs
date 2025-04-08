@@ -1,16 +1,23 @@
-import { apiFetchData } from '@/lib/apiUtils'
+// src/services/apiPosts.js
+
 import http from '@/lib/http'
-import { ServiceCatRes, ServicesCat } from '@/types/services'
 
-export const fetchServicesCat = async (): Promise<ServicesCat[]> => {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/services`
-  return apiFetchData<ServicesCat[]>(url, true)
+import {
+  CategoryPostRes,
+  PostDetailRes,
+  PostPaginationRes
+} from '@/types/posts'
+
+const postApiRequest = {
+  getPostsCat: http.get<CategoryPostRes>('/posts', { cache: 'no-store' }),
+  getPosts: (catId: number, page: number, orderBy?: any, q?: string) =>
+    http.get<PostPaginationRes>(
+      `/posts/${catId}?page=${page}${orderBy ? `&orderby=${orderBy}` : ''}${
+        q ? `&q=${q}` : ''
+      }`
+    ),
+
+  getDetail: (id: number) => http.get<PostDetailRes>(`/posts/detail/${id}`)
 }
 
-// src/services/apiProducts.js
-
-const serviceApiRequest = {
-  getProductsCat: http.get<ServiceCatRes>('/services')
-}
-
-export default serviceApiRequest
+export default postApiRequest

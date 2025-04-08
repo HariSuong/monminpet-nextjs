@@ -22,7 +22,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
 
   return (
     <div className='mt-10 w-full'>
-      <h2 className='text-gray-900 text-3xl title-font font-medium mb-1 uppercase'>
+      <h2 className='text-gray-900 md:text-3xl text-lg title-font font-medium mb-1 uppercase'>
         Đánh giá sản phẩm
       </h2>
 
@@ -45,7 +45,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
               </div>
               <span className='ml-3 text-lg font-medium'>{review.name}</span>
             </div>
-            <p className='text-gray-600'>
+            <p className='text-gray-600 md:text-base text-sm'>
               {review.content || 'Chưa có mô tả.'}
             </p>
             <p className='text-sm text-gray-400 mt-2'>

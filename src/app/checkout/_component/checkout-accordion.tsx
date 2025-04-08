@@ -19,7 +19,9 @@ const CheckoutAccordion = ({
   sessionToken: string
 }) => {
   const [activeAccordion, setActiveAccordion] = useState('delivery')
-
+  const [code, setCode] = useState('')
+  const [amount, setAmount] = useState<number>(0)
+  const [orderId, setOrderId] = useState<number>(0)
   return (
     <Accordion
       type='single'
@@ -33,7 +35,12 @@ const CheckoutAccordion = ({
         <AccordionContent>
           <CheckoutForm
             profile={profile}
-            onFormValid={() => setActiveAccordion('payment')}
+            onFormValid={(code, amount, orderId) => {
+              setCode(code)
+              setActiveAccordion('payment')
+              setAmount(amount)
+              setOrderId(orderId)
+            }}
             sessionToken={sessionToken}
           />
         </AccordionContent>
@@ -44,7 +51,7 @@ const CheckoutAccordion = ({
           <h2 className='text-2xl font-bold'>Thanh toán</h2>
         </AccordionTrigger>
         <AccordionContent>
-          <PaymentInfo />
+          <PaymentInfo codePayment={code} amount={amount} orderId={orderId} />
         </AccordionContent>
       </AccordionItem>
     </Accordion>

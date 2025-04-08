@@ -1,5 +1,9 @@
 import { CartAttributeOption } from '@/types/cart'
 
+// date-fns
+import { format } from 'date-fns'
+import { vi } from 'date-fns/locale'
+
 export const generateCartItemId = (
   attributes: CartAttributeOption[],
   productId?: string
@@ -31,33 +35,14 @@ export const generateCartItemId = (
   return id // Trả về ID duy nhất
 }
 
-// import { CartAttributeOption } from '@/types/cart'
+export const tranformTimer = (createdAt: string) => {
+  if (createdAt === '') return ''
+  const formattedDate = format(new Date(createdAt), 'dd-MM-yyyy HH:mm', {
+    locale: vi
+  })
 
-// export const generateCartItemId = (
-//   attributes: CartAttributeOption[],
-//   productId?: string
-// ): string => {
-//   if (attributes.length === 0) {
-//     // Nếu không có thuộc tính, sử dụng productId
-//     return `${productId}`
-//   }
+  return formattedDate
+}
 
-//   // Nếu có thuộc tính, tiếp tục xử lý
-//   // 🔥 Sắp xếp attributes theo attribute_id để đảm bảo thứ tự luôn cố định
-//   const sortedAttributes = [...attributes].sort(
-//     (a, b) => a.attribute_id - b.attribute_id
-//   )
-
-//   const attributesPart = sortedAttributes
-//     .map(
-//       attr =>
-//         `${attr.product_id}_${attr.attribute_id}-${attr.name.replace(
-//           /\s+/g,
-//           '-'
-//         )}`
-//     ) // Gộp thuộc tính
-//     .join('_')
-
-//   // Trả về ID dựa trên thuộc tính nếu có
-//   return attributesPart
-// }
+// Sử dụng trong component khác:
+// <OrderDate createdAt="2025-03-29T07:56:59.000000Z" />

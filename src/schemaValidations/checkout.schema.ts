@@ -89,7 +89,10 @@ export const CheckoutRes = z.object({
   message: z.string(),
   code_payment: z.string(),
   discount: z.number(),
-  final_price: z.number(),
+  total: z.string(),
+  id: z.number(),
+  fee: z.number(),
+  amount: z.number(),
   coupon_message: z.string()
 })
 

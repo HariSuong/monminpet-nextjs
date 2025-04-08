@@ -26,8 +26,10 @@ const ProductDetail = ({ product }: { product: ProductDetail }) => {
   }
 
   return (
-    <div className='container px-5 py-24 mx-auto'>
+    <div className='container px-5 md:py-24 py-8 mx-auto'>
       <BreadcrumbWithCustomSeparator
+        corePage='Sản phẩm'
+        coreLink={`/products`}
         parentLink={`/products/${slugify(product?.menus?.name || '', {
           lower: true,
           strict: true,
@@ -45,6 +47,7 @@ const ProductDetail = ({ product }: { product: ProductDetail }) => {
         />
 
         <ProductInfo
+          reviews={product?.reviews}
           id={product?.id}
           name={product?.name}
           desc={product?.desc!}

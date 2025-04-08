@@ -11,19 +11,20 @@ import { CouponProvider } from '@/context/coupon-context'
 import { Toaster } from '@/components/ui/sonner'
 // import { Header } from '@/components/header-top'
 
-const roboto = Roboto({
-  subsets: ['vietnamese'],
-  weight: ['300', '400', '500', '700']
-})
-
 const montserrat = Montserrat({
   subsets: ['vietnamese'],
   weight: ['300', '400', '500', '700']
 })
 
 export const metadata: Metadata = {
-  title: 'Monminpet',
-  description: 'Gia đình - nơi có những người bạn bốn chân!'
+  title: {
+    default: 'Monminpet',
+    template: '%s | Monminpet'
+  },
+  description: 'Gia đình - nơi có những người bạn bốn chân!',
+  icons: {
+    icon: '/logo/fav-monminpet.png'
+  }
 }
 
 export default function RootLayout({
@@ -39,6 +40,13 @@ export default function RootLayout({
       <head>
         <link rel='preconnect' href='https://fonts.googleapis.com' />
         <link rel='preconnect' href='https://fonts.gstatic.com' />
+        <link
+          rel='icon'
+          href='/logo/fav-monminpet.png'
+          sizes='32x32'
+          type='image/png'
+        />
+        <link rel='apple-touch-icon' href='/logo/fav-monminpet.png' />
       </head>
       {/* <body className={montserrat.className}> */}
       <body className={montserrat.className}>

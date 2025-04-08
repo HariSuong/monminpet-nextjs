@@ -47,7 +47,7 @@ const OrderSumary = ({ totalPrice }: { totalPrice: number }) => {
           <span className='italic font-light'>Thành tiền:</span>
           <span className='font-bold'>
             {(finalPrice
-              ? finalPrice
+              ? finalPrice + shippingFee
               : totalPrice + shippingFee
             ).toLocaleString('vi-VN', {
               currency: 'VND'

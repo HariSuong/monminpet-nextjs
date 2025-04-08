@@ -15,7 +15,7 @@ interface MobileCartAttributeSelectProps {
   attributeId: number
   attributeName: string
   handleAttributeChange: (item: CartItem, selectedAttr: any) => void
-  isAttributeInCart: (attrId: number) => boolean
+  isAttributeInCart: (attrPaId: number, attrId: number) => boolean
 }
 
 const MobileCartAttributeSelect: React.FC<MobileCartAttributeSelectProps> = ({
@@ -50,7 +50,7 @@ const MobileCartAttributeSelect: React.FC<MobileCartAttributeSelectProps> = ({
             {(item.availableAttributes ?? [])
               .find(a => a.id === attributeId)
               ?.product_attribute.map(pa => {
-                const isDisabled = isAttributeInCart(pa.id)
+                const isDisabled = isAttributeInCart(attributeId, pa.id)
                 return (
                   <SelectItem
                     key={pa.id}
@@ -70,7 +70,6 @@ const MobileCartAttributeSelect: React.FC<MobileCartAttributeSelectProps> = ({
           </SelectContent>
         </Select>
       )}
-      {!item.attributes?.length && 'Mặc định'}
     </div>
   )
 }

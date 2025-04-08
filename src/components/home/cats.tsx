@@ -4,8 +4,17 @@ import Link from 'next/link'
 import Title from '../title'
 import LeftToRightAnimation from '@/components/common/left-to-right'
 import RightToLeftAnimation from '@/components/common/right-to-left'
+import slugify from 'slugify'
 
-const PetCats: React.FC = () => {
+interface ProductCat {
+  id: number
+  name: string
+  thumb: string
+  inside: number
+}
+
+const PetCats = ({ cats }: { cats: ProductCat[] }) => {
+  if (!cats) return null
   return (
     <div className='p-4 relative lg:px-[4.5rem] container'>
       <Image
@@ -23,137 +32,67 @@ const PetCats: React.FC = () => {
         height={200}
       />
 
-      <div className='md:p-8 p-4 flex flex-col justify-center items-center'>
+      <div className='md:p-8 py-4 flex flex-col justify-center items-center'>
         <LeftToRightAnimation
-          className='md:p-8 p-4 flex md:flex-row flex-col justify-center items-center gap-4 md:gap-0 w-full'
+          className='md:p-8 py-4 flex justify-center items-center md:gap-16 w-full mb-4 md:mb-0'
           delay={0.2}>
-          <div className='p-4 flex items-center md:gap-8 gap-2 w-full md:w-auto justify-between md:justify-center'>
-            <Link
-              href='/products/?catId=14'
-              className='flex flex-col gap-4 md:items-center items-start justify-center'>
-              <h3 className='uppercase font-semibold md:text-lg text-sm'>
-                Thức ăn Mỹ
-              </h3>
-              <Image
-                src='/icon/dog.png'
-                alt='Icon Dog'
-                width={100}
-                height={100}
-                className='w-20 h-20 md:w-32 lg:w-40 lg:h-40 md:h-32'
-              />
-            </Link>
-
-            <Link
-              href='/products/?catId=15'
-              className='flex flex-col gap-4 md:items-center items-end justify-center'>
-              <h3 className='uppercase font-semibold md:text-lg text-sm'>
-                Dermacore
-              </h3>
-              <Image
-                src='/icon/cat.png'
-                alt='Icon Cat'
-                width={100}
-                height={100}
-                className='w-20 h-20 md:w-32 lg:w-40 lg:h-40 md:h-32'
-              />
-            </Link>
-          </div>
-          <div className='p-4 flex items-center md:gap-8 gap-2 w-full md:w-auto justify-between md:justify-center'>
-            <Link
-              href='/products/?catId=16'
-              className='flex flex-col gap-4 md:items-center items-start justify-center'>
-              <h3 className='uppercase font-semibold md:text-lg text-sm'>
-                Súp thưởng
-              </h3>
-              <Image
-                src='/icon/cat.png'
-                alt='Icon Cat'
-                width={100}
-                height={100}
-                className='w-20 h-20 md:w-32 lg:w-40 lg:h-40 md:h-32'
-              />
-            </Link>
-            <Link
-              href='/products/?catId=17'
-              className='flex flex-col gap-4 md:items-center items-end justify-center'>
-              <h3 className='uppercase font-semibold md:text-lg text-sm'>
-                Làm sạch
-              </h3>
-              <Image
-                src='/icon/cat.png'
-                alt='Icon Cat'
-                width={100}
-                height={100}
-                className='w-20 h-20 md:w-32 lg:w-40 lg:h-40 md:h-32'
-              />
-            </Link>
-          </div>
+          {cats.slice(0, 2).map(cat => {
+            return (
+              <div
+                className='py-4 flex items-center md:gap-8 gap-2 w-full md:w-auto justify-center'
+                key={cat.id}>
+                <Link
+                  href={`/products/${slugify(cat.name || '', {
+                    lower: true,
+                    strict: true,
+                    locale: 'vi'
+                  })}?catId=${cat.id}`}
+                  className='flex flex-col items-center justify-center'>
+                  <h3 className='uppercase font-semibold lg:text-2xl md:text-lg text-sm mb-4'>
+                    {cat.name}
+                  </h3>
+                  <Image
+                    src={cat.thumb || '/icon/cat.png'}
+                    alt={`Icon ${cat.name}`}
+                    width={300}
+                    height={300}
+                    className='w-36 h-36 lg:w-60 lg:h-60'
+                  />
+                </Link>
+              </div>
+            )
+          })}
         </LeftToRightAnimation>
 
         <RightToLeftAnimation
-          className='md:p-8 p-4 flex md:flex-row flex-col justify-center items-center gap-4 md:gap-0 w-full'
+          className='md:p-8 p-0 flex justify-center items-center gap-2 md:gap-16 w-full'
           delay={0.2}>
-          <div className='p-4 flex items-center md:gap-8 gap-2 w-full md:w-auto justify-between md:justify-center'>
-            <Link
-              href='/products/?catId=18'
-              className='flex flex-col gap-4 md:items-center items-start justify-center'>
-              <h3 className='uppercase font-semibold md:text-lg text-sm'>
-                Fera pets
-              </h3>
-              <Image
-                src='/icon/cat.png'
-                alt='Icon Cat'
-                width={100}
-                height={100}
-                className='w-20 h-20 md:w-32 lg:w-40 lg:h-40 md:h-32'
-              />
-            </Link>
-            <Link
-              href='/products/?catId=19'
-              className='flex flex-col gap-4 md:items-center items-end justify-center'>
-              <h3 className='uppercase font-semibold md:text-lg text-sm'>
-                Purodora
-              </h3>
-              <Image
-                src='/icon/cat.png'
-                alt='Icon Cat'
-                width={100}
-                height={100}
-                className='w-20 h-20 md:w-32 lg:w-40 lg:h-40 md:h-32'
-              />
-            </Link>
-          </div>
-
-          <div className='p-4 flex items-center md:gap-8 gap-2 w-full md:w-auto justify-between md:justify-center'>
-            <Link
-              href='/products/?catId=20'
-              className='flex flex-col gap-4 md:items-center items-start justify-center'>
-              <h3 className='uppercase font-semibold md:text-lg text-sm'>
-                Sản phẩm khác
-              </h3>
-              <Image
-                src='/icon/cat.png'
-                alt='Icon Cat'
-                width={100}
-                height={100}
-                className='w-20 h-20 md:w-32 lg:w-40 lg:h-40 md:h-32'
-              />
-            </Link>
-            <Link
-              href='/products/?catId=21'
-              className='flex flex-col gap-4 md:items-center items-end justify-center'>
-              <h3 className='uppercase font-semibold md:text-lg text-sm'>
-                Sữa dê fera
-              </h3>
-              <Image
-                src='/icon/cat.png'
-                alt='Icon Cat'
-                width={100}
-                height={100}
-                className='w-20 h-20 md:w-32 lg:w-40 lg:h-40 md:h-32'
-              />
-            </Link>
-          </div>
+          {cats.slice(2, 4).map(cat => {
+            return (
+              <div
+                className='py-4 flex items-center md:gap-8 gap-2 w-full md:w-auto justify-center'
+                key={cat.id}>
+                <Link
+                  href={`/products/${slugify(cat.name || '', {
+                    lower: true,
+                    strict: true,
+                    locale: 'vi'
+                  })}?catId=${cat.id}`}
+                  className='flex flex-col items-center justify-center'>
+                  <h3 className='uppercase font-semibold lg:text-2xl md:text-lg text-sm mb-4'>
+                    {cat.name}
+                  </h3>
+                  <Image
+                    src={cat.thumb || '/icon/dog.png'}
+                    alt={`Icon ${cat.name}`}
+                    width={300}
+                    height={300}
+                    className='w-36 h-36 lg:w-60 lg:h-60'
+                  />
+                </Link>
+              </div>
+            )
+          })}
         </RightToLeftAnimation>
       </div>
       <div className=''>

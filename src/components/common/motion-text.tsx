@@ -20,7 +20,7 @@ const MotionText: React.FC<MotionTextProps> = ({ items }) => {
   return (
     <motion.ul
       ref={ref}
-      className='md:mt-6 md:text-3xl text-xs md:ml-14 ml-7 space-y-1 list-disc font-light md:font-normal md:space-y-4 md:w-1/2 w-full'
+      className='md:mt-6 md:text-3xl text-xs md:ml-14 ml-7 space-y-1 list-disc font-light md:font-normal md:space-y-4 md:w-2/3 w-full'
       initial='hidden'
       animate={isInView ? 'visible' : 'hidden'}>
       {items.map((item, index) => (

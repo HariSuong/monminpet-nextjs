@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import BuyAgain from '@/app/(account)/_component/purchase-history/buy-again'
 import { Card } from '@/components/ui/card'
 import accountApiRequest from '@/services/apiAccount'
 import { StarFilledIcon } from '@radix-ui/react-icons'
@@ -15,41 +15,9 @@ const PurchaseList = async () => {
   const result = await accountApiRequest.invoices(sessionToken.value)
   // console.log('result', result)
   if (!result) return
-  console.log('result', result.payload.data.data)
+  // console.log('result', result.payload.data.data)
   const productList = result.payload.data.data
-  const products = [
-    {
-      id: 1,
-      name: 'FERA PET',
-      quantity: 1,
-      desc: 'Bột bổ sung sữa dê bổ lông tóc cho chó và mèo',
-      price: 990000,
-      totalPrice: 1050000,
-      rating: 4,
-      detailsLink: '/order-details/1'
-    },
-    {
-      id: 2,
-      name: 'PRARINTEL',
-      quantity: 1,
-      desc: 'Bột bổ sung sữa dê bổ lông tóc cho chó và mèo',
-      price: 60000,
-      totalPrice: 60000,
-      rating: 0,
-      detailsLink: '/order-details/2'
-    },
-    {
-      id: 3,
-      name: 'FERA PET',
-      quantity: 1,
-      desc: 'Bột bổ sung sữa dê bổ lông tóc cho chó và mèo',
-      price: 990000,
-      totalPrice: 990000,
-      rating: 5,
-      detailsLink: '/order-details/3'
-    }
-  ]
-
+  console.log('productList', productList)
   return (
     <div className='my-10 flex flex-col items-center'>
       <div className='md:w-3/4 w-full'>
@@ -57,107 +25,96 @@ const PurchaseList = async () => {
           Lịch sử mua hàng
         </h2>
         <div className='space-y-4'>
-          {products.map((product, index) => (
-            <Card key={index} className='shadow-md p-4'>
-              <div className='flex flex-col md:flex-row gap-20'>
-                {/* Product details */}
-                <div className='md:w-2/5 w-full space-y-6'>
-                  <div className='flex items-center space-x-4'>
-                    <div className='flex-shrink-0'>
-                      <Image
-                        src={'/images/relate-product-1.png'}
-                        alt={product.name}
-                        width={80}
-                        height={80}
-                        className='w-20 h-20 object-cover rounded-md'
-                      />
-                    </div>
-                    <div>
-                      <div className='flex justify-between'>
-                        <h3 className='text-lg font-semibold'>
-                          {product.name}
-                        </h3>
-                        <p className='text-sm text-gray-500'>
-                          x{product.quantity}
-                        </p>
-                      </div>
-                      <p className='text-sm text-gray-500'>{product.desc}</p>
-                      <p className='text-xl font-bold'>
-                        {product.price.toLocaleString()}đ
-                      </p>
-                    </div>
-                  </div>
-                  <div className='flex items-center space-x-4'>
-                    <div className='flex-shrink-0'>
-                      <Image
-                        src={'/images/relate-product-1.png'}
-                        alt={product.name}
-                        width={80}
-                        height={80}
-                        className='w-20 h-20 object-cover rounded-md'
-                      />
-                    </div>
-                    <div>
-                      <div className='flex justify-between'>
-                        <h3 className='text-lg font-semibold'>
-                          {product.name}
-                        </h3>
-                        <p className='text-sm text-gray-500'>
-                          x{product.quantity}
-                        </p>
-                      </div>
-                      <p className='text-sm text-gray-500'>{product.desc}</p>
-                      <p className='text-xl font-bold'>
-                        {product.price.toLocaleString()}đ
-                      </p>
-                    </div>
-                  </div>
-                </div>
+          {productList.map((products, index) => {
+            return (
+              <Card key={products?.id} className='shadow-md p-4'>
+                <div className='flex flex-col md:flex-row gap-20'>
+                  {/* Product details */}
 
-                <div className='flex flex-col justify-between md:w-3/5 w-full'>
-                  <div className='flex flex-col md:flex-row items-end md:items-stretch justify-between'>
-                    <p className='text-base text-gray-500 italic mt-2'>
-                      {`${products.length} sản phẩm`}
-                    </p>
-                    {/* Price & Total */}
-                    <p className='font-bold flex gap-3 md:mt-2 my-2'>
-                      <span className='text-gray-500 italic'>Thành tiền:</span>
-                      <p className='text-[#b00303]'>
-                        {product.totalPrice.toLocaleString()}đ
-                      </p>
-                    </p>
-                    <Button className='bg-[#b00303] text-white py-2 mt-0 rounded-md hover:bg-red-600'>
-                      {/* {product.rating > 0 ? 'Mua lại' : 'Đánh giá'} */}
-                      Mua lại
-                    </Button>
+                  <div className='md:w-2/5 w-full space-y-6'>
+                    {products?.products?.map((product, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className='flex items-center space-x-4'>
+                          <div className='flex-shrink-0'>
+                            <Image
+                              src={`https://cdn.monminpet.com/storage/app/public/${product?.thumb}`}
+                              alt={product.name}
+                              width={80}
+                              height={80}
+                              className='w-20 h-20 object-cover rounded-md'
+                            />
+                          </div>
+                          <div>
+                            <div className='flex justify-between'>
+                              <h3 className='md:text-lg text-base md:font-semibold font-medium'>
+                                {product.name}
+                              </h3>
+                              <p className='text-sm text-gray-500'>
+                                x{product.quantity}
+                              </p>
+                            </div>
+                            {/* <p className='text-sm text-gray-500'>{product.desc}</p> */}
+                            <p className='md:text-xl font-bold'>
+                              {product.price.toLocaleString('vi-VN', {
+                                currency: 'VND'
+                              })}
+                              đ
+                            </p>
+                          </div>
+                        </div>
+                      )
+                    })}
                   </div>
-                  {/* Action Buttons */}
-                  <div className='flex flex-col md:flex-row justify-between md:items-center items-end md:mt-0 mt-4'>
-                    <div className='flex gap-2'>
-                      <p className='italic'>Đánh giá của bạn: </p>
-                      <div className='flex items-center'>
-                        {[...Array(5)].map((_, i) => (
-                          <StarFilledIcon
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < product.rating
-                                ? 'text-yellow-400'
-                                : 'text-gray-300'
-                            }`}
-                          />
-                        ))}
-                      </div>
+
+                  <div className='flex flex-col justify-between md:w-3/5 w-full'>
+                    <div className='flex flex-col md:flex-row items-end md:items-stretch justify-between'>
+                      <p className='text-base text-gray-500 italic mt-2'>
+                        {`${products?.quantity} sản phẩm`}
+                      </p>
+                      {/* Price & Total */}
+                      <p className='font-bold flex gap-3 md:mt-2 my-2'>
+                        <span className='text-gray-500 italic'>
+                          Thành tiền:
+                        </span>
+                        <p className='text-[#b00303]'>
+                          {Number(products?.total).toLocaleString('vi-VN', {
+                            currency: 'VND'
+                          })}
+                          đ
+                        </p>
+                      </p>
+                      <BuyAgain jsonInvoices={products?.json_invoices ?? ''} />
                     </div>
-                    <a
-                      href={`/account/purchase-history/${product.id}?tab=purchase-history`}
-                      className='text-sm text-gray-500'>
-                      Chi tiết đơn hàng {`>`}
-                    </a>
+                    {/* Action Buttons */}
+                    <div className='flex flex-col md:flex-row justify-between md:items-center items-end md:mt-0 mt-4'>
+                      <div className='flex gap-2'>
+                        <p className='italic'>Đánh giá của bạn: </p>
+                        <div className='flex items-center'>
+                          {[...Array(5)].map((_, i) => (
+                            <StarFilledIcon
+                              key={i}
+                              className={`w-4 h-4 ${
+                                i < (products?.rating ?? 5)
+                                  ? 'text-yellow-400'
+                                  : 'text-gray-300'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      <a
+                        href={`/account/purchase-history/${products?.id}?tab=purchase-history`}
+                        className='text-sm text-gray-500'>
+                        Chi tiết đơn hàng {`>`}
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            )
+          })}
         </div>
       </div>
     </div>

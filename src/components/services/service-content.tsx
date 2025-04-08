@@ -8,7 +8,7 @@ const ServiceContent = ({ content }: { content: string }) => {
       </h2> */}
       {/* Tạo 1 div chứa nội dung bài viết, thông tin chi tiết sản phẩm  */}
       <div
-        className='mt-6 text-gray-900 text-lg font-extralight mb-1'
+        className='mt-6 text-gray-900 text-lg font-extralight mb-1 content-container'
         dangerouslySetInnerHTML={{ __html: content }}></div>
     </div>
   )

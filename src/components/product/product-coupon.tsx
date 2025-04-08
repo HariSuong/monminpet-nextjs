@@ -27,8 +27,10 @@ const ProductCoupon = ({ coupons }: { coupons: Coupon[] }) => {
 
   return (
     <div className='flex items-center mb-5 space-x-3'>
-      <span className='text-xl font-semibold'>Mã giảm giá</span>
-      <div className='flex items-center gap-6'>
+      <span className='md:text-xl text-lg md:font-semibold font-medium md:w-[30%] w-2/5'>
+        Mã giảm giá
+      </span>
+      <div className='flex items-center gap-6 md:w-[70%] w-3/5 flex-wrap'>
         {coupons.map(coupon => (
           <div className='relative' key={coupon.code}>
             <Dialog>

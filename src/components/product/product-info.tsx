@@ -1,4 +1,4 @@
-import { Attribute, Coupon, Product } from '@/types/products'
+import { Attribute, Coupon, Product, Review } from '@/types/products'
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
 import { HiOutlineStar, HiStar } from 'react-icons/hi2'
@@ -11,6 +11,15 @@ import { generateCartItemId } from '@/lib/helper'
 import { formatPrice } from '@/components/product/product-item'
 import { useRouter } from 'next/navigation'
 import ProductCoupon from '@/components/product/product-coupon'
+import {
+  FaRegStar,
+  FaRegStarHalfStroke,
+  FaStar,
+  FaRegCircleRight
+} from 'react-icons/fa6'
+import { Toaster } from '@/components/ui/sonner'
+import { toast } from 'sonner'
+import { Button } from '@/components/ui/button'
 
 interface ProductInfoProps {
   id?: string
@@ -22,6 +31,7 @@ interface ProductInfoProps {
   suggests: Product[]
   attributes?: Attribute[]
   coupons?: Coupon[]
+  reviews?: Review[]
   onAttributeClick: (imageUrl: string) => void
 }
 
@@ -35,6 +45,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   price_text,
   suggests,
   onAttributeClick,
+  reviews,
   coupons
 }) => {
   const router = useRouter() // Khởi tạo useRouter
@@ -103,6 +114,27 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         total: calculateTotalPrice() // Tổng giá của sản phẩm
       }
       addToCart(itemToAdd, image, attributes ?? []) // Thêm vào giỏ hàng
+      toast.success('Đã thêm sản phẩm vào giỏ hàng!', {
+        description: 'Bạn có thể xem giỏ hàng để thanh toán',
+        action: <Button onClick={() => console.log('Action!')}>Action</Button>,
+        // action: (
+        //   <div
+        //     style={{
+        //       display: 'flex flex-col',
+        //       justifyContent: 'space-between',
+        //       alignItems: 'center',
+        //       width: '100%'
+        //     }}>
+        //     <Button onClick={() => router.push('/cart')} className='mr-2'>
+        //       Xem giỏ hàng
+        //     </Button>
+        //     <Button onClick={() => router.push('/products')}>
+        //       Tiếp tục mua sắm
+        //     </Button>
+        //   </div>
+        // ),
+        dismissible: true // Cho phép người dùng tắt toast
+      })
       return
     }
 
@@ -122,40 +154,73 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
     }
 
     addToCart(itemToAdd, image, attributes!) // Thêm vào giỏ hàng
+    toast.success('Đã thêm sản phẩm vào giỏ hàng!', {
+      description: 'Bạn có thể xem giỏ hàng để thanh toán',
+      action: (
+        <Button onClick={() => router.push('/cart')}>
+          <FaRegCircleRight className='w-4 h-4 mr-2' />
+        </Button>
+      ),
+      // action: (
+      //   <div
+      //     style={{
+      //       display: 'flex flex-col',
+      //       justifyContent: 'space-between',
+      //       width: '100%'
+      //     }}>
+      //     <Button onClick={() => router.push('/cart')} className='mr-2'>
+      //       Xem giỏ hàng
+      //     </Button>
+      //     <Button onClick={() => router.push('/products')}>
+      //       Tiếp tục mua sắm
+      //     </Button>
+      //   </div>
+      // ),
+      // duration: 5000, // Toast sẽ tự động tắt sau 5 giây
+      dismissible: true // Cho phép người dùng tắt toast
+    })
   }
 
-  // Hàm xử lý khi click "Mua ngay"
+  // Hàm xử lý khi người dùng click vào nút "Mua ngay"
   const handleBuyNow = () => {
     if (!selectedAttributes || selectedAttributes.length === 0) {
+      // Chỉ tính ID một lần và lưu vào useRef
       if (!generatedIdRef.current) {
         generatedIdRef.current = generateCartItemId([], id)
       }
 
       const itemToAdd = {
-        id: generatedIdRef.current,
+        id: generateCartItemId([], id),
         name,
         price: Number(price_text),
-        quantity: 1, // Chỉ thêm 1 sản phẩm
-        attributes: [], // Các thuộc tính đã chọn (mặc định nếu không có)
+        quantity: 1,
+        attributes: [], // Các thuộc tính đã chọn
         total: calculateTotalPrice() // Tổng giá của sản phẩm
       }
-      addToCart(itemToAdd, image, attributes!)
-    } else {
-      const totalPrice = calculateTotalPrice()
-      if (!generatedIdRef.current) {
-        generatedIdRef.current = generateCartItemId(selectedAttributes, id)
-      }
+      addToCart(itemToAdd, image, attributes ?? []) // Thêm vào giỏ hàng
 
-      const itemToAdd = {
-        id: generatedIdRef.current,
-        name,
-        price: Number(price_text),
-        quantity: 1, // Chỉ thêm 1 sản phẩm
-        attributes: selectedAttributes,
-        total: totalPrice
-      }
-      addToCart(itemToAdd, image, attributes!)
+      // Điều hướng sang trang giỏ hàng ngay lập tức
+      router.push('/cart')
+
+      return
     }
+
+    const totalPrice = calculateTotalPrice() // Tính giá tổng
+
+    if (!generatedIdRef.current) {
+      generatedIdRef.current = generateCartItemId(selectedAttributes, id)
+    }
+
+    const itemToAdd = {
+      id: generatedIdRef.current, // 🔥 Tạo ID duy nhất
+      name,
+      price: Number(price_text),
+      quantity: 1,
+      attributes: selectedAttributes, // Các thuộc tính đã chọn
+      total: totalPrice // Tổng giá của sản phẩm
+    }
+
+    addToCart(itemToAdd, image, attributes!) // Thêm vào giỏ hàng
 
     // Điều hướng sang trang giỏ hàng ngay lập tức
     router.push('/cart')
@@ -171,30 +236,64 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
     }
   }, [attributes])
 
+  // Cập nhật số sao
+  // const averageStar =
+  //   invoiceDetail.products.reduce((acc, product) => acc + product.rating, 0) /
+  //   invoiceDetail.products.length
+
+  const averageStar =
+    reviews?.reduce((acc, review) => acc + review.rating, 0)! /
+    (reviews?.length || 1)
+  const averageStarRounded = Math.round(averageStar * 10) / 10 // Làm tròn đến 1 chữ số thập phân
+
   return (
     <div className='lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0'>
-      <h1 className='text-gray-900 text-3xl title-font font-medium mb-1'>
+      <h1 className='text-gray-900 md:text-3xl text-lg title-font font-medium mb-1'>
         {name}
       </h1>
-      <p className='text-gray-900 text-lg font-extralight mb-1'>{desc}</p>
-      <div className='flex mb-4'>
-        <span className='flex items-center'>
-          <HiStar className='text-yellow-500 w-4 h-4' />
-          <HiStar className='text-yellow-500 w-4 h-4' />
-          <HiStar className='text-yellow-500 w-4 h-4' />
-          <HiStar className='text-yellow-500 w-4 h-4' />
-          <HiOutlineStar className='text-yellow-500 w-4 h-4' />
+      <p className='text-gray-900 md:text-lg text-sm font-extralight mb-1'>
+        {desc}
+      </p>
+      {reviews?.length! > 0 && (
+        <div className='flex mb-4'>
+          <span className='flex items-center'>
+            <span className='flex items-center'>
+              {/* Vẽ các sao đầy đủ */}
+              {[...Array(Math.floor(averageStar))].map((_, i) => (
+                <FaStar
+                  key={i}
+                  className='md:w-6 w-4 md:h-6 h-4 text-yellow-400'
+                />
+              ))}
 
-          <span className='text-yellow-500 italic text-sm font-extralight ml-3'>
-            (7 đánh giá | Đã bán: 123)
+              {/* Vẽ nửa sao nếu có */}
+              {averageStar % 1 !== 0 && (
+                <FaRegStarHalfStroke className='md:w-6 w-4 md:h-6 h-4 text-yellow-400' />
+              )}
+
+              {/* Vẽ các sao rỗng */}
+              {[...Array(5 - Math.ceil(averageStar))].map((_, i) => (
+                <FaRegStar
+                  key={i}
+                  className='md:w-6 w-4 md:h-6 h-4 text-yellow-400'
+                />
+              ))}
+            </span>
+
+            <span className='text-yellow-500 italic text-sm font-extralight ml-3'>
+              ({reviews?.length} đánh giá
+              {/* | Đã bán: 123 */})
+            </span>
           </span>
-        </span>
-      </div>
+        </div>
+      )}
 
       <div className='mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5'>
         <div className='flex items-center mb-5 space-x-3'>
-          <span className='text-xl font-semibold'>Giá</span>
-          <p className='bg-black px-3 py-2 text-white font-semibold text-2xl'>
+          <span className='md:text-xl text-lg md:font-semibold font-medium md:w-[30%] w-2/5'>
+            Giá
+          </span>
+          <p className='bg-black px-3 py-2 text-white font-semibold md:text-2xl text-lg'>
             {/* {formatPrice(Number(price_text))} */}
             {Number(price_text).toLocaleString('vi-VN', {
               currency: 'VND'
@@ -213,27 +312,35 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         {attributes &&
           Object.values(attributes).map(attr => (
             <div key={attr.id} className='flex items-center mb-5 space-x-3'>
-              <span className='text-xl font-semibold'>{attr.name}</span>
-              {attr.product_attribute.map(pa => (
-                <div
-                  key={pa.id}
-                  onClick={() => {
-                    onAttributeClick(pa.image)
-                    handleSelectAttribute(pa) // Cập nhật thuộc tính khi chọn
-                  }}
-                  className={`bg-[#D89C17] px-3 py-2 text-black border border-black font-semibold text-lg cursor-pointer ${
-                    selectedAttributes.some(attribute => attribute.id === pa.id)
-                      ? 'bg-[#F8EDD8] border-[#B20101]'
-                      : ''
-                  }`}>
-                  {pa.name}
-                </div>
-              ))}
+              <span className='md:text-xl text-lg md:font-semibold font-medium md:w-[30%] w-2/5'>
+                {attr.name}
+              </span>
+              <div className='flex md:w-[70%] w-3/5 flex-wrap gap-2'>
+                {attr.product_attribute.map(pa => (
+                  <div
+                    key={pa.id}
+                    onClick={() => {
+                      onAttributeClick(pa.image)
+                      handleSelectAttribute(pa) // Cập nhật thuộc tính khi chọn
+                    }}
+                    className={`bg-[#D89C17] px-3 py-2 text-black border border-black font-semibold text-lg cursor-pointer ${
+                      selectedAttributes.some(
+                        attribute => attribute.id === pa.id
+                      )
+                        ? 'bg-[#F8EDD8] border-[#B20101]'
+                        : ''
+                    }`}>
+                    {pa.name}
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
 
         <div className='flex items-center mb-5 space-x-3'>
-          <span className='text-xl font-semibold'>Số lượng</span>
+          <span className='md:text-xl text-lg md:font-semibold font-medium md:w-[30%] w-2/5'>
+            Số lượng
+          </span>
           {/* Tôi muốn tạo một input group có dấu trừ, số lượng và dấu trừ */}
           <div className='flex items-center'>
             <button
@@ -263,10 +370,10 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
             onClick={handleAddToCart}>
             <TiShoppingCart className='w-8 h-8 mr-2 font-thin' />
 
-            <span>Thêm vào giỏ hàng</span>
+            <span className='md:text-lg text-sm'>Thêm vào giỏ hàng</span>
           </button>
           <button
-            className='hover:bg-[#D89C17] bg-gradient-to-r from-[#8F0000] via-[#920000] to-[#B20101] text-white py-2 px-3 ml-4 font-semibold text-lg'
+            className='hover:bg-[#D89C17] bg-gradient-to-r from-[#8F0000] via-[#920000] to-[#B20101] text-white py-2 px-3 ml-4 font-semibold md:text-lg text-sm'
             onClick={handleBuyNow} // Gọi handleBuyNow khi click vào nút "Mua ngay"
           >
             Mua ngay
@@ -277,8 +384,6 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
             <p className='text-xl italic font-semibold'>Kết hợp tốt với:</p>
 
             <div className='mt-5'>
-              {/* Tôi muốn tạo một thẻ div sản phẩm kèm theo là flex gồm có 1 bên là 1 thumbnai, bên cạnh thumbnail sẽ 1 cụm, gồm dòng 1 là tên, dòng 2 là giá, bên cạnh giá là "-Thêm vào giỏ hàng", cả thẻ div có background là (#F8EDD8)*/}
-
               {suggests.map(sug => (
                 <Suggests
                   image={sug?.thumb}
@@ -292,6 +397,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           </div>
         )}
       </div>
+      <Toaster position='top-right' richColors closeButton />
     </div>
   )
 }

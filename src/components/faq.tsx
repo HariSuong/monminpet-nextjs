@@ -11,7 +11,7 @@ export function Faq({ faqs }: { faqs?: FAQ[] }) {
 
   return (
     <div className='w-full mx-auto my-8'>
-      <h2 className='text-2xl font-semibold text-gray-800 mb-12 mt-16 uppercase'>
+      <h2 className='md:text-2xl text-lg md:font-semibold font-medium text-gray-800 mb-12 mt-16 uppercase'>
         câu hỏi thường gặp
       </h2>
 

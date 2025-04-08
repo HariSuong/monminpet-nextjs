@@ -13,11 +13,14 @@ interface Product {
 }
 
 const OrderSummary = () => {
-  const { cart } = useCart()
+  const { cart, getPaymentInfo } = useCart()
   const { discount, finalPrice } = useCoupon()
 
+  const paymentInfo = getPaymentInfo()
+  console.log('paymentInfo', paymentInfo)
+
   const totalPrice = cart.reduce((acc, item) => acc + item.total, 0)
-  const shippingFee = totalPrice <= 1000000 ? 30000 : 0
+  const shippingFee = totalPrice < 1000000 ? 30000 : 0
 
   console.log(discount, finalPrice)
 
@@ -91,7 +94,7 @@ const OrderSummary = () => {
             <p className='font-bold'>Tổng cộng</p>
             <p className='font-bold'>
               {(finalPrice
-                ? finalPrice
+                ? finalPrice + shippingFee
                 : totalPrice + shippingFee
               ).toLocaleString('vi-VN', {
                 currency: 'VND'

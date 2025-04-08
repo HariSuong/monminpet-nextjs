@@ -55,7 +55,7 @@ const SearchModal = () => {
       </DialogTrigger>
 
       {/* Nội dung modal */}
-      <DialogContent className='h-5/6 overflow-auto lg:max-w-5xl'>
+      <DialogContent className='md:h-5/6 h-4/6 top-1/3 overflow-auto lg:max-w-5xl'>
         <div className='p-4'>
           <h2 className='text-lg font-bold mb-2'>Tìm kiếm</h2>
           <div className='flex gap-2'>
@@ -71,98 +71,101 @@ const SearchModal = () => {
           <div className='mt-4'>
             {/* Bài viết */}
             {results.post.length > 0 && (
-              <div>
+              <div className='mb-4 border-b'>
                 <h3 className='text-lg font-semibold'>Bài viết</h3>
                 <ul>
                   {results.post.slice(0, 8).map(post => (
-                    <li
-                      key={post.id}
-                      className='flex items-center gap-2 p-2 border-b'>
-                      <Image
-                        src={post.thumb}
-                        alt={post.title}
-                        width={40}
-                        height={40}
-                        className='rounded'
-                      />
-                      <p>{post.title}</p>
+                    <li key={post.id} className='flex items-center gap-2 p-2'>
+                      <div className='w-1/3'>
+                        <Image
+                          src={post.thumb}
+                          alt={post.title}
+                          width={50}
+                          height={50}
+                          className='rounded w-28 h-28 object-cover'
+                        />
+                      </div>
+                      <p className='w-2/3'>{post.title}</p>
                     </li>
                   ))}
                 </ul>
-                <Button
-                  variant='link'
-                  onClick={() => router.push(`/search?page=posts&q=${query}`)}>
-                  Xem thêm
-                </Button>
+                <div className='text-center'>
+                  <Button
+                    className='border border-neutral-500 px-2 py-1 mt-4 mb-8'
+                    variant='link'
+                    onClick={() =>
+                      router.push(`/search?page=posts&q=${query}`)
+                    }>
+                    Xem thêm
+                  </Button>
+                </div>
               </div>
             )}
 
             {/* Sản phẩm */}
             {results.product.length > 0 && (
-              <div>
+              <div className='mb-4 border-b'>
                 <h3 className='text-lg font-semibold'>Sản phẩm</h3>
                 <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
                   {results.product.slice(0, 8).map(product => (
-                    // <li
-                    //   key={product.id}
-                    //   className='flex items-center gap-2 p-2 border-b'>
-                    //   <Image
-                    //     src={product.thumb}
-                    //     alt={product.name}
-                    //     width={40}
-                    //     height={40}
-                    //     className='rounded'
-                    //   />
-                    //   <p>{product.name}</p>
-                    // </li>
                     <ProductItem
                       key={product.id}
                       id={product.id}
                       name={product.name}
                       description={product.desc || ''} // Add default value for description
-                      price={`${product.price}đ`}
+                      price={product.price}
+                      priceOld={product.price_old}
                       imageUrl={product.thumb}
-                      isHot={product.hot === 1}
+                      isHot={product.hot ?? 0}
                     />
                   ))}
                 </div>
-                <Button
-                  variant='link'
-                  onClick={() =>
-                    router.push(`/search?page=products&q=${query}`)
-                  }>
-                  Xem thêm
-                </Button>
+                <div className='text-center'>
+                  <Button
+                    className='border border-neutral-500 px-2 py-1 mt-4 mb-8'
+                    variant='link'
+                    onClick={() =>
+                      router.push(`/search?page=products&q=${query}`)
+                    }>
+                    Xem thêm
+                  </Button>
+                </div>
               </div>
             )}
 
             {/* Dịch vụ */}
             {results.service.length > 0 && (
-              <div>
+              <div className='border-b'>
                 <h3 className='text-lg font-semibold'>Dịch vụ</h3>
-                <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+                <ul>
                   {results.service.slice(0, 8).map(service => (
-                    <div
+                    <li
                       key={service.id}
-                      className='flex items-center gap-2 p-2 border-b'>
-                      <Image
-                        src={service.thumb}
-                        alt={service.title}
-                        width={40}
-                        height={40}
-                        className='rounded'
-                      />
-                      <p>{service.title}</p>
-                    </div>
+                      className='flex items-center gap-2 p-2'>
+                      <div className='w-1/3'>
+                        <Image
+                          src={service.thumb}
+                          alt={service.title}
+                          width={50}
+                          height={50}
+                          className='rounded w-28 h-28 object-cover'
+                        />
+                      </div>
+                      <p className='w-2/3'>{service.title}</p>
+                    </li>
                   ))}
+                </ul>
+
+                <div className='text-center'>
+                  <Button
+                    className='border border-neutral-500 px-2 py-1 mt-4 mb-8'
+                    variant='link'
+                    onClick={() =>
+                      router.push(`/search?page=services&q=${query}`)
+                    }>
+                    Xem thêm
+                  </Button>{' '}
                 </div>
-                <Button
-                  variant='link'
-                  onClick={() =>
-                    router.push(`/search?page=services&q=${query}`)
-                  }>
-                  Xem thêm
-                </Button>
               </div>
             )}
           </div>

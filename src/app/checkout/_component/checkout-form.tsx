@@ -27,7 +27,7 @@ const CheckoutForm = ({
   sessionToken
 }: {
   profile: AccountResType['data']
-  onFormValid: () => void
+  onFormValid: (code: string, amount: number, orderId: number) => void
   sessionToken: string
 }) => {
   const form = useForm<CheckoutType>({
@@ -40,7 +40,7 @@ const CheckoutForm = ({
       message: ''
     }
   })
-  const { cart, clearCart } = useCart()
+  const { cart, clearCart, handlePaymentInfo } = useCart()
   console.log('cart', cart)
   const totalPrice = cart.reduce((acc, item) => acc + item.total, 0)
   const shippingFee = totalPrice <= 1000000 ? 30000 : 0
@@ -85,9 +85,13 @@ const CheckoutForm = ({
       // Xử lý kết quả trả về
       if (response.payload?.message) {
         toast.success(response.payload?.message) // Hiển thị thông báo thành công
-        clearCart()
-        clearCoupon()
-        onFormValid() // Kích hoạt khi form hợp lệ
+
+        // Chuyển hướng đến trang thanh toán
+        onFormValid(
+          response.payload.code_payment,
+          response.payload.amount,
+          response.payload.id
+        ) // Kích hoạt khi form hợp lệ
       } else {
         toast.error('Có lỗi xảy ra khi gửi đơn hàng.')
       }

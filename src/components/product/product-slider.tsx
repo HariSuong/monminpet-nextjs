@@ -39,8 +39,10 @@ const settings = {
     {
       breakpoint: 480,
       settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        infinite: true,
+        dots: false
       }
     }
   ]
@@ -54,10 +56,10 @@ const ProductSlider: React.FC<ProductListProps> = ({ products }) => {
           key={product.id}
           id={product.id} // Add this line
           name={product.name}
-          description={product.desc}
-          price={product.price.toString()}
+          description={product.desc ?? ''}
+          price={product.price}
           imageUrl={product.thumb}
-          isHot={product.desc}
+          isHot={product.hot ?? 0}
           priceOld={product.price_old}
         />
       ))}

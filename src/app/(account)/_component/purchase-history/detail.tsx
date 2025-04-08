@@ -13,70 +13,44 @@ import { cookies } from 'next/headers'
 import accountApiRequest from '@/services/apiAccount'
 import { useCart } from '@/context/CartContext'
 import { useRouter } from 'next/navigation'
+import BuyAgain from '@/app/(account)/_component/purchase-history/buy-again'
+import { InvoiceType } from '@/schemaValidations/invoice.schema'
+import slugify from 'slugify'
 
-const products = [
-  {
-    id: 1,
-    name: 'FERA PET',
-    quantity: 1,
-    desc: 'Bột bổ sung sữa dê bổ lông tóc cho chó và mèo',
-    price: 990000,
-    totalPrice: 1050000,
-    detailsLink: '/order-details/1',
-    star: 4
-  },
-  {
-    id: 2,
-    name: 'PRARINTEL',
-    quantity: 1,
-    desc: 'Bột bổ sung sữa dê bổ lông tóc cho chó và mèo',
-    price: 60000,
-    totalPrice: 60000,
-    detailsLink: '/order-details/2',
-    star: 3
-  }
-]
+interface Product {
+  product_id: number
+  name: string
+  price: number
+  thumb: string
+  quantity: number
+  rating: number
+  content: string | null
+}
 
-const averageStar =
-  products.reduce((acc, product) => acc + product.star, 0) / products.length
-
-const PurchaseDetail = ({
-  orderId,
-  jsonInvoices
-}: {
-  orderId: string
-  jsonInvoices: any[] // Thay 'any' bằng kiểu dữ liệu cụ thể của jsonInvoices
-}) => {
-  const { clearCart } = useCart() // Chỉ cần clearCart
-  const router = useRouter()
-
-  const handleBuyAgain = () => {
-    clearCart() // Xóa giỏ hàng hiện tại
-
-    // Lưu trực tiếp jsonInvoices vào localStorage (giả sử cấu trúc đã phù hợp)
-    localStorage.setItem('cartItems', JSON.stringify(jsonInvoices))
-
-    router.push('/cart')
-  }
+const PurchaseDetail = ({ invoiceDetail }: { invoiceDetail: InvoiceType }) => {
+  console.log('invoiceDetail', invoiceDetail)
+  const averageStar =
+    invoiceDetail.products.reduce((acc, product) => acc + product.rating, 0) /
+    invoiceDetail.products.length
 
   return (
     <div className='flex flex-col justify-center items-center md:text-base text-sm'>
       <BackLink />
       <Card className='shadow-md p-4 md:w-4/5 w-full'>
-        <Link href={'/'} className='mb-4 w-fit md:text-xl text-sm px-4 py-2'>
+        <div className='mb-4 w-fit md:text-xl text-sm px-4 py-2'>
           Chi tiết đơn hàng {'>'}
-        </Link>
+        </div>
         <div className='my-10 flex flex-col md:flex-row md:gap-16'>
           <div className='md:w-2/5 w-full'>
             <div className='space-y-4'>
-              {products.map((product, index) => (
-                <div key={index} className='flex gap-20'>
+              {invoiceDetail.products.map(product => (
+                <div key={product.product_id} className='flex gap-20'>
                   {/* Product details */}
                   <div className='space-y-6'>
                     <div className='flex items-center space-x-4'>
                       <div className='flex-shrink-0'>
                         <Image
-                          src={'/images/relate-product-1.png'}
+                          src={`https://cdn.monminpet.com/storage/app/public/${product?.thumb}`}
                           alt={product.name}
                           width={80}
                           height={80}
@@ -85,16 +59,26 @@ const PurchaseDetail = ({
                       </div>
                       <div>
                         <div className='flex justify-between'>
-                          <h3 className='md:text-lg text-base font-semibold'>
-                            {product.name}
-                          </h3>
+                          <Link
+                            href={`/products/${slugify(product.name || '', {
+                              lower: true,
+                              strict: true,
+                              locale: 'vi'
+                            })}/${product.product_id}`}>
+                            <h3 className='md:text-lg text-base md:font-semibold font-medium'>
+                              {product.name}
+                            </h3>
+                          </Link>
                           <p className='text-sm text-gray-500'>
                             x{product.quantity}
                           </p>
                         </div>
-                        <p className='text-sm text-gray-500'>{product.desc}</p>
+                        {/* <p className='text-sm text-gray-500'>{product.desc}</p> */}
                         <p className='md:text-xl text-base font-bold'>
-                          {product.price.toLocaleString()}đ
+                          {product.price.toLocaleString('vi-VN', {
+                            currency: 'VND'
+                          })}
+                          đ
                         </p>
                       </div>
                     </div>
@@ -106,31 +90,61 @@ const PurchaseDetail = ({
           <div className='flex flex-col justify-between md:w-3/5 w-full md:gap-16'>
             {/* Action Buttons */}
             <div className='flex flex-col md:flex-row justify-between'>
-              <p className='md:w-1/5 w-full md:text-base text-sm text-gray-500 italic mt-2'>{`${products.length} sản phẩm`}</p>
+              <p className='md:w-1/5 w-full md:text-base text-sm text-gray-500 italic mt-2'>{`${invoiceDetail.products.length} sản phẩm`}</p>
               {/* Price & Total */}
               <div className='md:w-4/5 w-full'>
                 <p className='font-bold flex justify-between gap-3 mt-2'>
                   <span className='text-gray-500 italic'>Tổng tiền hàng:</span>
-                  <p className='text-[#b00303]'>{'10000'.toLocaleString()}đ</p>
+                  <p className='text-[#b00303]'>
+                    {Number(invoiceDetail.total).toLocaleString('vi-VN', {
+                      currency: 'VND'
+                    })}
+                    đ
+                  </p>
                 </p>
                 <p className='font-bold flex justify-between gap-3 mt-2'>
                   <span className='text-gray-500 italic'>Phí vận chuyển:</span>
-                  <p className='text-[#b00303]'>{'10000'.toLocaleString()}đ</p>
+                  <p className='text-[#b00303]'>
+                    {invoiceDetail.fee.toLocaleString('vi-VN', {
+                      currency: 'VND'
+                    })}
+                    đ
+                  </p>
                 </p>
                 <p className='font-bold flex justify-between gap-3 mt-2'>
                   <span className='text-gray-500 italic'>Ưu đãi:</span>
-                  <p className='text-[#b00303]'>{'10000'.toLocaleString()}đ</p>
+                  <p className='text-[#b00303]'>
+                    {invoiceDetail?.discount.toLocaleString('vi-VN', {
+                      currency: 'VND'
+                    })}
+                    đ
+                  </p>
                 </p>
                 <p className='font-bold flex justify-between gap-3 mt-2'>
                   <span className='text-gray-500 italic'>Thành tiền:</span>
-                  <p className='text-[#b00303]'>{'10000'.toLocaleString()}đ</p>
+                  <p className='text-[#b00303]'>
+                    {Number(invoiceDetail?.amount).toLocaleString('vi-VN', {
+                      currency: 'VND'
+                    })}
+                    đ
+                  </p>
                 </p>
               </div>
             </div>
           </div>
         </div>
 
-        <InfoDetail />
+        <InfoDetail
+          infoDetail={{
+            name: invoiceDetail.name,
+            phone: invoiceDetail.phone,
+            address: invoiceDetail.address,
+            method: invoiceDetail.method,
+
+            received_at: invoiceDetail.received_at || '',
+            created_at: invoiceDetail.created_at || ''
+          }}
+        />
 
         <div className='flex flex-col justify-between md:mt-0 mt-4'>
           {/* Action Buttons */}
@@ -164,14 +178,14 @@ const PurchaseDetail = ({
 
             <div className='flex justify-end gap-2'>
               <Link
-                href={'/account/review'}
+                href={`/account/review/${invoiceDetail.id}?tab=purchase-history`}
                 className='bg-gradient-to-r from-[rgb(0,0,0)] via-[#222222] to-[#555555] text-white px-4 py-2 text-sm text-center font-semibold uppercase rounded-md'>
                 Đánh giá
               </Link>
-              <Button className='bg-[#b00303] text-white py-2 mt-0 rounded-md hover:bg-red-600 text-center font-semibold uppercase'>
-                {/* {product.rating > 0 ? 'Mua lại' : 'Đánh giá'} */}
-                Mua lại
-              </Button>
+
+              <BuyAgain
+                jsonInvoices={JSON.stringify(invoiceDetail.json_invoices)}
+              />
             </div>
           </div>
         </div>

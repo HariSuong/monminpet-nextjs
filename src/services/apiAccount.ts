@@ -6,7 +6,10 @@ import {
   UpdateMeResponseType
 } from '@/schemaValidations/account.schema'
 import { GetBalanceResponseType } from '@/schemaValidations/balance.schema'
-import { InvoicesResponseType } from '@/schemaValidations/invoice.schema'
+import {
+  InvoiceDetailResponseType,
+  InvoicesResponseType
+} from '@/schemaValidations/invoice.schema'
 import { TransactionsResponseType } from '@/services/transactions.schema'
 
 const accountApiRequest = {
@@ -31,12 +34,11 @@ const accountApiRequest = {
       }
     }),
   // New method to fetch invoice detail
-  invoice: (sessionToken: string, id: number) =>
-    http.get<InvoicesResponseType>(`/user/accounts/invoice/detail/${id}`, {
-      headers: {
-        Authorization: `Bearer ${sessionToken}`
-      }
+  invoice: (id: number) =>
+    http.get<InvoiceDetailResponseType>(`/invoice/detail/${id}`, {
+      cache: 'no-store'
     }),
+
   getBalance: (sessionToken: string) =>
     http.get<GetBalanceResponseType>('/user/accounts/getbalance', {
       headers: {

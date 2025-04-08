@@ -5,39 +5,88 @@ import { Toaster } from '@/components/ui/sonner'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/context/CartContext'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaCreditCard, FaMoneyBill, FaQrcode } from 'react-icons/fa'
 import { toast } from 'sonner'
 import Image from 'next/image'
+import accountApiRequest from '@/services/apiAccount'
+import { useCoupon } from '@/context/coupon-context'
 
-const PaymentInfo = () => {
+const PaymentInfo = ({
+  codePayment,
+  amount,
+  orderId
+}: {
+  codePayment: string
+  amount: number
+  orderId?: number
+}) => {
   const router = useRouter()
-  const { cart } = useCart()
+  const { clearCart } = useCart()
+  const { clearCoupon } = useCoupon()
+  const [copied, setCopied] = useState(false)
 
-  const totalPrice = cart.reduce((acc, item) => acc + item.total, 0)
-  const shippingFee = totalPrice <= 1000000 ? 30000 : 0
-  const discount = 0
-
-  const total = totalPrice + shippingFee - discount
-  const handlePayment = async () => {
-    try {
-      // Giả lập thanh toán thành công
-      await new Promise(resolve => setTimeout(resolve, 2000))
-
-      toast.success('Thanh toán thành công!', {
-        description: 'Đơn hàng của bạn đã được xử lý thành công'
-      })
-
-      // Chuyển hướng sau 2 giây
-      setTimeout(() => {
-        router.push('/order-history')
-      }, 2000)
-    } catch (error) {
-      toast.error('Thanh toán thất bại', {
-        description: 'Vui lòng thử lại hoặc kiểm tra thông tin thanh toán'
-      })
-    }
+  // Hàm xử lý copy mã giảm giá
+  const handleCopy = (couponCode: string) => {
+    navigator.clipboard.writeText(couponCode)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000) // Reset sao chép sau 2 giây
   }
+
+  // const handlePayment = async () => {
+  //   try {
+  //     const result = await accountApiRequest.invoice(orderId!)
+  //     console.log('result', result)
+
+  //     if (result.payload.data.paid === 1) {
+  //       toast.success('Thanh toán thành công', {
+  //         description: 'Đơn hàng của bạn đã được xử lý thành công'
+  //       })
+  //       clearPaymentInfo()
+  //       setTimeout(() => {
+  //         router.push('/account/purchase-history')
+  //       }, 2000)
+  //     }
+  //   } catch (error) {
+  //     toast.error('Thanh toán thất bại', {
+  //       description: 'Vui lòng thử lại hoặc kiểm tra thông tin thanh toán'
+  //     })
+  //   }
+  // }
+
+  console.log('orderId', orderId)
+
+  // Hàm kiểm tra trạng thái thanh toán
+  const checkPaymentStatus = React.useCallback(async () => {
+    if (!orderId) return false
+    try {
+      const result = await accountApiRequest.invoice(orderId)
+      console.log('result.payload.data.paid', result.payload.data.paid)
+      return result.payload.data.paid === 1
+    } catch (error) {
+      return false
+    }
+  }, [orderId])
+
+  useEffect(() => {
+    if (!orderId) return
+
+    const paymentPolling = setInterval(async () => {
+      const isPaid = await checkPaymentStatus()
+      console.log('isPaid', isPaid)
+      if (isPaid) {
+        clearInterval(paymentPolling)
+        toast.success('Thanh toán thành công', {
+          description: 'Đơn hàng của bạn đã được xử lý thành công'
+        })
+        clearCoupon()
+        clearCart()
+        router.push(`/account/purchase-history/${orderId}?tab=purchase-history`)
+      }
+    }, 3000) // Kiểm tra mỗi 3 giây
+
+    return () => clearInterval(paymentPolling)
+  }, [orderId, checkPaymentStatus, clearCoupon, clearCart, router]) // Chạy lại effect khi orderId thay đổi
 
   return (
     <div className='space-y-6'>
@@ -55,14 +104,28 @@ const PaymentInfo = () => {
           <p>Tên ngân hàng: Ngân hàng VPBank</p>
           <p>Số tài khoản: 3123685</p>
           <p>Chủ tài khoản: Lê Minh Duy</p>
-          <p> Lời nhắn chuyển khoản: 423523</p>
-
+          <p> Lời nhắn chuyển khoản: </p>{' '}
+          <div className='flex justify-between items-center mb-4'>
+            <p className='font-bold'>MMP{codePayment}</p>
+            <Button
+              variant='outline'
+              onClick={() => handleCopy(`MMP${codePayment}`)}
+              className={`px-4 py-2 ${
+                copied ? 'bg-green-300' : 'bg-blue-300'
+              } text-white rounded-md`}>
+              {copied ? 'Copied' : 'Copy'}
+            </Button>
+          </div>
+          <p className='text-sm bg-orange-200 p-2 rounded-md'>
+            Vui lòng nhập đúng thông tin chuyển khoản để tránh mất thời gian xử
+            lý
+          </p>
           <p className='font-bold'>
             Hoặc quét mã bên dưới để được nhập thông tin tự động
           </p>
           <div className='mt-4'>
             <Image
-              src={`https://api.vietqr.io/image/970432-3123685-JrUfq5m.jpg?accountName=LE%20MINH%20DUY&amount=${total}&addInfo=RABDOM`}
+              src={`https://api.vietqr.io/image/970432-3123685-JrUfq5m.jpg?accountName=LE%20MINH%20DUY&amount=${amount}&addInfo=MMP${codePayment}`}
               alt='Mã QR'
               width={500}
               height={500}
@@ -70,7 +133,7 @@ const PaymentInfo = () => {
           </div>
         </div>
 
-        <ButtonSubmit title='Xác nhận thanh toán' onClick={handlePayment} />
+        {/* <ButtonSubmit title='Xác nhận thanh toán' onClick={handlePayment} /> */}
       </div>
       <Toaster position='top-right' richColors closeButton />
     </div>

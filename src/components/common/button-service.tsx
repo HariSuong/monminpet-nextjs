@@ -3,16 +3,20 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 const ButtonService = ({
   title,
-  linkUrl = '/'
+  linkUrl = '/',
+  about = false
 }: {
   title: string
   linkUrl?: string
+  about?: boolean
 }) => {
   return (
     <Button asChild>
       <Link
         href={linkUrl}
-        className='!bg-[#f8edd8] !px-2 !md:px-8 !py-0 h-auto !md:py-10 !text-black text-center text-[0.5rem] md:text-2xl italic rounded-none font-bold uppercase'>
+        className={`!bg-[#f8edd8]  h-auto !md:py-10 !text-black text-center text-[0.5rem] md:text-2xl italic rounded-none font-bold uppercase ${
+          about ? '!px-1 !py-1' : ''
+        }`}>
         {/* Decode HTML entities trước khi hiển thị */}
         <span dangerouslySetInnerHTML={{ __html: title }} />
       </Link>

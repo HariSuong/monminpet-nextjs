@@ -9,6 +9,8 @@ import { Category } from '@/types/cats'
 import slugify from 'slugify'
 
 const ProductCat: React.FC<{ productsCat: Category[] }> = ({ productsCat }) => {
+  console.log('productsCat', productsCat)
+
   const products = productsCat?.map(cat => {
     if (cat.products.length === 0) return null
     return (
@@ -22,7 +24,7 @@ const ProductCat: React.FC<{ productsCat: Category[] }> = ({ productsCat }) => {
             locale: 'vi'
           })}?catId=${cat.id}&page=1`}
         />
-        <div className='font-[sans-serif] '>
+        <div>
           <div className='p-4 lg:max-w-7xl sm:max-w-full'>
             <ProductSlider products={cat.products} />
           </div>

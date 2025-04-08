@@ -1,4 +1,5 @@
 import { ServicesCat } from '@/types/services'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -26,7 +27,13 @@ const ServiceItem: React.FC<ServicesCat> = ({ id, name, thumb, content }) => {
         </div>
       </div>
       <div className='w-1/2 relative'>
-        <img src={thumb} alt={name} className='w-full object-cover' />
+        <Image
+          src={thumb}
+          alt={name}
+          width={300}
+          height={300}
+          className='h-full w-full object-cover transition-transform duration-300 ease-in-out transform hover:scale-105'
+        />
       </div>
     </div>
   )

@@ -24,23 +24,25 @@ const settings = {
       settings: {
         slidesToShow: 3,
         slidesToScroll: 3,
-        infinite: true,
-        dots: true
+        infinite: true
+        // dots: true
       }
     },
     {
       breakpoint: 600,
       settings: {
         slidesToShow: 2,
-        slidesToScroll: 2,
+        slidesToScroll: 1,
         initialSlide: 2
       }
     },
     {
       breakpoint: 480,
       settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        infinite: true,
+        dots: false
       }
     }
   ]
@@ -58,7 +60,7 @@ const ProductSliderHome: React.FC<{ products: ProductHome[] }> = ({
           key={product.id}
           id={product.id} // Add this line
           name={product.name}
-          price={product.price.toString()}
+          price={product.price}
           imageUrl={product.thumb}
           priceOld={product.price_old}
           countdownTimer={product.countdown_timer}

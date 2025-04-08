@@ -24,7 +24,7 @@ const CheckoutPage = async () => {
   if (!result) return
 
   return (
-    <div className='min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mt-16'>
+    <div className='min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 lg:pt-32'>
       <div className='max-w-7xl mx-auto'>
         <div className='flex md:flex-row flex-col gap-8'>
           {/* Left Column */}

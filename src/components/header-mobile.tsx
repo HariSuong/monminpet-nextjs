@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -6,17 +8,20 @@ import DropdownUser from '@/components/dropdown-user'
 import { Button } from '@/components/ui/button'
 import { usePathname } from 'next/navigation'
 import SearchModal from '@/components/home/search-modal'
+import { useCart } from '@/context/CartContext'
 
 const HeaderMobile = ({ totalCart }: { totalCart: number }) => {
+  const [open, setOpen] = useState(false)
   const pathname = usePathname()
+
+  const handleCloseMenu = () => {
+    setOpen(false)
+  }
 
   return (
     <div className='flex items-center justify-between py-4 container lg:hidden'>
       {/*  Mobile */}
-      <Link
-        href='/'
-        className='flex w-full items-center py-2 text-lg'
-        prefetch={false}>
+      <Link href='/' className='flex w-full items-center py-2 text-lg'>
         <Image
           src='/logo/logo.png'
           alt='Logo'
@@ -29,11 +34,13 @@ const HeaderMobile = ({ totalCart }: { totalCart: number }) => {
         <div className='flex gap-3 items-center'>
           <SearchModal />
 
-          <Link className='text-gray-700 hover:text-black' href='/'>
+          <Link className='text-gray-700 hover:text-black' href='#'>
             {/* <Image src='/icon/user.png' alt='User' width={24} height={24} className='w-12' /> */}
             <DropdownUser />
           </Link>
-          <Link className='relative text-gray-700 hover:text-black' href={'#'}>
+          <Link
+            className='relative text-gray-700 hover:text-black'
+            href={'/cart'}>
             {/* Icon giỏ hàng */}
             <Image
               src='/icon/cart.png'
@@ -51,7 +58,7 @@ const HeaderMobile = ({ totalCart }: { totalCart: number }) => {
             )}
           </Link>
         </div>
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
             asChild
             className='flex flex-col justify-center items-center ml-4'>
@@ -62,28 +69,47 @@ const HeaderMobile = ({ totalCart }: { totalCart: number }) => {
           </SheetTrigger>
           <SheetContent side='left'>
             <div className='grid gap-2 py-6'>
+              {[
+                { href: '/', label: 'TRANG CHỦ' },
+                { href: '/about-us', label: 'GIỚI THIỆU' },
+                { href: '/products', label: 'SẢN PHẨM' },
+                { href: '/services', label: 'DỊCH VỤ' },
+                { href: '/academy', label: 'ACADEMY' },
+                { href: '/posts', label: 'TIN TỨC' }
+              ].map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={handleCloseMenu}
+                  className={`flex w-full items-center py-2 text-lg font-light ${
+                    pathname === href ? 'font-semibold' : ''
+                  }`}>
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </SheetContent>
+          {/* <SheetContent side='left'>
+            <div className='grid gap-2 py-6'>
               <Link
                 href='/'
                 className={`flex w-full items-center py-2 text-lg font-light ${
                   pathname === '/' ? 'font-semibold' : ''
-                }`}
-                prefetch={false}>
+                }`}>
                 TRANG CHỦ
               </Link>
               <Link
                 href='/about'
                 className={`flex w-full items-center py-2 text-lg font-light ${
                   pathname === '/about-us' ? 'font-semibold' : ''
-                }`}
-                prefetch={false}>
+                }`}>
                 GIỚI THIỆU
               </Link>
               <Link
                 href='/products'
                 className={`flex w-full items-center py-2 text-lg font-light ${
                   pathname === '/products' ? 'font-semibold' : ''
-                }`}
-                prefetch={false}>
+                }`}>
                 SẢN PHẨM
               </Link>
 
@@ -91,28 +117,25 @@ const HeaderMobile = ({ totalCart }: { totalCart: number }) => {
                 href='/services'
                 className={`flex w-full items-center py-2 text-lg font-light ${
                   pathname === '/services' ? 'font-semibold' : ''
-                }`}
-                prefetch={false}>
+                }`}>
                 DỊCH VỤ
               </Link>
               <Link
                 href='/academy'
                 className={`flex w-full items-center py-2 text-lg font-light ${
                   pathname === '/academy' ? 'font-semibold' : ''
-                }`}
-                prefetch={false}>
+                }`}>
                 ACADEMY
               </Link>
               <Link
                 href='/news'
                 className={`flex w-full items-center py-2 text-lg font-light ${
                   pathname === '/news' ? 'font-semibold' : ''
-                }`}
-                prefetch={false}>
+                }`}>
                 TIN TỨC
               </Link>
             </div>
-          </SheetContent>
+          </SheetContent> */}
         </Sheet>
       </div>
     </div>

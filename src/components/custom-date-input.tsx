@@ -20,10 +20,12 @@ interface DatePickerProps {
 }
 
 export function DatePickerDemo({ value, onChange }: DatePickerProps) {
+  const [open, setOpen] = React.useState(false)
+
   const dateValue = value ? new Date(value) : undefined
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={'outline'}
@@ -43,7 +45,11 @@ export function DatePickerDemo({ value, onChange }: DatePickerProps) {
         <Calendar
           mode='single'
           selected={dateValue}
-          onSelect={onChange}
+          // onSelect={onChange}
+          onSelect={date => {
+            onChange(date)
+            setOpen(false) // ✅ Tự động đóng khi chọn xong
+          }}
           initialFocus
         />
       </PopoverContent>

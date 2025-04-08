@@ -1,3 +1,5 @@
+'use client'
+
 import { SlashIcon } from '@radix-ui/react-icons'
 
 import {
@@ -12,10 +14,14 @@ import {
 export function BreadcrumbWithCustomSeparator({
   parentPage,
   parentLink,
+  corePage,
+  coreLink,
   currentPage
 }: {
   parentPage: string
   parentLink: string
+  corePage?: string
+  coreLink?: string
   currentPage: string
 }) {
   return (
@@ -23,6 +29,12 @@ export function BreadcrumbWithCustomSeparator({
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href='/'>Trang chủ</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator>
+          <SlashIcon />
+        </BreadcrumbSeparator>
+        <BreadcrumbItem>
+          <BreadcrumbLink href={coreLink}>{corePage}</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator>
           <SlashIcon />

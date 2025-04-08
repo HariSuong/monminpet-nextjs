@@ -102,7 +102,7 @@ const PaginationDemo: React.FC<PaginationProps> = ({
             current_page === 1
               ? 'opacity-50 pointer-events-none text-lg text-black'
               : ''
-          } text-lg text-[#424040]`}>
+          } text-lg text-[#424040] cursor-pointer`}>
           <PaginationPrevious
             onClick={() => handlePageChange(current_page - 1)}
             aria-disabled={current_page === 1}
@@ -125,7 +125,7 @@ const PaginationDemo: React.FC<PaginationProps> = ({
                 onClick={() => handlePageChange(Number(link.label))}
                 className={`${
                   link.active ? 'text-black' : 'text-[#424040]'
-                } text-lg`}
+                } text-lg cursor-pointer`}
                 isActive={link.active}>
                 {link.label}
               </PaginationLink>
@@ -138,7 +138,7 @@ const PaginationDemo: React.FC<PaginationProps> = ({
             current_page === last_page
               ? 'opacity-50 pointer-events-none text-lg text-black'
               : ''
-          } text-lg text-[#424040]`}>
+          } text-lg text-[#424040] cursor-pointer`}>
           <PaginationNext
             onClick={() => handlePageChange(current_page + 1)}
             aria-disabled={current_page === last_page}

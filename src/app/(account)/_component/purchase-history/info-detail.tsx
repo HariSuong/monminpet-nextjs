@@ -1,6 +1,25 @@
+import { tranformTimer } from '@/lib/helper'
 import React from 'react'
 
-const InfoDetail = () => {
+/** "name": "Ngọc Sương",
+        "phone": "0111111111",
+        "address": "123 Test",
+        "method": 0,
+        "delivered_at": null,
+        "received_at": null,
+        "created_at": "2025-03-29T07:56:59.000000Z", */
+
+interface InfoDetailProps {
+  name: string
+  phone: string
+  address: string
+  method: number
+
+  received_at: string
+  created_at: string
+}
+
+const InfoDetail = ({ infoDetail }: { infoDetail: InfoDetailProps }) => {
   return (
     <div className='flex flex-col md:flex-row justify-between text-sm'>
       <>
@@ -8,36 +27,38 @@ const InfoDetail = () => {
           <div className='flex flex-col gap-2'>
             <div>Phương thức thanh toán:</div>
             <div>Thời gian đặt hàng:</div>
-            <div>Thời gian thanh toán:</div>
+            {/* <div>Thời gian vận chuyển:</div> */}
             <div>Thời gian hoàn thành:</div>
           </div>
           <div className='flex flex-col gap-2'>
-            <div>Chuyển khoản ngân hàng</div>
-            <div>28-08-2024 15:01</div>
-            <div>28-08-2024 15:02</div>
-            <div>29-08-2024 16:30</div>
+            <div>{infoDetail.method === 0 && 'Chuyển khoản ngân hàng'}</div>
+            <div>{tranformTimer(infoDetail.created_at)}</div>
+            {/* <div>
+              {tranformTimer(infoDetail.delivered_at) || '05-04-2025 16:06'}
+            </div> */}
+            <div>{tranformTimer(infoDetail.received_at)}</div>
           </div>
         </div>
 
         <div className='flex md:hidden flex-col gap-2'>
           <div className='font-bold'>Phương thức thanh toán:</div>
-          <div>Chuyển khoản ngân hàng</div>
+          <div>{infoDetail.method === 0 && 'Chuyển khoản ngân hàng'}</div>
 
           <div className='font-bold'>Thời gian đặt hàng:</div>
-          <div>28-08-2024 15:01</div>
+          <div>{tranformTimer(infoDetail.created_at)}</div>
 
-          <div className='font-bold'>Thời gian thanh toán:</div>
-          <div>28-08-2024 15:02</div>
+          {/* <div className='font-bold'>Thời gian vận chuyển:</div>
+          <div>28-08-2024 15:02</div> */}
 
           <div className='font-bold'>Thời gian hoàn thành:</div>
-          <div>29-08-2024 16:30</div>
+          <div>{tranformTimer(infoDetail.received_at)}</div>
         </div>
       </>
       <div className='flex flex-col md:items-end md:mt-0 mt-6'>
-        <div className='font-bold'>Địa chỉ nhận hàng:</div>
-        <p>Thục Đoan</p>
-        <p>0939730048</p>
-        <p>1046 Âu Cơ, P14, Tân Bình, TP. Hồ Chí Minh</p>
+        <div className='font-bold'>Thông tin nhận hàng:</div>
+        <p>{infoDetail.name}</p>
+        <p>{infoDetail.phone}</p>
+        <p>{infoDetail.address}</p>
       </div>
     </div>
   )

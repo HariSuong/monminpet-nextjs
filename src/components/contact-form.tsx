@@ -7,14 +7,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Button } from './ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from './ui/form'
+import { Form, FormControl, FormField, FormItem, FormMessage } from './ui/form'
 import { Input } from './ui/input'
 import {
   Select,
@@ -24,15 +17,14 @@ import {
   SelectValue
 } from './ui/select'
 
-import { toast, Toaster } from 'sonner'
-import { Textarea } from './ui/textarea'
+import contactSchema from '@/schemaValidations/contact.schema'
+import serviceApiRequest from '@/services/apiServices'
+import { ServicesCat } from '@/types/services'
 import { SelectIcon } from '@radix-ui/react-select'
 import Image from 'next/image'
+import { toast, Toaster } from 'sonner'
 import { DatePickerDemo } from './custom-date-input'
-import { useServicesCat } from '@/hooks/services/useServices'
-import { SkeletonCard } from './skeleton-card'
-import contactSchema from '@/schemaValidations/contact.schema'
-import { ServicesCat } from '@/types/services'
+import { Textarea } from './ui/textarea'
 
 interface Option {
   value: string
@@ -51,7 +43,7 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
       email: '',
       phone: '',
       pet: '',
-      service: 'Test',
+      service: '',
       message: '',
       appointment_at: ''
     }
@@ -62,15 +54,35 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
     label: name
   }))
 
-  const onSubmit = (data: z.infer<typeof contactSchema>) => {
-    console.log('Submit')
+  const onSubmit = async (data: z.infer<typeof contactSchema>) => {
     console.log('data', data)
-    toast.success('Thông tin đã được gửi', {
-      description:
-        'Chúng tôi đã ghi nhận lịch của bạn và sẽ trả lời trong thời gian sớm nhất'
-    })
+    const contactBody = {
+      service: data.service || '',
+      pet: data.pet || '',
+      full_name: data.full_name || '',
+      phone: data.phone || '',
+      email: data.email || '',
+      appointment_at: data.appointment_at || '',
+      message: data.message || ''
+    }
 
-    form.reset() // Reset form sau khi submit thành công
+    console.log('contactBody', contactBody)
+
+    try {
+      const response = await serviceApiRequest.submitMessage(contactBody)
+
+      console.log('response', response)
+      // Xử lý kết quả trả về
+      if (response.payload?.success) {
+        toast.success(response.payload?.success)
+
+        form.reset() // Reset form sau khi submit thành công
+      } else {
+        toast.error('Có lỗi xảy ra khi gửi liên lạc.')
+      }
+    } catch (error) {
+      toast.error('Đã có lỗi xảy ra khi gửi liên lạc.')
+    }
   }
 
   return (
@@ -101,9 +113,7 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
                   name='service'
                   render={({ field }) => (
                     <FormItem>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}>
+                      <Select onValueChange={field.onChange}>
                         <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-full uppercase'>
                           <SelectTrigger className='relative'>
                             <SelectValue placeholder='Chọn chuyên khoa *' />
@@ -120,7 +130,7 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
                         </FormControl>
                         <SelectContent className='bg-[#F8EDD8]'>
                           {serviceOptions.map(option => (
-                            <SelectItem key={option.value} value={option.value}>
+                            <SelectItem key={option.value} value={option.label}>
                               {option.label}
                             </SelectItem>
                           ))}
@@ -155,7 +165,7 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
                         </FormControl>
                         <SelectContent className='bg-[#F8EDD8]'>
                           {petOptions.map(option => (
-                            <SelectItem key={option.value} value={option.value}>
+                            <SelectItem key={option.value} value={option.label}>
                               {option.label}
                             </SelectItem>
                           ))}
@@ -257,8 +267,9 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
                     <FormItem>
                       <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-2xl uppercase'>
                         <Textarea
-                          placeholder='Lời nhắn *'
+                          placeholder='Monminpet có thể giúp gì cho "bé cưng" của bạn? *'
                           className='placeholder:text-black'
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />

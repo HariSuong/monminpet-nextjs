@@ -23,6 +23,7 @@ export interface CartItem {
 
 export interface CartContextType {
   cart: CartItem[]
+  setCart: (cart: CartItem[]) => void // ✅ Thêm setCart vào context
   addToCart: (
     item: CartItem,
     defaultImage: string,
@@ -32,5 +33,23 @@ export interface CartContextType {
   updateQuantity: (id: string, quantity: number) => void
   handleSizeChange: (item: CartItem, newSize: CartAttributeOption) => void
   clearCart: () => void
-  isAttributeInCart: (attributeId: number) => boolean
+  isAttributeInCart: (attributeParentId: number, attributeId: number) => boolean
+  handlePaymentInfo: (
+    codePayment: string,
+    amount: number,
+    discount: number,
+    total: number,
+    fee: number,
+    couponMessage: string
+  ) => void
+  getPaymentInfo: () => {
+    codePayment: string
+    amount: number
+    discount: number
+    total: number
+    fee: number
+    couponMessage: string
+  } | null
+  clearPaymentInfo: () => void
+  cartLength: number
 }

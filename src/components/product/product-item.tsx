@@ -9,35 +9,43 @@ export const formatPrice = (price: number) => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }
 
-const ProductItem = (props: any) => {
-  const {
-    id,
-    name,
-    description,
-    price,
-    priceOld,
-    imageUrl,
-    countdownTimer,
-    isNew = false,
-    isHot = false
-  } = props
-
+const ProductItem = ({
+  id,
+  name,
+  description,
+  price,
+  priceOld,
+  imageUrl,
+  countdownTimer,
+  isNew,
+  isHot
+}: {
+  id: number
+  name: string
+  description?: string
+  price: number
+  priceOld: number
+  imageUrl: string
+  countdownTimer?: number
+  isNew?: number
+  isHot?: number
+}) => {
   return (
     <div className='bg-white rounded-2xl p-5 cursor-pointer hover:-translate-y-2 transition-all relative'>
-      <div className='w-11/12 h-[210px] overflow-hidden mx-auto aspect-w-16 aspect-h-8 md:mb-2 mb-4'>
+      <div className='lg:w-11/12 w-full lg:h-[210px] h-36 overflow-hidden mx-auto md:mb-2 mb-4'>
         <Image
           src={imageUrl}
           alt={name}
           width={300}
           height={300}
-          className='h-full w-full object-cover'
+          className='h-full w-full object-cover transition-transform duration-300 ease-in-out transform hover:scale-105'
         />
         {isNew && <Badge title='NEW!' />}
         {isHot && <Badge title='HOT!' />}
       </div>
 
       <div className='text-center'>
-        <h3 className='text-xl font-bold uppercase text-gray-800 line-clamp-2 mt-6'>
+        <h3 className='md:text-xl text-base md:font-bold font-medium uppercase text-gray-800 line-clamp-2 mt-6'>
           <Link
             href={`/products/${slugify(name || '', {
               lower: true,
@@ -64,7 +72,7 @@ const ProductItem = (props: any) => {
             </p>
           )}
         </div>
-        <CountdownHome timer={countdownTimer} />
+        {countdownTimer && <CountdownHome timer={countdownTimer} />}
       </div>
     </div>
   )

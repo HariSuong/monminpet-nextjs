@@ -12,7 +12,7 @@ const PetVaccination = () => {
     'Tiết kiệm chi phí chăm sóc sức khoẻ khác'
   ]
   return (
-    <div>
+    <div className='md:block hidden'>
       <div className='bg-cover bg-center relative'>
         <Banner type='video' time={3000} url='/home/dogs.mp4' />
         {/* Lớp phủ mờ chỉ cho background image */}

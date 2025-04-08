@@ -5,7 +5,7 @@ import { CategoryRes } from '@/types/cats'
 import { ProductDetailRes, ProductPaginationRes } from '@/types/products'
 
 const productApiRequest = {
-  getProductsCat: http.get<CategoryRes>('/products'),
+  getProductsCat: http.get<CategoryRes>('/products', { cache: 'no-store' }),
   getProducts: (catId: number, page: number, orderBy?: any) =>
     http.get<ProductPaginationRes>(
       `/products/${catId}?page=${page}${orderBy ? `&orderby=${orderBy}` : ''}`

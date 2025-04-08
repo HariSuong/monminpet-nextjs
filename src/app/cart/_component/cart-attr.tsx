@@ -55,8 +55,6 @@ const CartAttributeSelect: React.FC<CartAttributeSelectProps> = ({
         <Select
           value={attribute?.id.toString()}
           onValueChange={value => {
-            // const selectedAttr = (item.availableAttributes ?? []).find(a => a.id === attributeId)?.product_attribute.find(pa => pa.id === Number(value))
-
             let selectedAttr
             if (availableAttributesGroups.length > 0) {
               selectedAttr = availableAttributesGroups
@@ -75,23 +73,6 @@ const CartAttributeSelect: React.FC<CartAttributeSelectProps> = ({
             <SelectValue placeholder={`Chọn ${attributeName}`} />
           </SelectTrigger>
           <SelectContent>
-            {/* {(item.availableAttributes ?? [])
-              .find(a => a.id === attributeId)
-              ?.product_attribute.map(pa => {
-                const isDisabled = isAttributeInCart(attributeId, pa.id)
-                return (
-                  <SelectItem
-                    key={pa.id}
-                    value={pa.id.toString()}
-                    disabled={isDisabled}
-                    style={{
-                      color: isDisabled ? 'gray' : 'black'
-                    }}>
-                    {pa.name} (+{pa.price.toLocaleString()}đ)
-                  </SelectItem>
-                )
-              })} */}
-
             {availableAttributesGroups.length > 0 ? (
               availableAttributesGroups
                 .find(a => a.id === attributeId)

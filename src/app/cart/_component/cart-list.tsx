@@ -37,7 +37,8 @@ const CartList: React.FC<CartListProps> = ({ sessionToken }) => {
   const { cart, removeFromCart, updateQuantity, handleSizeChange } = useCart()
   const [openDialog, setOpenDialog] = useState(false) // Điều khiển việc mở và đóng popup
   const [itemToDelete, setItemToDelete] = useState<string | null>(null) // Lưu ID sản phẩm muốn xóa
-  const { setCouponData } = useCoupon() // Get setCouponData from context
+
+  console.log('cart', cart)
 
   const removeItem = (id: string) => {
     if (id && itemToDelete === id) {
@@ -62,14 +63,6 @@ const CartList: React.FC<CartListProps> = ({ sessionToken }) => {
   // Lấy tổng giá trị giỏ hàng
   const totalPrice = cart.reduce((acc, item) => acc + item.total, 0)
 
-  // Hàm cập nhật discount và final price từ API trả về
-  // const handleDiscountUpdate = (
-  //   discountAmount: number,
-  //   finalPrice: number,
-  //   codeCoupon: string
-  // ) => {
-  //   setCouponData(discountAmount, finalPrice, codeCoupon)
-  // }
   return (
     <>
       {/* Cart Items */}
@@ -111,6 +104,15 @@ const CartList: React.FC<CartListProps> = ({ sessionToken }) => {
               const sizeAttribute = item.attributes.find(
                 attr => attr.attribute_id === 1
               )
+              const tasteAttribute = item.attributes.find(
+                attr => attr.attribute_id === 5
+              )
+              const volumeAttribute = item.attributes.find(
+                attr => attr.attribute_id === 6
+              )
+              const weightAttribute = item.attributes.find(
+                attr => attr.attribute_id === 7
+              )
 
               return (
                 <TableRow key={item.id}>
@@ -137,7 +139,11 @@ const CartList: React.FC<CartListProps> = ({ sessionToken }) => {
                         <h3 className='font-bold'>{item.name}</h3>
                       </Link>
                       <p className='text-sm text-gray-600'>
-                        {sizeAttribute?.name}
+                        {sizeAttribute?.name ||
+                          tasteAttribute?.name ||
+                          volumeAttribute?.name ||
+                          weightAttribute?.name ||
+                          'Mặc định'}
                       </p>
                     </div>
                   </TableCell>
@@ -239,14 +245,14 @@ const CartList: React.FC<CartListProps> = ({ sessionToken }) => {
               />
             ) : (
               <CouponForm
-                sessionToken={sessionToken ?? ''}
+                sessionToken={''}
                 // onDiscountUpdate={handleDiscountUpdate}
               />
             )}
           </TableBody>
         </Table>
 
-        {/* <MobileCartItems /> */}
+        <MobileCartItems sessionToken={sessionToken ?? ''} />
       </div>
 
       {/* Order Summary */}

@@ -10,7 +10,7 @@ const contactSchema = z.object({
     .regex(/^\d{10}$/, { message: 'Số điện thoại phải có 10 chữ số.' }),
   email: z.string().email({ message: 'Email không hợp lệ.' }),
   appointment_at: z.string().optional(),
-  message: z.string().optional()
+  message: z.string().min(1, { message: 'Lời nhắn là bắt buộc.' })
 })
 
 export default contactSchema

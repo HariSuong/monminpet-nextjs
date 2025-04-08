@@ -164,29 +164,86 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     })
   }
 
+  /* Hàm lưu thông tin giá trả về sau khi đã gửi đơn hàng và thông báo thành công, dữ liệu trả về sẽ là dạng message: z.string(),
+    code_payment: z.string(),
+    discount: z.number(),
+    total: z.string(),
+    fee: z.number(),
+    amount: z.number(),
+    coupon_message: z.string()
+Và giỏ hàng đã được xóa khi thêm thành công. Tôi cần tạo ra một hàm để lưu thông tin này hiển thị ở cột info đơn hàng
+    */
+  const handlePaymentInfo = (
+    codePayment: string,
+    amount: number,
+    discount: number,
+    total: number,
+    fee: number,
+    couponMessage: string
+  ) => {
+    // Lưu thông tin thanh toán vào localStorage
+    const paymentInfo = {
+      codePayment,
+      amount,
+      discount,
+      total,
+      fee,
+      couponMessage
+    }
+    localStorage.setItem('paymentInfo', JSON.stringify(paymentInfo))
+  }
+  // Hàm lấy thông tin thanh toán từ localStorage
+  const getPaymentInfo = () => {
+    const paymentInfo = localStorage.getItem('paymentInfo')
+    if (paymentInfo) {
+      return JSON.parse(paymentInfo) // Nếu có, trả về thông tin thanh toán
+    }
+    return null // Nếu không có, trả về null
+  }
+  // Hàm xóa thông tin thanh toán khỏi localStorage
+  const clearPaymentInfo = () => {
+    localStorage.removeItem('paymentInfo') // Xóa thông tin thanh toán khỏi localStorage
+  }
+  // Hàm xóa sản phẩm khỏi giỏ hàng
+
   // Hàm xóa tất cả sản phẩm trong giỏ hàng
   const clearCart = () => {
     setCart([]) // Đặt giỏ hàng thành mảng rỗng trong context
     localStorage.removeItem('cart') // Xóa item 'cart' khỏi localStorage
   }
 
-  const isAttributeInCart = (attributeId: number) => {
+  const isAttributeInCart = (
+    attributeParentId: number,
+    attributeId: number
+  ) => {
+    console.log('attributeId', attributeId)
     return cart.some(item =>
-      item.attributes.some(attr => attr.attribute_id === attributeId)
+      item.attributes.some(
+        attr =>
+          attr.attribute_id === attributeParentId && attr.id === attributeId
+      )
     )
   }
+
+  const cartLength = cart.length // Tính tổng số sản phẩm trong giỏ hàng
 
   return (
     // Cung cấp giá trị giỏ hàng và các hàm cho các component con
     <CartContext.Provider
       value={{
         cart,
+        setCart, // ✅ Thêm setCart vào context
+
         addToCart,
         removeFromCart,
         updateQuantity,
         clearCart,
         handleSizeChange,
-        isAttributeInCart
+        isAttributeInCart,
+        cartLength,
+        handlePaymentInfo,
+        getPaymentInfo,
+        clearPaymentInfo
       }}>
       {children}
     </CartContext.Provider>

@@ -12,7 +12,7 @@ export default function Cart() {
   const cookieStore = cookies()
   const sessionToken = cookieStore.get('sessionToken')?.value || null
   return (
-    <div className='container mx-auto p-8 grid grid-cols-1 lg:grid-cols-3 gap-8 mt-32'>
+    <div className='container mx-auto p-8 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:pt-32'>
       <CartList sessionToken={sessionToken} />
     </div>
   )

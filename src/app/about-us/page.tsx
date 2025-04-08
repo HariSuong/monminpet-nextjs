@@ -5,6 +5,37 @@ import EnterAnimation from '@/components/common/enter-animation'
 import FeatureTemplate from '@/components/common/feature-template'
 import ServiceTemplate from '@/components/common/service-template'
 import Title from '@/components/title'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Về Chúng Tôi',
+  description:
+    'Khám phá câu chuyện của Monminpet – nơi tình yêu dành cho thú cưng trở thành sứ mệnh. Cam kết mang lại sản phẩm chất lượng và hoạt động thiện nguyện thiết thực.',
+  openGraph: {
+    title: 'Về Chúng Tôi',
+    description:
+      'Khám phá câu chuyện của Monminpet – nơi tình yêu dành cho thú cưng trở thành sứ mệnh.',
+    url: 'https://monminpet.com/about-us',
+    siteName: 'Monminpet',
+    images: [
+      {
+        url: 'https://monminpet.com/logo/logo.png',
+        width: 800,
+        height: 600,
+        alt: 'Monminpet Logo'
+      }
+    ],
+    locale: 'vi_VN',
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Về Chúng Tôi | Monminpet',
+    description:
+      'Khám phá câu chuyện của Monminpet – nơi tình yêu dành cho thú cưng trở thành sứ mệnh.',
+    images: ['https://monminpet.com/logo/logo.png']
+  }
+}
 
 const AboutUs = () => {
   return (
@@ -14,13 +45,16 @@ const AboutUs = () => {
         <div className='z-10 w-full absolute md:bottom-16 bottom-4'>
           <div className='flex justify-around'>
             <EnterAnimation>
-              <ButtonService title='CÂU CHUYỆN &lt;br/&gt; CỦA CHÚNG TÔI' />
+              <ButtonService
+                title='CÂU CHUYỆN &lt;br/&gt; CỦA CHÚNG TÔI'
+                about={true}
+              />
             </EnterAnimation>
             <EnterAnimation>
-              <ButtonService title='Sứ mệnh' />
+              <ButtonService title='Sứ mệnh' about={true} />
             </EnterAnimation>
             <EnterAnimation>
-              <ButtonService title='thiện nguyện' />
+              <ButtonService title='thiện nguyện' about={true} />
             </EnterAnimation>
           </div>
         </div>
@@ -32,11 +66,11 @@ const AboutUs = () => {
         <AboutSection />
       </div>
 
-      <div className='py-24'>
-        <div className='px-24'>
+      <div className='lg:py-24 py-8 lg:px-[4.5rem]'>
+        <div>
           <Title title='đặt thú cưng của bạn lên hàng đầu' subtitle='sứ mệnh' />
         </div>
-        <div className='md:px-12 flex-wrap justify-around md:flex'>
+        <div className='md:flex-row flex-col justify-between flex lg:gap-0 lg:px-0 gap-6 container'>
           <FeatureTemplate
             title='chất lượng &lt;br/&gt; cao'
             content='Cung cấp các sản phẩm chất lượng cao, chính hãng, được bào chế từ nguyên liệu tự nhiên, nguồn gốc rõ ràng, an toàn cho thú cưng.'

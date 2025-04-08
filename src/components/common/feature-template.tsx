@@ -34,7 +34,7 @@ const FeatureTemplate = ({
       </BotToTopAnimation>
       {/* Content Section */}
       <BotToTopAnimation delay={0.5}>
-        <p className='text-base md:text-2xl text-center px-4'>{content}</p>
+        <p className='text-sm md:text-2xl text-center px-4'>{content}</p>
       </BotToTopAnimation>
     </div>
   )

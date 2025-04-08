@@ -8,11 +8,11 @@ import ProductSlider from '@/components/product/product-slider'
 import ProductSliderHome from '@/components/home/product-slider-home'
 import TopToBotAnimation from '@/components/common/top-to-bot'
 
-const ProductHot = async () => {
+const ProductHot = async ({ products }: { products: ProductHome[] }) => {
   const home = await homeApiRequest.getHome
   // const home = await fetch('https://cdn.monminpet.com/public/api/home')
   // console.log('home', await home.json())
-  // console.log('home', home.payload.data)
+
   return (
     <div className='md:my-40 my-16 relative lg:px-[4.5rem] lg:container'>
       <Image
@@ -40,7 +40,7 @@ const ProductHot = async () => {
         {/* {to && <SeeAll to={to} />} */}
       </div>
       <div className='lg:px-14 xl:px:28 px-6'>
-        <ProductSliderHome products={home.payload.data.products} />
+        <ProductSliderHome products={products} />
       </div>
     </div>
   )

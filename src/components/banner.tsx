@@ -32,6 +32,11 @@ const Banner: React.FC<BannerProps> = ({
         {position === 'product' && (
           <div className='absolute right-0 bottom-12'>
             <p className='bg-orange-100 px-10 py-4 font-semibold text-lg rounded-s-full text-center'>
+              <Link href={`/products/`}>
+                Tất cả <br /> DANH MỤC ở<br /> đây nè
+              </Link>
+            </p>
+            {/* <p className='bg-orange-100 px-10 py-4 font-semibold text-lg rounded-s-full text-center'>
               {catId === 1 && (
                 <Link href={`/products/danh-cho-sep-meo?catId=2&page=1`}>
                   Đồ của <br /> SẾP MÈO ở<br /> đây nè
@@ -42,7 +47,7 @@ const Banner: React.FC<BannerProps> = ({
                   Đồ của <br /> SẾP CÚN ở<br /> đây nè
                 </Link>
               )}
-            </p>
+            </p> */}
           </div>
         )}
       </div>
