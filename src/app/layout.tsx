@@ -18,7 +18,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Monminpet',
+    default: 'Monminpet - Gia đình - nơi có những người bạn bốn chân!',
     template: '%s | Monminpet'
   },
   description: 'Gia đình - nơi có những người bạn bốn chân!',
@@ -34,6 +34,8 @@ export default function RootLayout({
 }>) {
   const cookie = cookies()
   const sessionToken = cookie.get('sessionToken')?.value
+  console.log('sessionToken', sessionToken)
+  const isLoggedIn = sessionToken !== undefined ? true : false
 
   return (
     <html lang='vi'>
@@ -49,12 +51,12 @@ export default function RootLayout({
         <link rel='apple-touch-icon' href='/logo/fav-monminpet.png' />
       </head>
       {/* <body className={montserrat.className}> */}
-      <body className={montserrat.className}>
+      <body className={`w-full scroll-smooth ${montserrat.className}`}>
         <Providers>
           <CouponProvider>
             <CartProvider>
               {/* Bao bọc ứng dụng bằng CartProvider */}
-              <Header />
+              <Header isLoggedIn={isLoggedIn} />
               <AppProvider initialSessionToken={sessionToken}>
                 {children}
                 <Toaster position='top-right' richColors closeButton />

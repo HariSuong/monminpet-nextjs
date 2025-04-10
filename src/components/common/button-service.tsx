@@ -14,6 +14,7 @@ const ButtonService = ({
     <Button asChild>
       <Link
         href={linkUrl}
+        scroll={true}
         className={`!bg-[#f8edd8]  h-auto !md:py-10 !text-black text-center text-[0.5rem] md:text-2xl italic rounded-none font-bold uppercase ${
           about ? '!px-1 !py-1' : ''
         }`}>

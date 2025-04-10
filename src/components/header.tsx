@@ -13,12 +13,14 @@ import {
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import DropdownUser from './dropdown-user'
+
 import SearchModal from '@/components/home/search-modal'
 import HeaderMobile from '@/components/header-mobile'
 import { useCart } from '@/context/CartContext'
+import { DropdownUser } from '@/components/dropdown-user'
+import DropdownUserClient from '@/components/dropdown-user-client'
 
-const Header: React.FC = () => {
+const Header = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const { cartLength } = useCart()
 
   const pathname = usePathname()
@@ -26,7 +28,7 @@ const Header: React.FC = () => {
   return (
     <header className='bg-transparent shadow-md '>
       {/*  Mobile */}
-      <HeaderMobile totalCart={cartLength} />
+      <HeaderMobile totalCart={cartLength} isLoggedIn={isLoggedIn} />
 
       <NavigationMenu className='hidden lg:flex justify-center gap-6 max-w-full container px-4 py-8 absolute top-0 right-0 left-0 z-20'>
         <NavigationMenuList className='lg:space-x-6'>
@@ -113,7 +115,8 @@ const Header: React.FC = () => {
 
           <Link className='text-gray-700 hover:text-black' href='#'>
             {/* <Image src='/icon/user.png' alt='User' width={24} height={24} /> */}
-            <DropdownUser />
+            {/* <DropdownUser /> */}
+            <DropdownUserClient isLoggedIn={isLoggedIn} />
           </Link>
           <Link
             className='relative text-gray-700 hover:text-black'

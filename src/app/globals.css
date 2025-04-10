@@ -89,6 +89,10 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer base {
@@ -113,6 +117,10 @@
 
   .content-container p {
     @apply text-base mb-5 leading-relaxed;
+  }
+
+  .content-container a {
+    @apply underline italic text-[#ffc13c];
   }
 
   .content-container ul,
@@ -152,7 +160,9 @@
     .content-container h3 {
       @apply text-base font-medium mb-6;
     }
-    .content-container p {
+    .content-container p,
+    .content-container ul,
+    .content-container ol {
       @apply text-sm mb-5 leading-relaxed;
     }
   }

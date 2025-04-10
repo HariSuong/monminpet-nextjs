@@ -10,7 +10,7 @@ import {
 const serviceApiRequest = {
   getServices: http.get<ServiceCatRes>('/services', { cache: 'no-store' }),
   getDetailService: (id: number) =>
-    http.get<ServiceDetailRes>(`/services/detail/${id}`),
+    http.get<ServiceDetailRes>(`/services/detail/${id}`, { cache: 'no-store' }),
   submitMessage: (body: MessageBody) => {
     return http.post<ServiceMessageRes>('/messages', body)
   }

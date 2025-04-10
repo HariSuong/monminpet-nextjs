@@ -15,31 +15,38 @@ import SamplePrevArrow from './sample-prev-arrow'
 const feedbacks = [
   {
     id: 1,
-    name: 'Lucky',
+    name: 'Mẹ bé Mon',
     message:
-      'Giao hàng đúng hẹn, chất lượng sản phẩm tuyệt vời. Săn sale được giá hời. Ưng nha!',
-    avatar: '/feedback/lucky.png'
+      'Bé nhà mình có lần ăn phải hàng trôi nổi nên bị bệnh đường ruột, may tìm được shop này bán súp thưởng hàng chính hãng. Mọi người yên tâm mua nhé.',
+    avatar: '/feedback/mebemon.jpg'
   },
   {
     id: 2,
-    name: 'Cat',
+    name: 'Suzy Nguyen',
     message:
-      'Shop bán hàng chính hãng, sau khi sử dụng Fish oil vài ngày bé mèo nhà mình lông mềm hơn.',
-    avatar: '/feedback/cat.png'
+      'Shop bán sữa tắm Mypet mùi rất thơm, tắm mà tận 2 ngày sau vẫn còn mùi thoang thoảng. Tắm xong lông mềm, mượt, để xem có giảm rụng lông ko mình sẽ quay lại feedback sau.',
+    avatar: '/feedback/suzynguyen.jpg'
   },
   {
     id: 3,
-    name: 'Tom',
+    name: 'An Khuê',
     message:
-      'Nên mua Probiotics nha mọi người. Mèo nhà mình hay nôn và tiêu chảy, sau khi bổ sung hết hẳn luôn í.',
-    avatar: '/feedback/tom.png'
+      'Ai muốn chó sống lâu thì mua Fera Pets của shop này nha mọi người. Chó nhà mình từ lúc dùng sản phẩm của shop thì sức khỏe cải thiện hẳn.',
+    avatar: '/feedback/ankhue.jpg'
   },
   {
     id: 4,
-    name: 'BoTom',
+    name: 'Bống',
     message:
-      'Nên mua Probiotics nha mọi người. Mèo nhà mình hay nôn và tiêu chảy, sau khi bổ sung hết hẳn luôn í.',
-    avatar: '/feedback/tom.png'
+      'Shop bán cát mèo giá hơi chát hơn so với các loại khác. Bù lại cát không có bụi, khử mùi tốt. Sẽ quay lại ủng hộ tiếp.',
+    avatar: '/feedback/bong.jpg'
+  },
+  {
+    id: 5,
+    name: 'Phạm An Nhiên',
+    message:
+      'Đóng gói cẩn thận, giao hàng nhanh, nhân viên tư vấn nhiệt tình, hàng chất lượng cao cấp. Sẽ giới thiệu bạn bè ủng hộ.',
+    avatar: '/feedback/phamannhien.jpg'
   }
 ]
 
@@ -74,8 +81,9 @@ const settings = {
     {
       breakpoint: 480,
       settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        infinite: true
       }
     }
   ]

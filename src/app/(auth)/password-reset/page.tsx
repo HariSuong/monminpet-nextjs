@@ -1,6 +1,11 @@
 import TitleAuth from '@/app/(auth)/_component/title-auth'
 import PasswordResetForm from '@/app/(auth)/password-reset/password-reset-form'
 import React from 'react'
+import { Metadata } from 'next'
+export const metadata: Metadata = {
+  title: 'Quên mật khẩu',
+  description: 'Trở thành thành viên của chúng tôi để nhận nhiều ưu đãi.'
+}
 
 const PasswordReset = () => {
   return (

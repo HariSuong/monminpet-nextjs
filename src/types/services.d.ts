@@ -43,6 +43,11 @@ export interface ServiceDetail {
   thumb: string
   desc: string
   content: string
+  faqs: {
+    id: number
+    question: string
+    answer: string
+  }[]
 }
 
 /**{

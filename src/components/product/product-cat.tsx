@@ -1,6 +1,5 @@
 'use client'
 
-import { useProductsCat } from '@/hooks/product/useProductsCat'
 import { SkeletonCard } from '../skeleton-card'
 import Title from '../title'
 import ProductSlider from './product-slider'

@@ -16,13 +16,16 @@ import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema'
 import authApiRequest from '@/services/apiAuth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast, Toaster } from 'sonner'
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false) // Thêm state loading
+  const searchParams = useSearchParams()
+
+  const redirectPath = searchParams.get('redirect') || '/'
 
   const router = useRouter()
   const form = useForm<LoginBodyType>({
@@ -47,7 +50,7 @@ const LoginForm = () => {
       await authApiRequest.auth({ sessionToken: result.payload.token })
       // router.push('/account')
       setTimeout(() => {
-        router.push('/')
+        router.push(redirectPath)
       }, 500) // Chờ 500ms trước khi thực hiện push
     } catch (error: any) {
       const status = error.status as number

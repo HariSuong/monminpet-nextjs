@@ -1,16 +1,22 @@
 'use client'
 
-import React, { useState } from 'react'
-import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet'
-import Link from 'next/link'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import Image from 'next/image'
-import DropdownUser from '@/components/dropdown-user'
+import Link from 'next/link'
+import { useState } from 'react'
+
+import DropdownUserClient from '@/components/dropdown-user-client'
+import SearchModal from '@/components/home/search-modal'
 import { Button } from '@/components/ui/button'
 import { usePathname } from 'next/navigation'
-import SearchModal from '@/components/home/search-modal'
-import { useCart } from '@/context/CartContext'
 
-const HeaderMobile = ({ totalCart }: { totalCart: number }) => {
+const HeaderMobile = ({
+  totalCart,
+  isLoggedIn
+}: {
+  totalCart: number
+  isLoggedIn: boolean
+}) => {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
@@ -36,7 +42,8 @@ const HeaderMobile = ({ totalCart }: { totalCart: number }) => {
 
           <Link className='text-gray-700 hover:text-black' href='#'>
             {/* <Image src='/icon/user.png' alt='User' width={24} height={24} className='w-12' /> */}
-            <DropdownUser />
+            {/* <DropdownUser /> */}
+            <DropdownUserClient isLoggedIn={isLoggedIn} />
           </Link>
           <Link
             className='relative text-gray-700 hover:text-black'

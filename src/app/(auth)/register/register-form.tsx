@@ -36,15 +36,14 @@ const RegisterForm = () => {
     try {
       const result = await authApiRequest.register(values)
       toast.success('Đăng ký thành công', {
-        description:
-          'Chúng tôi đã ghi nhận lịch của bạn và sẽ trả lời trong thời gian sớm nhất'
+        description: 'Chúng tôi sẽ chuyển hướng đến trang chủ trong giây lát'
       })
 
       await authApiRequest.auth({ sessionToken: result.payload.token })
       // console.log(result.payload.token)
       // sessionTokenClient.value = result.payload?.token
 
-      router.push('/account')
+      // router.push('/login')
     } catch (error: any) {
       console.log(error)
       const errors = error.payload.errors as { email: string }
@@ -60,33 +59,6 @@ const RegisterForm = () => {
         toast.error('Có lỗi xảy ra')
       }
     }
-
-    // try {
-    //   const result = await fetch(`${envConfig.NEXT_PUBLIC_API_URL}/register`, {
-    //     method: 'POST',
-    //     body: JSON.stringify(values),
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     }
-    //   }).then(result => result.json())
-    // } catch (error) {
-    //   console.log(error)
-    // }
-
-    // try {
-    //   const result = await authApiRequest.register(values)
-    //   toast.success('Đăng ký thành công', {
-    //     description:
-    //       'Chúng tôi đã ghi nhận lịch của bạn và sẽ trả lời trong thời gian sớm nhất'
-    //   })
-    //   await authApiRequest.auth({ sessionToken: result.payload.token })
-    //   setSessionToken(result.payload?.token)
-    //   router.push('/account')
-    // } catch (error) {
-    //   console.log(error)
-
-    //   toast.error('Có lỗi xảy ra')
-    // }
   }
 
   return (

@@ -5,13 +5,13 @@ import LeftToRightAnimation from '@/components/common/left-to-right'
 
 interface TitleProps {
   title: string
-  subtitle: string
+  subtitle?: string
   to?: string
 }
 
 const Title: React.FC<TitleProps> = ({ title, subtitle, to }) => {
   return (
-    <div className='flex items-center justify-between sm:px-6 md:px-0 md:my-10 my-2 container'>
+    <div className='flex items-center justify-between px-0 sm:px-6 md:px-0 md:my-10 my-2 container'>
       <div className=''>
         <TopToBotAnimation>
           <p className='uppercase font-light md:text-3xl lg:text-4xl text-sm md:mb-2 mb-0'>

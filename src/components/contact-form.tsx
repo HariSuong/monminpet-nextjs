@@ -25,6 +25,7 @@ import Image from 'next/image'
 import { toast, Toaster } from 'sonner'
 import { DatePickerDemo } from './custom-date-input'
 import { Textarea } from './ui/textarea'
+import Title from '@/components/title'
 
 interface Option {
   value: string
@@ -104,9 +105,11 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
               alt='Icon Mèo'
               className='absolute bottom-0 left-0 w-1/6 z-0'
             />
-            <div className='p-8 max-w-screen-lg w-full mx-auto z-10'>
-              <h2 className='text-2xl font-light'>ĐẶT LỊCH HẸN</h2>
-              <h3 className='text-4xl font-semibold mb-6'>BOOKING NOW!</h3>
+            <div className='md:p-8 p-0 max-w-screen-lg w-full mx-auto z-10'>
+              <Title title='BOOKING NOW!' subtitle='ĐẶT LỊCH HẸN' />
+
+              {/* <h2 className='text-2xl font-light'>ĐẶT LỊCH HẸN</h2>
+              <h3 className='text-4xl font-semibold mb-6'>BOOKING NOW!</h3> */}
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 uppercase'>
                 <FormField
                   control={form.control}
@@ -114,7 +117,7 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
                   render={({ field }) => (
                     <FormItem>
                       <Select onValueChange={field.onChange}>
-                        <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-full uppercase'>
+                        <FormControl className='bg-[#F8EDD8] py-8 pl-6 md:text-base text-sm italic font-light rounded-full uppercase'>
                           <SelectTrigger className='relative'>
                             <SelectValue placeholder='Chọn chuyên khoa *' />
                             <SelectIcon asChild>
@@ -149,7 +152,7 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}>
-                        <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-full uppercase'>
+                        <FormControl className='bg-[#F8EDD8] py-8 pl-6 md:text-base text-sm italic font-light rounded-full uppercase'>
                           <SelectTrigger className='relative'>
                             <SelectValue placeholder='Chọn thú nuôi *' />
                             <SelectIcon asChild>
@@ -182,7 +185,7 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
                   name='full_name'
                   render={({ field }) => (
                     <FormItem>
-                      <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-full uppercase'>
+                      <FormControl className='bg-[#F8EDD8] py-8 pl-6 md:text-base text-sm italic font-light rounded-full uppercase'>
                         <Input
                           placeholder='Tên'
                           className='placeholder:text-black'
@@ -198,7 +201,7 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
                   name='email'
                   render={({ field }) => (
                     <FormItem>
-                      <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-full uppercase'>
+                      <FormControl className='bg-[#F8EDD8] py-8 pl-6 md:text-base text-sm italic font-light rounded-full uppercase'>
                         <Input
                           type='text'
                           placeholder='Email'
@@ -217,7 +220,7 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
                   name='phone'
                   render={({ field }) => (
                     <FormItem>
-                      <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-full uppercase'>
+                      <FormControl className='bg-[#F8EDD8] py-8 pl-6 md:text-base text-sm italic font-light rounded-full uppercase'>
                         <Input
                           type='tel'
                           className='placeholder:text-black'
@@ -234,7 +237,7 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
                   name='appointment_at'
                   render={({ field }) => (
                     <FormItem>
-                      <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-full uppercase'>
+                      <FormControl className='bg-[#F8EDD8] py-8 pl-6 md:text-base text-sm italic font-light rounded-full uppercase'>
                         {/* <Input
                           type='date'
                           placeholder='Ngày - Giờ đặt lịch'
@@ -265,7 +268,7 @@ const ContactForm: React.FC<{ services: ServicesCat[] }> = ({ services }) => {
                   name='message'
                   render={({ field }) => (
                     <FormItem>
-                      <FormControl className='bg-[#F8EDD8] py-8 pl-6 text-base italic font-light rounded-2xl uppercase'>
+                      <FormControl className='bg-[#F8EDD8] py-8 pl-6 md:text-base text-sm italic font-light rounded-2xl uppercase'>
                         <Textarea
                           placeholder='Monminpet có thể giúp gì cho "bé cưng" của bạn? *'
                           className='placeholder:text-black'

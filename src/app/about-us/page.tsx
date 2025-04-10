@@ -4,6 +4,7 @@ import ButtonService from '@/components/common/button-service'
 import EnterAnimation from '@/components/common/enter-animation'
 import FeatureTemplate from '@/components/common/feature-template'
 import ServiceTemplate from '@/components/common/service-template'
+import TopToBotAnimation from '@/components/common/top-to-bot'
 import Title from '@/components/title'
 import { Metadata } from 'next'
 
@@ -48,25 +49,32 @@ const AboutUs = () => {
               <ButtonService
                 title='CÂU CHUYỆN &lt;br/&gt; CỦA CHÚNG TÔI'
                 about={true}
+                linkUrl='#our-story'
               />
             </EnterAnimation>
             <EnterAnimation>
-              <ButtonService title='Sứ mệnh' about={true} />
+              <ButtonService title='Sứ mệnh' about={true} linkUrl='#mission' />
             </EnterAnimation>
             <EnterAnimation>
-              <ButtonService title='thiện nguyện' about={true} />
+              <ButtonService
+                title='thiện nguyện'
+                about={true}
+                linkUrl='#charity'
+              />
             </EnterAnimation>
           </div>
         </div>
       </div>
-      <div>
-        <h2 className='w-full text-center uppercase text-2xl md:text-4xl py-0 md:py-8 font-medium'>
-          OUR STORY{' '}
-        </h2>
+      <div id='our-story'>
+        <TopToBotAnimation>
+          <h2 className='w-full text-center uppercase text-2xl md:text-4xl py-0 md:py-8 font-medium'>
+            OUR STORY{' '}
+          </h2>
+        </TopToBotAnimation>
         <AboutSection />
       </div>
 
-      <div className='lg:py-24 py-8 lg:px-[4.5rem]'>
+      <div className='lg:py-24 py-8 lg:px-[4.5rem]' id='mission'>
         <div>
           <Title title='đặt thú cưng của bạn lên hàng đầu' subtitle='sứ mệnh' />
         </div>
@@ -88,19 +96,21 @@ const AboutUs = () => {
           />
         </div>
       </div>
-      <ServiceTemplate
-        title='CHƯƠNG TRÌNH THIỆN NGUYỆN'
-        image='/about/our-story/4.png'
-        titleButton='liên lạc'>
-        <p className='font-light md:text-xl text-base mb-6'>
-          Chương trình từ thiện của chúng tôi cam kết đóng góp và hợp tác lâu
-          dài với các tổ chức từ thiện thông qua việc hiến tặng sản phẩm và hỗ
-          trợ các hoạt động gây quỹ. Chúng tôi hiến tặng sản phẩm và một phần
-          lợi nhuận cho các tổ chức cứu hộ, tập trung vào các tổ chức hỗ trợ
-          người cao tuổi và chó mèo gặp vấn đề về sức khỏe. Ngoài ra cùng đồng
-          hành với các đội cứu trợ động vật khu vực TPHCM.
-        </p>
-      </ServiceTemplate>
+      <div id='charity'>
+        <ServiceTemplate
+          title='CHƯƠNG TRÌNH THIỆN NGUYỆN'
+          image='/about/our-story/4.png'
+          titleButton='liên lạc'>
+          <p className='font-light md:text-xl text-base mb-6'>
+            Chương trình từ thiện của chúng tôi cam kết đóng góp và hợp tác lâu
+            dài với các tổ chức từ thiện thông qua việc hiến tặng sản phẩm và hỗ
+            trợ các hoạt động gây quỹ. Chúng tôi hiến tặng sản phẩm và một phần
+            lợi nhuận cho các tổ chức cứu hộ, tập trung vào các tổ chức hỗ trợ
+            người cao tuổi và chó mèo gặp vấn đề về sức khỏe. Ngoài ra cùng đồng
+            hành với các đội cứu trợ động vật khu vực TPHCM.
+          </p>
+        </ServiceTemplate>
+      </div>
     </div>
   )
 }

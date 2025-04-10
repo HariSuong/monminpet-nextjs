@@ -1,4 +1,4 @@
-import Loading from '@/app/products/loading'
+import Loading from '@/app/posts/loading'
 import Banner from '@/components/banner'
 import Pagination from '@/components/pagination'
 import PostList from '@/components/post/post-list'
@@ -19,7 +19,6 @@ const CategoryPostPage = async ({
   const q = searchParams.q || ''
 
   const posts = await postApiRequest.getPosts(catId, page, orderBy, q)
-  console.log('posts', posts)
 
   const { links, last_page, data } = posts.payload.data
 

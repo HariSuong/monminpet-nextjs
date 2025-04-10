@@ -1,4 +1,5 @@
-import LoadingDetail from '@/app/products/loading-detail'
+import Loading from '@/app/loading'
+
 import PostDetail from '@/components/post/post-detail'
 import postApiRequest from '@/services/apiPost'
 import { Suspense } from 'react'
@@ -16,7 +17,7 @@ const PostDetailPage = async ({ params }: { params: { id: string } }) => {
     }
 
     return (
-      <Suspense fallback={<LoadingDetail />}>
+      <Suspense fallback={<Loading />}>
         <PostDetail payload={payload} />
       </Suspense>
     )

@@ -161,66 +161,14 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
           <FaRegCircleRight className='w-4 h-4 mr-2' />
         </Button>
       ),
-      // action: (
-      //   <div
-      //     style={{
-      //       display: 'flex flex-col',
-      //       justifyContent: 'space-between',
-      //       width: '100%'
-      //     }}>
-      //     <Button onClick={() => router.push('/cart')} className='mr-2'>
-      //       Xem giỏ hàng
-      //     </Button>
-      //     <Button onClick={() => router.push('/products')}>
-      //       Tiếp tục mua sắm
-      //     </Button>
-      //   </div>
-      // ),
-      // duration: 5000, // Toast sẽ tự động tắt sau 5 giây
+
       dismissible: true // Cho phép người dùng tắt toast
     })
   }
 
   // Hàm xử lý khi người dùng click vào nút "Mua ngay"
   const handleBuyNow = () => {
-    if (!selectedAttributes || selectedAttributes.length === 0) {
-      // Chỉ tính ID một lần và lưu vào useRef
-      if (!generatedIdRef.current) {
-        generatedIdRef.current = generateCartItemId([], id)
-      }
-
-      const itemToAdd = {
-        id: generateCartItemId([], id),
-        name,
-        price: Number(price_text),
-        quantity: 1,
-        attributes: [], // Các thuộc tính đã chọn
-        total: calculateTotalPrice() // Tổng giá của sản phẩm
-      }
-      addToCart(itemToAdd, image, attributes ?? []) // Thêm vào giỏ hàng
-
-      // Điều hướng sang trang giỏ hàng ngay lập tức
-      router.push('/cart')
-
-      return
-    }
-
-    const totalPrice = calculateTotalPrice() // Tính giá tổng
-
-    if (!generatedIdRef.current) {
-      generatedIdRef.current = generateCartItemId(selectedAttributes, id)
-    }
-
-    const itemToAdd = {
-      id: generatedIdRef.current, // 🔥 Tạo ID duy nhất
-      name,
-      price: Number(price_text),
-      quantity: 1,
-      attributes: selectedAttributes, // Các thuộc tính đã chọn
-      total: totalPrice // Tổng giá của sản phẩm
-    }
-
-    addToCart(itemToAdd, image, attributes!) // Thêm vào giỏ hàng
+    handleAddToCart()
 
     // Điều hướng sang trang giỏ hàng ngay lập tức
     router.push('/cart')
@@ -244,7 +192,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   const averageStar =
     reviews?.reduce((acc, review) => acc + review.rating, 0)! /
     (reviews?.length || 1)
-  const averageStarRounded = Math.round(averageStar * 10) / 10 // Làm tròn đến 1 chữ số thập phân
+  // const averageStarRounded = Math.round(averageStar * 10) / 10 // Làm tròn đến 1 chữ số thập phân
 
   return (
     <div className='lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0'>

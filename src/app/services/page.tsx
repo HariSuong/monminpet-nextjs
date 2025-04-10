@@ -1,6 +1,7 @@
-import Loading from '@/app/products/loading'
+import Loading from '@/app/services/loading'
 import Banner from '@/components/banner'
 import ContactForm from '@/components/contact-form'
+import BannerScroll from '@/components/services/banner-scroll'
 import ServicesList from '@/components/services/services-list'
 import serviceApiRequest from '@/services/apiServices'
 import { Metadata } from 'next'
@@ -42,7 +43,7 @@ const ServicesPage = async () => {
   return (
     <>
       <Banner type='video' url='/services/banner.mp4?t=1' />
-      <Banner url='/services/vetcoach.png' />
+      <BannerScroll />
       <Suspense fallback={<Loading />}>
         <ServicesList services={services.payload.menus} />
       </Suspense>

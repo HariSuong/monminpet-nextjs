@@ -9,7 +9,7 @@ import homeApiRequest from '@/services/apiHome'
 
 export default async function Home() {
   const home = await homeApiRequest.getHome
-  console.log('menu_parents', home.payload.data.menu_parents)
+  // console.log('menu_parents', home.payload.data.menu_parents)
   return (
     <>
       <Banner type='video' url='/home/banner.mp4?t=1' />

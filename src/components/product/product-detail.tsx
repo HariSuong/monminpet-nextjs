@@ -1,7 +1,6 @@
 'use client'
 
 import { SkeletonCard } from '@/components/skeleton-card'
-import { useProduct } from '@/hooks/product/useProduct'
 import slugify from 'slugify'
 
 import { BreadcrumbWithCustomSeparator } from '../breadcrumb-with-custom-separator'
@@ -10,11 +9,17 @@ import { Faq } from '../faq'
 import ProductContent from './product-content'
 import ProductInfo from './product-info'
 import SliderThumb from './slider-thumb'
-import { type ProductDetail } from '@/types/products'
+import { Coupon, type ProductDetail } from '@/types/products'
 import { useState } from 'react'
 import ProductReviews from '@/components/product/product-reviews'
 
-const ProductDetail = ({ product }: { product: ProductDetail }) => {
+const ProductDetail = ({
+  product,
+  coupons
+}: {
+  product: ProductDetail
+  coupons: Coupon[]
+}) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
 
   console.log('product', product)
@@ -26,7 +31,7 @@ const ProductDetail = ({ product }: { product: ProductDetail }) => {
   }
 
   return (
-    <div className='container px-5 md:py-24 py-8 mx-auto'>
+    <div className='container px-5 md:py-32 py-8 mx-auto'>
       <BreadcrumbWithCustomSeparator
         corePage='Sản phẩm'
         coreLink={`/products`}
@@ -57,7 +62,7 @@ const ProductDetail = ({ product }: { product: ProductDetail }) => {
           suggests={product?.suggests || []}
           attributes={product?.attributes}
           onAttributeClick={handleAttributeClick} // Truyền hàm xử lý
-          coupons={product?.coupons}
+          coupons={coupons}
         />
         <ProductContent content={product?.content} />
         {/* <SliderThumb images={product.imgs} />

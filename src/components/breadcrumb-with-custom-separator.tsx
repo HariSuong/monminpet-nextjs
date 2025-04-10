@@ -18,8 +18,8 @@ export function BreadcrumbWithCustomSeparator({
   coreLink,
   currentPage
 }: {
-  parentPage: string
-  parentLink: string
+  parentPage?: string
+  parentLink?: string
   corePage?: string
   coreLink?: string
   currentPage: string
@@ -36,9 +36,11 @@ export function BreadcrumbWithCustomSeparator({
         <BreadcrumbItem>
           <BreadcrumbLink href={coreLink}>{corePage}</BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbSeparator>
-          <SlashIcon />
-        </BreadcrumbSeparator>
+        {parentPage && (
+          <BreadcrumbSeparator>
+            <SlashIcon />
+          </BreadcrumbSeparator>
+        )}
         <BreadcrumbItem>
           <BreadcrumbLink href={parentLink}>{parentPage}</BreadcrumbLink>
         </BreadcrumbItem>

@@ -4,6 +4,7 @@ import accountApiRequest from '@/services/apiAccount'
 import { StarFilledIcon } from '@radix-ui/react-icons'
 import { cookies } from 'next/headers'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const PurchaseList = async () => {
   const cookieStore = cookies()
@@ -14,7 +15,13 @@ const PurchaseList = async () => {
   // Gọi API lấy thông tin tài khoản
   const result = await accountApiRequest.invoices(sessionToken.value)
   // console.log('result', result)
-  if (!result) return
+  if (!result)
+    return (
+      <div className='mt-4'>
+        {' '}
+        <p>Chưa có đơn hàng</p> <Link href='/products'>Tiếp tục mua sắm</Link>
+      </div>
+    )
   // console.log('result', result.payload.data.data)
   const productList = result.payload.data.data
   console.log('productList', productList)

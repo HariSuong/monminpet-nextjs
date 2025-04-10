@@ -1,46 +1,43 @@
-import LoadingDetail from '@/app/products/loading-detail'
+import Loading from '@/app/loading'
+
 import ProductDetail from '@/components/product/product-detail'
 import productApiRequest from '@/services/apiProducts'
 import { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { Suspense } from 'react'
+import slugify from 'slugify'
 
 export async function generateMetadata({
   params
 }: {
   params: { id: string }
 }): Promise<Metadata> {
-  const cookieStore = cookies()
-  const sessionToken = cookieStore.get('sessionToken') || ''
   const { id } = params
 
-  const { payload } = await productApiRequest.getDetail(
-    sessionToken.value,
-    Number(id)
-  )
+  const products = await productApiRequest.getDetail(Number(id))
 
   return {
-    title: products.payload,
-    description: products.payload.menu?.desc,
+    title: products.payload.data.name,
+    description: products.payload.data.menus?.desc,
     openGraph: {
-      title: `Danh mục sản phẩm ${products.payload.menu?.name} | Monminpet`,
-      description: products.payload.menu?.desc,
-      images: products.payload.menu?.thumb, // Cập nhật hình ảnh đại diện cho danh mục
+      title: `Danh mục sản phẩm ${products.payload.data.menus?.name} | Monminpet`,
+      description: products.payload.data.menus?.desc,
+      images: products.payload.data.menus?.thumb, // Cập nhật hình ảnh đại diện cho danh mục
       url: `https://monminpet.com/products/${slugify(
-        products.payload.menu?.name || '',
+        products.payload.data.menus?.name || '',
         {
           lower: true,
           strict: true,
           locale: 'vi'
         }
-      )}?catId=${products.payload.menu?.id}&page=1`,
+      )}?catId=${products.payload.data.menus?.id}&page=1`,
       type: 'website'
     },
     twitter: {
       card: 'summary_large_image',
-      title: `Danh mục sản phẩm ${products.payload.menu?.name} | Monminpet`,
-      description: `Khám phá các sản phẩm chất lượng của Monminpet trong danh mục ${products.payload.menu?.name}.`,
-      images: products.payload.menu?.thumb
+      title: `Danh mục sản phẩm ${products.payload.data.menus?.name} | Monminpet`,
+      description: `Khám phá các sản phẩm chất lượng của Monminpet trong danh mục ${products.payload.data.menus?.name}.`,
+      images: products.payload.data.menus?.thumb
     }
   }
 }
@@ -54,10 +51,10 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
 
   try {
     // Trả về dữ liệu sản phẩm từ API
-    const { payload } = await productApiRequest.getDetail(
-      sessionToken.value,
-      Number(id)
-    )
+    const { payload } = await productApiRequest.getDetail(Number(id))
+
+    // Trả về dữ liệu sản phẩm từ API
+    const coupon = await productApiRequest.getCoupon(sessionToken.value)
 
     // Kiểm tra nếu không có dữ liệu
     if (!payload?.data) {
@@ -65,8 +62,8 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
     }
 
     return (
-      <Suspense fallback={<LoadingDetail />}>
-        <ProductDetail product={payload.data} />
+      <Suspense fallback={<Loading />}>
+        <ProductDetail product={payload.data} coupons={coupon.payload.data} />
       </Suspense>
     )
   } catch (error) {

@@ -109,7 +109,6 @@ export interface ProductDetail {
   attributes?: Attribute[]
   related?: Product[]
   reviews?: Review[]
-  coupons?: Coupon[]
 }
 export interface ProductPoint {
   id: string
@@ -129,4 +128,9 @@ export interface ProductDetailRes {
   success: boolean
   message: string
   data: ProductDetail
+}
+export interface CouponRes {
+  success: boolean
+  message: string
+  data: Coupon[]
 }

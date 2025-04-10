@@ -1,6 +1,11 @@
 import React from 'react'
 import RegisterForm from './register-form'
 import TitleAuth from '@/app/(auth)/_component/title-auth'
+import { Metadata } from 'next'
+export const metadata: Metadata = {
+  title: 'Đăng ký',
+  description: 'Trở thành thành viên của chúng tôi để nhận nhiều ưu đãi.'
+}
 
 const RegisterPage = () => {
   return (

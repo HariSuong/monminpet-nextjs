@@ -57,7 +57,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ reviews }) => {
 
       {visibleReviews < reviews.length && (
         <button
-          className='mt-4 text-blue-500 hover:text-blue-700 font-semibold'
+          className='mt-4 text-[#F8EDD8] hover:text-[#D89C17] font-semibold'
           onClick={loadMoreReviews}>
           Xem thêm {reviews.length - visibleReviews} đánh giá
         </button>
